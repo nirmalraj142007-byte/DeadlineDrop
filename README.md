@@ -1,5 +1,7 @@
 # DeadlineDrop
 
+[![CI](https://github.com/nirmalraj142007-byte/DeadlineDrop/actions/workflows/ci.yml/badge.svg)](https://github.com/nirmalraj142007-byte/DeadlineDrop/actions/workflows/ci.yml)
+
 DeadlineDrop: bandwidth-fair deadline submissions
 
 ## Quick start

@@ -33,3 +33,25 @@ defaults to UTC on startup.
 **File to read first:** `pom.xml` — it pins the entire dependency graph (Boot 4.1.1,
 Testcontainers managed by Boot BOM, ArchUnit 1.4.0 explicit) and configures the
 Surefire/Failsafe split that governs how `./mvnw verify` works.
+
+---
+
+## Phase 1 — 2026-11-06
+
+**What changed:** Implemented uniform RFC 9457 ProblemDetail error handling, request ID tracing, architecture testing, and CI workflow.
+- In `pom.xml`, added `maven-dependency-plugin:properties` to resolve `-javaagent:${org.mockito:mockito-core:jar}` in Surefire and Failsafe arguments to eliminate the Mockito byte-buddy self-attachment warning on Java 21, keeping `-Duser.timezone=UTC`. Added Boot 4's `spring-boot-starter-webmvc-test` dependency for `@WebMvcTest`.
+- Created `com.deadlinedrop.api.ErrorCodes` containing all 25 standardized error code constants.
+- Created `com.deadlinedrop.api.ApiException` runtime exception with status, code, detail, and static factories.
+- Created `com.deadlinedrop.web.RequestIdFilter` (`OncePerRequestFilter`, `HIGHEST_PRECEDENCE + 1`) to reuse incoming `X-Request-Id` UUID headers or generate a UUID, populate MDC key `requestId`, and echo the header in responses.
+- Created `com.deadlinedrop.web.GlobalExceptionHandler` (`@RestControllerAdvice` extending `ResponseEntityExceptionHandler`), returning `ProblemDetail` with type `https://deadlinedrop.dev/problems/<lower-kebab>`, title, status, detail, instance URI, `code`, `requestId`, `errors` on validation failures, `Retry-After: 1` on 503 database unavailability, and sanitization of unexpected 500 errors with logged stack traces.
+- Created `com.deadlinedrop.security.ProblemDetailWriter` using Jackson 3 to stream RFC 9457 JSON from Spring Security handlers. Updated `SecurityConfig` to disable CSRF (documenting why: bearer tokens in Authorization header with no cookies), disable httpBasic and formLogin, and route `authenticationEntryPoint` (401 UNAUTHENTICATED) and `accessDeniedHandler` (403 FORBIDDEN) through `ProblemDetailWriter`.
+- Created `src/test/java/com/deadlinedrop/web/GlobalExceptionHandlerTest` testing all 15 error scenarios with filters disabled.
+- Extended `ApplicationSmokeIT` to verify `GET /api/anything` returns 401 `UNAUTHENTICATED` with `application/problem+json` and `X-Request-Id` header, and converted tests to constructor injection.
+- Created `src/test/java/com/deadlinedrop/ArchitectureTest` using ArchUnit to enforce layering (`api` -> `repository`, `repository` -> `service`/`api`, `domain` -> `api`) and forbid `@Autowired` field injection.
+- Created `.github/workflows/ci.yml` with `build-test` and `secrets` (Gitleaks) jobs, and added the CI badge to `README.md`.
+
+**Why:** A uniform error format prevents client-side ambiguity and data leakage, while correlation IDs ensure every error can be traced end-to-end. Layering and injection rules enforced in ArchUnit prevent architectural erosion as features are added in subsequent phases.
+
+**Trade-off:** In Spring Boot 4.1.x, `@WebMvcTest` slice testing was modularized into `spring-boot-starter-webmvc-test` under `org.springframework.boot.webmvc.test.autoconfigure`. Subclassing `ResponseEntityExceptionHandler` requires overriding its protected template methods (e.g., `handleMethodArgumentNotValid`) instead of declaring duplicate `@ExceptionHandler` methods to avoid ambiguous handler mapping collisions in Spring MVC's dispatcher.
+
+**File to read first:** `src/main/java/com/deadlinedrop/web/GlobalExceptionHandler.java` — it defines the centralized error contract and exception mapping logic for the entire API.
