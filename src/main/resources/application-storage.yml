@@ -21,5 +21,3 @@ spring:
       - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
       - org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration
       - org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration
-
-JWT_SECRET: "c3RvcmFnZS1kdW1teS1qd3Qtc2VjcmV0LWtleS1hdC1sZWFzdC0zMi1ieXRlcw=="

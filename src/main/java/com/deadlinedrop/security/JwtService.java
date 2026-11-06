@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -20,6 +21,7 @@ import java.util.Base64;
 import java.util.Objects;
 
 @Service
+@Profile("!storage")
 public class JwtService {
 
     private static final String DEFAULT_TTL = "PT12H";
