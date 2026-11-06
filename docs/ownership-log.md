@@ -74,3 +74,23 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 
 **File to read first:** `PREDICTIONS.md` — pre-registration record containing the exact experimental hypotheses and embarrassment conditions against which all subsequent load and failure tests will be evaluated.
 
+---
+
+## Phase 3 — 2026-11-06
+
+**What changed:** Implemented the complete PostgreSQL schema across five forward-only Flyway migrations and validated relational constraints with integration tests:
+- Removed `src/main/resources/db/migration/.gitkeep`.
+- Created `V1__users_courses_assignments.sql` defining `user_role` enum, `users`, `courses`, `enrollments`, and `assignments` tables with size constraints, deadline checks, and lower-cased unique email indexing.
+- Created `V2__submissions_state_machine.sql` defining `submission_status`, `submission_timing`, and `event_actor` enums, the `submissions` table (without optimistic locking version column; status column guards state transitions), `submission_events` audit history, lowercase hexadecimal SHA-256 validation regex constraint, student-scoped idempotency unique index, and partial unique index `ux_live_submission` preventing multiple concurrent active submissions for an assignment.
+- Created `V3__jobs.sql` defining `job_type`, `job_status`, and the `jobs` table for transactional job processing with unique constraint on `(type, submission_id)` and pending execution index `ix_jobs_ready`.
+- Created `V4__telemetry_survey.sql` defining `telemetry_events` and `survey_responses` tables storing student-consented upload telemetry keyed by anonymous hash identifiers with deliberate exclusion of user foreign keys.
+- Created `V5__baseline_submissions.sql` defining `baseline_submissions` table for experimental arms A and B recording direct upload / finalize completion stamps for ablation comparison.
+- Created `src/test/java/com/deadlinedrop/repository/MigrationIT.java` using Spring Boot, Testcontainers PostgreSQL 17, and `JdbcTemplate` to verify migration history and enforce partial index behavior, regex constraints, grace window constraints, duplicate job rejection, and idempotency uniqueness.
+
+**Why:** The database schema encodes DeadlineDrop's core transactional invariants directly into PostgreSQL rather than relying solely on application-level checks. State transitions, hash validity, idempotency, and concurrency limits are guarded by database-level constraints.
+
+**Trade-off:** Omitting an optimistic locking `version` column on `submissions` departs from conventional JPA entity patterns. It explicitly delegates concurrency control to atomic single-row conditional updates (`UPDATE submissions SET status = ? WHERE id = ? AND status = ?`) and partial unique indexes (`ux_live_submission`). This avoids version churn and lock conflicts while allowing concurrent state checks with exact row-count validation.
+
+**File to read first:** `src/main/resources/db/migration/V2__submissions_state_machine.sql` — it encapsulates the core state machine, the partial unique index guarding live submissions, and the audit log schema.
+
+
