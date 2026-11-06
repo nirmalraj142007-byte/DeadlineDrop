@@ -177,8 +177,9 @@ Ports: app/arm C 8080, arm B 8083 (8081 in the demo stack), arm A 8082, storage 
 1. Run every acceptance check in the phase prompt and show me the output.
 2. Append an entry to `docs/ownership-log.md`: date, phase, what changed, why, one
    trade-off, and the one file I should read first.
-3. Commit with a descriptive message (never leave the repo broken: `./mvnw verify` green,
-   `docker compose up` working).
+3. Commit with a descriptive message and push to origin main (never leave the repo broken:
+   `./mvnw verify` green, `docker compose up` working), then check the CI run with
+   `gh run list --limit 1` and report its result.
 4. Explain to me in plain language what you built and why. I must be able to defend
    every line in an interview, so explain the reasoning, not just the diff.
 
