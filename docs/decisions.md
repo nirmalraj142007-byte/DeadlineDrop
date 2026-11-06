@@ -30,3 +30,4 @@ To maximize throughput and review quality within rate windows: generate implemen
 
 ## D6: Credit Balance on Day 1 (2026-11-06)
 Credit balance: 
+The project budget cap is approximately US$40. Because billing account `011506-D31873-0CFA73` operates in `INR` (Indian Rupee), the budget alert `dd-40` is expressed in INR, and the exact amount to use is `3500INR`.
