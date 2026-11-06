@@ -22,6 +22,10 @@ server:
 dd:
   jwt:
     ttl: PT12H
+  storage:
+    root: ${DD_STORAGE_ROOT:/data/objects}
+    public-base-url: ${DD_STORAGE_PUBLIC_BASE_URL:http://localhost:9000}
+    hmac-secret: ${DD_STORAGE_HMAC_SECRET}
 
 logging:
   structured:

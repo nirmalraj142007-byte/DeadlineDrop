@@ -136,3 +136,26 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Trade-off:** Pre-computing a single BCrypt password hash for all 1,000 load-test student accounts allows seeding 1,000 users in under 200 ms, whereas individually hashing passwords would take over 80 seconds on CPU. Load-test accounts exist solely for automated benchmarks; production pilot student accounts will receive individual salts and hashes in Phase 30.
 
 **File to read first:** `src/main/java/com/deadlinedrop/security/SecurityConfig.java` — it brings together JWT resource server decoding, role authority conversion, problem detail entry points, and endpoint authorization rules.
+
+---
+
+## Phase 6 — 2026-11-06
+
+**What changed:** Implemented the storage abstraction (`StoragePort`), local signed-URL adapter (`LocalStorageAdapter`), standalone HTTP storage server (`StorageServerController`), security, and integration test suite:
+- Added `SIGNATURE_INVALID` error code to `com.deadlinedrop.api.ErrorCodes`.
+- Created `com.deadlinedrop.storage.StoragePort` interface declaring nested records `SignedUrl(String url, String method, Map<String,String> headers, Instant expiresAt)` and `ObjectInfo(long size, String contentType)`, and methods `signPut`, `signGet`, `stat`, `open`, `put` (arm A), and `delete`.
+- Created `com.deadlinedrop.storage.StorageProperties` (`@ConfigurationProperties("dd.storage")`, `@Validated`) with `publicBaseUrl`, `root`, `hmacSecret`, `bucket`, and `server.enabled`.
+- Created package-private `com.deadlinedrop.storage.StorageHmac` for URL-safe HMAC-SHA256 signing and constant-time verification using `MessageDigest.isEqual`.
+- Created `com.deadlinedrop.storage.LocalStorageAdapter` (`@Component`, `@Profile("!cloud")`) generating HMAC-signed PUT and GET URLs, streaming byte open, atomic disk write with `.meta` sidecar for content type, stat, and delete.
+- Created `com.deadlinedrop.storage.StorageServerController` (`@RestController`, `@ConditionalOnProperty("dd.storage.server.enabled")`) with `@PublicEndpoint` `PUT /storage/**` and `GET /storage/**`. Validates signature, expiry, content type match, path traversal safety, and max byte cap while streaming (aborting with 413 `FILE_TOO_LARGE` past max). Moves files and `.meta` sidecars atomically into place. Returns 403 `SIGNATURE_INVALID` on any signature, expiry, path, or type violation.
+- Created `com.deadlinedrop.storage.StorageServerSecurityConfig` (`@ConditionalOnProperty("dd.storage.server.enabled")`, `@Order(0)`, `securityMatcher("/storage/**")`) permitting all requests without Bearer auth and allowing CORS from `http://localhost:8080`, `8081`, `8082`, and `8083`.
+- Created `src/main/resources/application-storage.yml` running on port 9000 with storage server enabled and excluding database auto-configurations across both Spring Boot 4 modular packages (`org.springframework.boot.jdbc...`, `org.springframework.boot.hibernate...`, `org.springframework.boot.data.jpa...`, `org.springframework.boot.flyway...`) and legacy names.
+- Annotated database-backed `AuthService` and `AuthController` with `@Profile("!storage")` so the storage server container requires no database.
+- Updated `docker-compose.yml` to define `storage` service on port 9000, updated `app` with shared volume `objects:/data/objects` and `DD_STORAGE_HMAC_SECRET`, and added `DD_STORAGE_HMAC_SECRET` to `.env.example`.
+- Created `src/test/java/com/deadlinedrop/storage/StorageIT` testing all required scenarios: valid signed PUT -> 200 with stat and open verification; missing signature -> 403; past TTL -> 403; path tampering -> 403; content-type mismatch -> 403; body > max bytes -> 413; signed GET -> 200 with `Content-Disposition: attachment; filename="<fn>"`.
+
+**Why:** Arms B and C of DeadlineDrop rely on browsers uploading bytes directly to storage via signed URLs, eliminating application server bandwidth bottlenecks during deadline rushes. Implementing a dedicated local storage server with constant-time HMAC verification, size limits, and CORS support allows developing, testing, and benchmarking the direct-to-storage architecture locally before introducing Google Cloud Storage in Phase 8.
+
+**Trade-off:** The storage server enforces limits during streaming rather than relying solely on the HTTP `Content-Length` header. While slightly more complex than checking `Content-Length` alone, streaming byte counting guarantees protection against clients spoofing headers or sending chunked transfer encoding payloads larger than the signed quota.
+
+**File to read first:** `src/main/java/com/deadlinedrop/storage/StorageServerController.java` — it encapsulates the signed URL validation, constant-time signature verification, streaming byte-limit abort, and atomic file and metadata persistence.

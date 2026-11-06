@@ -26,6 +26,7 @@ public final class ErrorCodes {
     public static final String GRACE_OVER = "GRACE_OVER";
     public static final String GRACE_NOT_OVER = "GRACE_NOT_OVER";
     public static final String NOT_UPLOADED = "NOT_UPLOADED";
+    public static final String SIGNATURE_INVALID = "SIGNATURE_INVALID";
     public static final String RECEIPT_INVALID = "RECEIPT_INVALID";
     public static final String RECEIPT_STALE = "RECEIPT_STALE";
     public static final String CONSENT_REQUIRED = "CONSENT_REQUIRED";

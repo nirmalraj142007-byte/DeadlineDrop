@@ -8,6 +8,7 @@ import com.deadlinedrop.api.dto.AuthDtos.TokenResponse;
 import com.deadlinedrop.domain.User;
 import com.deadlinedrop.repository.UserRepository;
 import com.deadlinedrop.security.JwtService;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Profile("!storage")
 @Transactional(readOnly = true)
 public class AuthService {
 

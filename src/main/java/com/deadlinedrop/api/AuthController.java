@@ -6,6 +6,7 @@ import com.deadlinedrop.api.dto.AuthDtos.TokenResponse;
 import com.deadlinedrop.security.PublicEndpoint;
 import com.deadlinedrop.service.AuthService;
 import jakarta.validation.Valid;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +20,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @RestController
+@Profile("!storage")
 public class AuthController {
 
     private final AuthService authService;

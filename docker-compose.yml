@@ -22,11 +22,25 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
+      DD_STORAGE_HMAC_SECRET: ${DD_STORAGE_HMAC_SECRET}
     depends_on:
       postgres:
         condition: service_healthy
+    volumes:
+      - objects:/data/objects
     ports:
       - "8080:8080"
 
+  storage:
+    build: .
+    environment:
+      SPRING_PROFILES_ACTIVE: storage
+      DD_STORAGE_HMAC_SECRET: ${DD_STORAGE_HMAC_SECRET}
+    volumes:
+      - objects:/data/objects
+    ports:
+      - "9000:9000"
+
 volumes:
   pgdata:
+  objects:

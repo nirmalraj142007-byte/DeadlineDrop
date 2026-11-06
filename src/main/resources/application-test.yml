@@ -4,3 +4,8 @@ logging:
       console: ""
 
 JWT_SECRET: dGVzdC1zZWNyZXQta2V5LXdpdGgtYXQtbGVhc3QtMzItYnl0ZXMtbG9uZw==
+
+dd:
+  storage:
+    hmac-secret: "test-storage-hmac-secret-at-least-32-bytes"
+    root: "${java.io.tmpdir}/deadlinedrop-test-storage"
