@@ -55,3 +55,22 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Trade-off:** In Spring Boot 4.1.x, `@WebMvcTest` slice testing was modularized into `spring-boot-starter-webmvc-test` under `org.springframework.boot.webmvc.test.autoconfigure`. Subclassing `ResponseEntityExceptionHandler` requires overriding its protected template methods (e.g., `handleMethodArgumentNotValid`) instead of declaring duplicate `@ExceptionHandler` methods to avoid ambiguous handler mapping collisions in Spring MVC's dispatcher.
 
 **File to read first:** `src/main/java/com/deadlinedrop/web/GlobalExceptionHandler.java` — it defines the centralized error contract and exception mapping logic for the entire API.
+
+---
+
+## Phase 2 — 2026-11-06
+
+**What changed:** Recorded the day-1 project foundations, pre-registered experimental predictions, vocabulary enforcement, and project tooling:
+- Pre-registered benchmark predictions in `PREDICTIONS.md` before any code producing results was written, covering definitions, 7 core hypotheses for Arms A, B, and C, embarrassment criteria, and the fallback reporting rule.
+- Added quality rules to `AGENTS.md` and created dated project decisions D1 through D6 in `docs/decisions.md` (deployment region `asia-south1`, scope cuts and replacements, working assumptions, pilot decision gate, Claude Code usage cadence, credit balance).
+- Created `tools/check-terms.sh` to enforce approved architectural terminology (requiring hash commitment and transactional job queue, and forbidding banned terms) across the repository while excluding `.git`, `target`, the script itself, and `AGENTS.md`. Integrated this check as a fast-failing first step in the `build-test` CI job in `.github/workflows/ci.yml`.
+- Created project `Makefile` defining `verify`, `up`, `down`, `logs`, and `terms` targets.
+- Created `deploy/budget.sh` setting up a $40 budget alert (`dd-40`) at 50%, 90%, and 100% spend thresholds via `gcloud billing budgets create`.
+- Drafted pilot outreach email in `docs/pilot/request-email.md` for prospective course instructors/club leads outlining opt-in anonymized telemetry, file retention, and deadline scheduling.
+
+**Why:** Pre-registering experimental predictions prevents p-hacking or adjusting benchmark windows after observing load test results. Enforcing terminology via CI prevents concept drift from the approved system design, and establishing budget scripts and pilot materials secures operational discipline from day 1.
+
+**Trade-off:** Pre-registering prediction thresholds before running test sweeps fixes the cohort evaluation window and prevents moving goalposts later. If Arm B misclassification falls below 5%, the pre-registered fallback mandates reporting raw counts per 1,000 students rather than widening the cohort window to inflate error rates.
+
+**File to read first:** `PREDICTIONS.md` — pre-registration record containing the exact experimental hypotheses and embarrassment conditions against which all subsequent load and failure tests will be evaluated.
+
