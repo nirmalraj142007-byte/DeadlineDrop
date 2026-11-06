@@ -1,0 +1,9 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Allow dummy secrets in test configurations and test sources"
+paths = [
+    '''src/main/resources/application-test\.yml''',
+    '''src/test/'''
+]
