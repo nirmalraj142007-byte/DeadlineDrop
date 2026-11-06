@@ -3,27 +3,54 @@ package com.deadlinedrop.security;
 import com.deadlinedrop.api.ErrorCodes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * Base security configuration.
  *
- * <p>Phase 0: stateless session, /actuator/health/** public, everything else requires
- * authentication. Phase 1 adds RFC 9457 ProblemDetail error bodies; phase 5 adds JWT
- * decoder and bearer-token filter.
+ * <p>Configures stateless HS256 JWT bearer token validation, ProblemDetail error handling,
+ * and method security.
  */
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final ProblemDetailWriter problemDetailWriter;
+    private final JwtService jwtService;
 
-    public SecurityConfig(ProblemDetailWriter problemDetailWriter) {
+    public SecurityConfig(ProblemDetailWriter problemDetailWriter, JwtService jwtService) {
         this.problemDetailWriter = problemDetailWriter;
+        this.jwtService = jwtService;
+    }
+
+    @Bean
+    public JwtDecoder jwtDecoder() {
+        return NimbusJwtDecoder.withSecretKey(jwtService.getSecretKey())
+                .macAlgorithm(MacAlgorithm.HS256)
+                .build();
+    }
+
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
+        authoritiesConverter.setAuthorityPrefix("ROLE_");
+        authoritiesConverter.setAuthoritiesClaimName("role");
+
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(authoritiesConverter);
+        return converter;
     }
 
     @Bean
@@ -37,6 +64,34 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .httpBasic(httpBasic -> httpBasic.disable())
             .formLogin(formLogin -> formLogin.disable())
+            .oauth2ResourceServer(oauth2 -> oauth2
+                .jwt(jwt -> jwt
+                    .decoder(jwtDecoder())
+                    .jwtAuthenticationConverter(jwtAuthenticationConverter())
+                )
+                .authenticationEntryPoint((request, response, authException) ->
+                    problemDetailWriter.write(
+                        response,
+                        request,
+                        HttpStatus.UNAUTHORIZED,
+                        ErrorCodes.UNAUTHENTICATED,
+                        authException.getMessage() != null
+                            ? authException.getMessage()
+                            : "Full authentication is required to access this resource"
+                    )
+                )
+                .accessDeniedHandler((request, response, accessDeniedException) ->
+                    problemDetailWriter.write(
+                        response,
+                        request,
+                        HttpStatus.FORBIDDEN,
+                        ErrorCodes.FORBIDDEN,
+                        accessDeniedException.getMessage() != null
+                            ? accessDeniedException.getMessage()
+                            : "Access is denied"
+                    )
+                )
+            )
             .exceptionHandling(ex -> ex
                 .authenticationEntryPoint((request, response, authException) ->
                     problemDetailWriter.write(
@@ -62,6 +117,7 @@ public class SecurityConfig {
                 )
             )
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                 .requestMatchers("/actuator/health/**").permitAll()
                 .anyRequest().authenticated());
 

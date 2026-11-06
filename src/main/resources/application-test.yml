@@ -2,3 +2,5 @@ logging:
   structured:
     format:
       console: ""
+
+JWT_SECRET: dGVzdC1zZWNyZXQta2V5LXdpdGgtYXQtbGVhc3QtMzItYnl0ZXMtbG9uZw==

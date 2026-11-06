@@ -6,6 +6,7 @@ package com.deadlinedrop.api;
 public final class ErrorCodes {
 
     public static final String VALIDATION_FAILED = "VALIDATION_FAILED";
+    public static final String INVALID_CREDENTIALS = "INVALID_CREDENTIALS";
     public static final String MISSING_IDEMPOTENCY_KEY = "MISSING_IDEMPOTENCY_KEY";
     public static final String UNAUTHENTICATED = "UNAUTHENTICATED";
     public static final String FORBIDDEN = "FORBIDDEN";

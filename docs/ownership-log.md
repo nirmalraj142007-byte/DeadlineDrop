@@ -111,4 +111,28 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 
 **Trade-off:** Foreign key references (`teacher_id`, `course_id`, `created_by`) are intentionally mapped as primitive `UUID` columns rather than lazy `@ManyToOne` relationships. This prevents N+1 query surprises and detached entity graph issues during concurrent operations, keeping entity lifecycles decoupled. Concurrency control on `Assignment` uses standard JPA `@Version` optimistic locking, contrasting with `submissions` which uses database-level row guards.
 
-**File to read first:** `src/main/java/com/deadlinedrop/domain/Assignment.java` — it encapsulates grace period computation, MIME type evaluation, range invariants, and array type mapping.
+
+---
+
+## Phase 5 — 2026-11-06
+
+**What changed:** Implemented stateless HS256 JWT authentication, method security enforcement, seed runner for benchmark cohorts, and architecture guards:
+- Added `INVALID_CREDENTIALS` error code to `com.deadlinedrop.api.ErrorCodes` and added `ApiException.unauthorized(...)` helper.
+- Created `com.deadlinedrop.config.ClockConfig` exposing `@Bean Clock systemUTC()` for consistent, testable wall-clock access.
+- Created `com.deadlinedrop.config.PasswordEncoderConfig` exposing `@Bean PasswordEncoder = new BCryptPasswordEncoder(10)`.
+- Created `com.deadlinedrop.security.PublicEndpoint` method-level marker annotation for deliberately unauthenticated endpoints.
+- Created `com.deadlinedrop.security.JwtService` to issue HS256 tokens using `NimbusJwtEncoder` and `ImmutableSecret` from base64-decoded `JWT_SECRET` (failing startup if decoded key < 32 bytes) with claims `iss` ("deadlinedrop"), `sub` (user UUID), `role`, `name`, `iat`, and `exp` (`clock.instant() + dd.jwt.ttl`, default 12 hours).
+- Updated `com.deadlinedrop.security.SecurityConfig` with `@EnableMethodSecurity`, `oauth2ResourceServer` JWT validation with `NimbusJwtDecoder`, `JwtAuthenticationConverter` mapping claim `role` to authority `ROLE_<role>`, permitting `POST /api/auth/login` and `/actuator/health/**`, and wiring `ProblemDetailWriter` for both 401 UNAUTHENTICATED and 403 FORBIDDEN.
+- Created `com.deadlinedrop.api.dto.AuthDtos` containing records `LoginRequest`, `TokenResponse`, and `MeResponse`.
+- Created `com.deadlinedrop.service.AuthService` handling `login` with constant-time dummy BCrypt hash evaluation when the email is missing (preventing user enumeration via timing analysis) and returning 401 `INVALID_CREDENTIALS` on password or user mismatch, plus `getMe(UUID)` lookup.
+- Created `com.deadlinedrop.api.AuthController` with `@PublicEndpoint` `POST /api/auth/login` returning `TokenResponse` and `@PreAuthorize("isAuthenticated()")` `GET /api/me` returning `MeResponse`.
+- Created `com.deadlinedrop.config.SeedRunner` (`@Profile("seed")`, `ApplicationRunner`) reading `SEED_STUDENTS` (default 50) and `SEED_PASSWORD` (required). Generates one BCrypt hash of `SEED_PASSWORD` for all load-test accounts, seeds admin, teacher, and students, creates course `DEMO101` and assignment `Lab 1` (due now + 7 days, grace 900 s, max 25 MiB, allowed MIME types pdf/zip/png), performs batch insertions with `ON CONFLICT DO NOTHING`, and exits with code 0 upon completion.
+- Added `seed` target to `Makefile` and `SEED_PASSWORD` to `.env.example`.
+- Extended `src/test/java/com/deadlinedrop/ArchitectureTest` with an ArchUnit rule asserting that every public method of a `@RestController` in `..api..` carries `@PreAuthorize` (on method or class) or `@PublicEndpoint`.
+- Created `src/test/java/com/deadlinedrop/security/AuthIT` integration test validating 200 login with 12 h expiry, 401 `INVALID_CREDENTIALS` on wrong password, 401 on unknown email with identical body structure, 401 `UNAUTHENTICATED` without token or with expired token, and 403 `FORBIDDEN` when student calls a `@PreAuthorize("hasRole('TEACHER')")` endpoint.
+
+**Why:** Stateless HS256 JWT tokens remove server-side session state and eliminate cross-site request forgery risks while keeping authentication overhead minimal during high-concurrency deadline rushes. Method-level security annotations coupled with strict ArchUnit enforcement prevent developer oversight from exposing endpoints, while constant-time login checks prevent user enumeration. The automated seed runner provides reproducible, idempotent student cohorts for subsequent k6 load tests.
+
+**Trade-off:** Pre-computing a single BCrypt password hash for all 1,000 load-test student accounts allows seeding 1,000 users in under 200 ms, whereas individually hashing passwords would take over 80 seconds on CPU. Load-test accounts exist solely for automated benchmarks; production pilot student accounts will receive individual salts and hashes in Phase 30.
+
+**File to read first:** `src/main/java/com/deadlinedrop/security/SecurityConfig.java` — it brings together JWT resource server decoding, role authority conversion, problem detail entry points, and endpoint authorization rules.

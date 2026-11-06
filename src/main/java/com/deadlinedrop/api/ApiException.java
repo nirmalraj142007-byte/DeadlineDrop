@@ -30,6 +30,10 @@ public class ApiException extends RuntimeException {
         return detail;
     }
 
+    public static ApiException unauthorized(String code, String detail) {
+        return new ApiException(HttpStatus.UNAUTHORIZED, code, detail);
+    }
+
     public static ApiException notFound(String code, String detail) {
         return new ApiException(HttpStatus.NOT_FOUND, code, detail);
     }
