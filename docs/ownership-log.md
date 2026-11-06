@@ -94,3 +94,21 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **File to read first:** `src/main/resources/db/migration/V2__submissions_state_machine.sql` — it encapsulates the core state machine, the partial unique index guarding live submissions, and the audit log schema.
 
 
+---
+
+## Phase 4 — 2026-11-06
+
+**What changed:** Implemented JPA entities and Spring Data repositories for users, courses, enrollments, and assignments:
+- Created `com.deadlinedrop.domain.Role` enum (`STUDENT`, `TEACHER`, `ADMIN`).
+- Created `com.deadlinedrop.domain.User` (`@Entity`, `@Table(name = "users")`) with UUID `@Id`, `email`, `passwordHash`, `role` mapped to PostgreSQL named enum `user_role` via `@Enumerated(EnumType.STRING)` and `@JdbcTypeCode(SqlTypes.NAMED_ENUM)`, `displayName` with 100-character constraint validation, `@Version long version` optimistic locking, and `@CreationTimestamp`/`@UpdateTimestamp` audit fields.
+- Created `com.deadlinedrop.domain.Course` with UUID primary key, unique `code`, `title`, plain `UUID teacherId` column (no `@ManyToOne` association), version, and timestamps.
+- Created `com.deadlinedrop.domain.Enrollment` with composite key `@EmbeddedId` record `Enrollment.Id(UUID courseId, UUID studentId)` and `@CreationTimestamp createdAt`.
+- Created `com.deadlinedrop.domain.Assignment` with UUID primary key, `courseId`, `title`, `deadlineAt`, `graceSeconds` (validated 0-3600), `maxBytes` (validated 1-26214400), `allowedTypes` mapped via `@JdbcTypeCode(SqlTypes.ARRAY)` to PostgreSQL `text[]`, `createdBy`, version, and timestamps. Added domain methods `graceEndsAt()`, `allows(String contentType)`, and `update(...)`.
+- Created Spring Data JPA interfaces in `com.deadlinedrop.repository`: `UserRepository` (`findByEmailIgnoreCase`), `CourseRepository` (`findByTeacherId`), `EnrollmentRepository` (`existsById`, `findByIdStudentId`), and `AssignmentRepository` (`findByCourseIdInOrderByDeadlineAtAsc`).
+- Created `src/test/java/com/deadlinedrop/repository/DomainRepositoryIT.java` verifying persistence, case-insensitive email lookup, role enum round-trip, PostgreSQL `text[]` array round-trip, ordered queries, enrollment lookups, and optimistic locking conflict detection via `ObjectOptimisticLockingFailureException`.
+
+**Why:** Modeling the static and administrative domain structures (users, courses, enrollments, assignments) in JPA with Hibernate schema validation (`ddl-auto=validate`) ensures that type definitions, constraints, and optimistic locking are strictly validated against the Flyway schema at application startup. Dynamic submission transactions and the job queue remain isolated from JPA to avoid ORM overhead and session caching pitfalls.
+
+**Trade-off:** Foreign key references (`teacher_id`, `course_id`, `created_by`) are intentionally mapped as primitive `UUID` columns rather than lazy `@ManyToOne` relationships. This prevents N+1 query surprises and detached entity graph issues during concurrent operations, keeping entity lifecycles decoupled. Concurrency control on `Assignment` uses standard JPA `@Version` optimistic locking, contrasting with `submissions` which uses database-level row guards.
+
+**File to read first:** `src/main/java/com/deadlinedrop/domain/Assignment.java` — it encapsulates grace period computation, MIME type evaluation, range invariants, and array type mapping.
