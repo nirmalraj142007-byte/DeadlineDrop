@@ -189,3 +189,13 @@ Ports: app/arm C 8080, arm B 8083 (8081 in the demo stack), arm A 8082, storage 
 - `docs/ownership-log.md` — one entry per session
 - `results/README.md` — evidence layout
 - `docs/design.md`, `docs/prior-art.md`, `docs/tests.md` — once they exist
+
+## Extra quality rules
+
+- No TODOs, stubs, canned responses, lorem ipsum or placeholder names in main code or UI copy. Mocks are allowed only in unit tests and never for the database, the state machine or storage.
+- Configuration is validated at startup (@ConfigurationProperties + @Validated); a missing or invalid secret stops the app with a clear message.
+- Never swallow an exception: handle it, convert it to a ProblemDetail, or rethrow it with context. No unchecked casts; no raw types.
+- Every external call (Cloud Storage, IAM signing, Cloud SQL) has a timeout and a defined failure behaviour that the user can see.
+- UI respects prefers-reduced-motion in addition to the existing accessibility rules.
+- At the start of a phase: restate its goal in two lines and list the files you will create or change. Flag every assumption; never add scope the phase does not ask for.
+
