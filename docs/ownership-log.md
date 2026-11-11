@@ -159,3 +159,30 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Trade-off:** The storage server enforces limits during streaming rather than relying solely on the HTTP `Content-Length` header. While slightly more complex than checking `Content-Length` alone, streaming byte counting guarantees protection against clients spoofing headers or sending chunked transfer encoding payloads larger than the signed quota.
 
 **File to read first:** `src/main/java/com/deadlinedrop/storage/StorageServerController.java` — it encapsulates the signed URL validation, constant-time signature verification, streaming byte-limit abort, and atomic file and metadata persistence.
+
+---
+
+## Phase 7 — 2026-11-11
+
+**What changed:** Implemented Arm A (the tutorial-style upload baseline where the entire file passes through the application and is stamped only when upload finishes):
+- Created `com.deadlinedrop.domain.Timing` enum (`ON_TIME`, `LATE`) matching PostgreSQL `submission_timing`.
+- Created `com.deadlinedrop.service.DeadlinePolicy` returning `ON_TIME` when `!stamp.isAfter(assignment.getDeadlineAt())` and `LATE` otherwise.
+- Created `com.deadlinedrop.security.CurrentUser` utility extracting user `UUID` and role string from JWT subject/claims or authentication context.
+- Created `com.deadlinedrop.service.AssignmentAccess` validating assignment existence (404 `ASSIGNMENT_NOT_FOUND`) and student course enrollment (403 `NOT_ENROLLED`) for reuse across arms A, B, and C.
+- Created `com.deadlinedrop.repository.BaselineSubmissionRepository` using `JdbcTemplate` to insert into `baseline_submissions` with enum casting `?::submission_timing` and count submissions by assignment.
+- Created `com.deadlinedrop.service.BaselineSubmissionService` to mediate baseline persistence from the service layer to satisfy ArchUnit layer enforcement (`api` never touches `repository`).
+- Created `com.deadlinedrop.api.dto.BaselineDtos` declaring record `BaselineSubmissionResponse(UUID submissionId, Instant submittedAt, String stampSource, String timing)`.
+- Created `com.deadlinedrop.api.NaiveSubmissionController` (`@Profile("naive")`, `@PreAuthorize("hasRole('STUDENT')")`) providing `POST /api/assignments/{assignmentId}/naive-submissions`: validates access, rejects disallowed media types (415 `TYPE_NOT_ALLOWED`) and oversized files (413 `FILE_TOO_LARGE`), streams bytes to `StoragePort`, records arrival stamp post-transfer, evaluates timing via `DeadlinePolicy`, inserts baseline submission row with stamp source `UPLOAD_COMPLETE`, and responds 201 Created.
+- Created `src/main/resources/application-naive.yml` setting `spring.servlet.multipart.max-file-size=25MB` and `max-request-size=26MB`.
+- Updated `Dockerfile` to create `/data/objects` owned by `app:app` to ensure non-root container write permissions on mounted volumes.
+- Updated `docker-compose.yml` adding service `app-arma` under compose profile `arms` on port 8082 with `SPRING_PROFILES_ACTIVE=local,naive` targeting database `dd_a`.
+- Created `src/test/java/com/deadlinedrop/support/MutableClock` providing an explicitly settable and advanceable test clock.
+- Created `src/test/java/com/deadlinedrop/service/DeadlinePolicyTest` testing T-1 ms (`ON_TIME`), exactly T (`ON_TIME`), and T+1 ms (`LATE`).
+- Created `src/test/java/com/deadlinedrop/api/NaiveSubmissionIT` testing 1 MB PDF on-time upload (verifying 201, database row, and storage bytes on disk), clock moved past deadline (`LATE`), 26 MB upload (413 `FILE_TOO_LARGE`), text/plain upload (415 `TYPE_NOT_ALLOWED`), and unenrolled student upload (403 `NOT_ENROLLED`).
+- Created `src/test/java/com/deadlinedrop/api/NaiveSubmissionDisabledIT` verifying 404 when the naive profile is inactive.
+
+**Why:** Arm A establishes the empirical baseline representing conventional tutorial-style assignment submission architectures. Under slow or degraded network conditions, taking the submission timestamp after bytes finish transferring through the application server penalizes students with slow connections even if their transfer started well before the deadline. Implementing Arm A enables direct ablation comparison against Arm B (direct-to-storage finalize stamp) and Arm C (hash commitment arrival stamp).
+
+**Trade-off:** Having the application server buffer and handle multipart uploads consumes application thread pool resources and server memory, contrasting with arms B and C which stream bytes straight to Cloud Storage via signed URLs. Stamping the submission post-transfer inherently binds the recorded timestamp to bandwidth and transfer latency. Additionally, to conform strictly with ArchUnit layering rules forbidding `api` classes from touching `repository`, baseline persistence operations are mediated by `BaselineSubmissionService`.
+
+**File to read first:** `src/main/java/com/deadlinedrop/api/NaiveSubmissionController.java` — it encapsulates the tutorial-style upload flow, post-transfer timestamping, and size/type validation.
