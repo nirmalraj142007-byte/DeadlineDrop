@@ -23,6 +23,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
       DD_STORAGE_HMAC_SECRET: ${DD_STORAGE_HMAC_SECRET}
+      INTERNAL_TOKEN: ${INTERNAL_TOKEN}
     depends_on:
       postgres:
         condition: service_healthy
@@ -30,6 +31,23 @@ services:
       - objects:/data/objects
     ports:
       - "8080:8080"
+
+  # Plays Cloud Scheduler locally: every 60 s, reconcile then drain the job queue over HTTP.
+  # $$ leaves $INTERNAL_TOKEN for the container's shell, so the token is not baked into the command.
+  scheduler:
+    image: curlimages/curl:8.11.1
+    environment:
+      INTERNAL_TOKEN: ${INTERNAL_TOKEN}
+    entrypoint: ["sh", "-c"]
+    command:
+      - >-
+        while true;
+        do curl -s -w '\n' -X POST -H "X-Internal-Token: $$INTERNAL_TOKEN" http://app:8080/internal/reconcile;
+        curl -s -w '\n' -X POST -H "X-Internal-Token: $$INTERNAL_TOKEN" http://app:8080/internal/jobs/drain;
+        sleep 60;
+        done
+    depends_on:
+      - app
 
   app-arma:
     profiles: ["arms"]

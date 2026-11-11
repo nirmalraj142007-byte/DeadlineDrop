@@ -344,3 +344,36 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Trade-off:** The tokens now carry an `iat` that disagrees with the simulated "now" the app sees. Nothing in the app compares the two, so this is harmless today; a future feature that checks token age against the app clock would need these tests revisited.
 
 **File to read first:** `src/test/java/com/deadlinedrop/support/TestTokens.java`.
+
+
+---
+
+## Phase 14 — 2026-11-11
+
+**What changed:** The background half of the core: a transactional job queue in Postgres, drained by an HTTP call.
+- `jobs/JobRepository`: `claimNext(now)` (`FOR UPDATE SKIP LOCKED`, refuses to run outside a transaction), `markDone`, `markRetry`, `markFailed`. `markRetry`/`markFailed` return whether they applied (see trade-offs).
+- `domain/JobRow`: the claimed row (id, submissionId, attempts).
+- `service/SubmissionStateMachine`: `markVerified` and `markRejected` (UPLOADED -> VERIFIED / REJECTED_HASH_MISMATCH, actor VERIFIER, one event), same guarded UPDATE.
+- `jobs/VerifierService`: streams the stored object through a `DigestInputStream` (SHA-256, 64 KB buffer) and compares with the committed hash. Rows that are no longer UPLOADED are skipped. Logs `submission_verified` / `submission_rejected`.
+- `jobs/DrainService`: one job per transaction (claim, verify, markDone) until the budget runs out. On failure, a new transaction records attempt n: retry after 1, 2, 4, 8 minutes; the 5th failure marks the job FAILED.
+- `jobs/ReconcilerSweep` + `SubmissionRepository.findCommittedBefore`: COMMITTED rows older than 2 min, oldest first, 200 per call, each through `ReconcilerService.settle`.
+- `api/InternalController`: `POST /internal/jobs/drain` (45 s budget) and `POST /internal/reconcile`, both `hasRole('INTERNAL')`.
+- `security/InternalSecurityConfig` (+ `InternalTokenFilter`, `InternalTokenProperties`): an `@Order(1)` chain for `/internal/**`. Under local/test, `X-Internal-Token` compared with `MessageDigest.isEqual` grants ROLE_INTERNAL; the token is validated at startup (non-blank, 32+ chars). Under every other profile, including cloud, it denies all. Failures are 401 ProblemDetails with `code` and `requestId`.
+- `docker-compose.yml`: `scheduler` service (`curlimages/curl:8.11.1`) that calls reconcile, then drain, every 60 s. `INTERNAL_TOKEN` was added to the app's environment and to `.env.example`.
+- `jobs/JobsIT` (7 cases): verified, rejected (same size, different bytes), job for a superseded row is DONE with no change, backoff 1/2/4/8 min then FAILED at attempt 5 (and never claimed early), two drainers on 20 UPLOADED submissions (split 10 + 10, each verified exactly once), reconciler sweep (stale with bytes -> UPLOADED, stale without -> waiting, fresh skipped, all expire after grace), and endpoint auth (no token, wrong token, student JWT -> 401; right token -> 200).
+- `./mvnw verify`: 35 unit + 88 integration, all green. Docker: commit -> PUT -> finalize, and the scheduler had the row VERIFIED 57 s after finalize. An unauthenticated drain returned 401.
+
+**Why:** The hash commitment is only closed when someone hashes the stored bytes and compares them with the committed sha256. That work must not run on the student's request path. It also cannot run on a background thread: Cloud Run throttles CPU between requests, so a `@Scheduled` loop would stall. A scheduler calling an HTTP endpoint gives the work a request, and with it CPU. Keeping jobs in Postgres means a job exists if and only if its transition committed. `SKIP LOCKED` lets several instances drain together without running a job twice.
+
+**Trade-off:** Claim, hash and markDone run in one transaction, so a drainer holds the row lock and one of the 5 pool connections while it hashes one object (at most 25 MB, read in-region). The gain is that a crashed drainer just drops the lock and the job runs again; there is no "in progress" status to clean up. The cost: during a drain, the commit path has one fewer connection per drainer. A second, smaller one: the failure is recorded after the first transaction rolled back, so in that gap another drainer can claim the same job. Verify is guarded by status, so this is harmless; `markRetry` then reports that it did not apply (logged as `applied=false`) instead of throwing.
+
+**Assumptions flagged:**
+- The phase prompt refers to "every case in the definition of done", but no definition of done was included. The 7 test cases are my reading of the task; check them against the real list.
+- The deny-all chain covers every profile except local/test, not only `cloud`, so a misconfigured profile can never leave `/internal/**` open.
+- The candidate query sits in `SubmissionRepository`, not inline in `ReconcilerSweep`, to keep SQL in repositories.
+- The sweep lets an exception from one row (e.g. storage `stat` failing) fail the whole call instead of skipping the row.
+- A FAILED job leaves its submission UPLOADED. Nothing alerts on it yet.
+- `DrainResult`/`ReconcileResult` are records nested in their services and returned as-is by the controller.
+- The local seed's assignment id is generated, so the acceptance flow ran with `ASSIGNMENT_ID` set. Tests ran outside the agent sandbox, as in earlier phases.
+
+**File to read first:** `src/main/java/com/deadlinedrop/jobs/DrainService.java` — then `JobRepository.claimNext`, which it depends on.

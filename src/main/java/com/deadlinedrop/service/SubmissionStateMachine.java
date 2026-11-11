@@ -78,6 +78,27 @@ public class SubmissionStateMachine {
         return currentStatus(id);
     }
 
+    /** UPLOADED -> VERIFIED: the stored bytes hash to the committed sha256. */
+    @Transactional
+    public Status markVerified(UUID id) {
+        return verifierTransition(id, Status.VERIFIED);
+    }
+
+    /** UPLOADED -> REJECTED_HASH_MISMATCH: the stored bytes are not the ones that were committed. */
+    @Transactional
+    public Status markRejected(UUID id) {
+        return verifierTransition(id, Status.REJECTED_HASH_MISMATCH);
+    }
+
+    private Status verifierTransition(UUID id, Status to) {
+        Objects.requireNonNull(id, "id must not be null");
+        Instant now = clock.instant();
+        if (transitions.transition(id, Status.UPLOADED, to, now) == 1) {
+            submissions.insertEvent(id, Status.UPLOADED, to, Actor.VERIFIER, now);
+        }
+        return currentStatus(id);
+    }
+
     private Status currentStatus(UUID id) {
         return submissions.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Submission " + id + " disappeared during a transition"))

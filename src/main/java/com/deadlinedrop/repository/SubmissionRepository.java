@@ -53,6 +53,10 @@ public class SubmissionRepository {
             "INSERT INTO submission_events (submission_id, from_status, to_status, actor, at) "
                     + "VALUES (?, ?::submission_status, ?::submission_status, ?::event_actor, ?)";
 
+    private static final String RECONCILE_CANDIDATES_SQL =
+            "SELECT id FROM submissions WHERE status = 'COMMITTED' AND committed_at < ? "
+                    + "ORDER BY committed_at LIMIT ?";
+
     private static final RowMapper<Row> ROW_MAPPER = SubmissionRepository::mapRow;
 
     private final JdbcTemplate jdbcTemplate;
@@ -101,6 +105,15 @@ public class SubmissionRepository {
         for (UUID oldId : oldIds) {
             jdbcTemplate.update(LINK_SQL, newId, oldId);
         }
+    }
+
+    /**
+     * COMMITTED rows stamped before {@code before}, oldest first: the reconciler's candidates.
+     * Served by {@code ix_sub_reconcile (status, committed_at)}.
+     */
+    public List<UUID> findCommittedBefore(Instant before, int limit) {
+        Objects.requireNonNull(before, "before must not be null");
+        return jdbcTemplate.queryForList(RECONCILE_CANDIDATES_SQL, UUID.class, utc(before), limit);
     }
 
     public void insertEvent(UUID id, Status from, Status to, Actor actor, Instant at) {
