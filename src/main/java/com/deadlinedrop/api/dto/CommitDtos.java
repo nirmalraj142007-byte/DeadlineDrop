@@ -33,4 +33,12 @@ public final class CommitDtos {
             Map<String, String> uploadHeaders,
             Instant urlExpiresAt) {
     }
+
+    /** Finalize result; {@code uploadedAt} is null while the submission is still COMMITTED. */
+    public record SubmissionStatusResponse(
+            UUID submissionId,
+            String status,
+            String timing,
+            Instant uploadedAt) {
+    }
 }
