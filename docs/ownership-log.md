@@ -228,3 +228,20 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Trade-off:** In Spring Boot 4's ECS structured logging, MDC attributes (such as `requestId` set by `RequestIdFilter`) are automatically ingested into top-level JSON fields. Manually adding duplicate `requestId` key-value pairs triggered `assertNotDuplicateNestedPairs` in `ContextPairs`. Delegating `requestId` propagation to MDC while logging `epochMs` and `contentLength` via SLF4J KeyValue pairs prevents runtime log appender failures while ensuring all three lifecycle events correlate cleanly in Cloud Logging.
 
 **File to read first:** `results/probe-buffering.md` — it contains the timing table, raw Cloud Logging events, and conclusion proving Cloud Run front-end buffering.
+
+
+---
+
+## Phase 10 — 2026-11-11
+
+**What changed:** Built the commit step of the hash commitment for arm C only.
+- `domain/Submission` (nested `Status`, `Actor`, `Row`), `web/CommitTimestampFilter` (stamps `ARRIVED_AT` from the injected `Clock` at `HIGHEST_PRECEDENCE` for `POST /api/assignments/*/commits`), `repository/SubmissionRepository` (JdbcTemplate; the supersede is one `WITH old AS (... FOR UPDATE) UPDATE ... RETURNING`), `service/CommitService`, `api/dto/CommitDtos`, `api/CommitController` (`@Profile("!naive & !direct-finalize")`, 201 new / 200 replay, `Server-Timing: app, db, sign`).
+- `CommitService` runs one transaction: idempotent replay or 409 `IDEMPOTENCY_KEY_REUSED`, then 415/413 checks, `DeadlinePolicy.timing`, supersede, insert with `committed_at = arrivedAt`, events, `superseded_by`. A `DuplicateKeyException` on `ux_sub_student_key` or `ux_live_submission` re-runs the block once. The signed PUT URL is created only after the transaction commits, and a signing failure logs `sign_failed` and returns `uploadUrl: null` instead of losing the stamp.
+- Tests: `CommitTimestampFilterTest`, `CommitIT` (16 cases incl. `committed_at` equals the MutableClock instant, a real PUT to the returned URL, supersede + `superseded_by`, concurrent commits, `Server-Timing`), `CommitDisabledUnderNaiveIT` (404 under `naive`). `GlobalExceptionHandlerTest` now imports `ClockConfig` because the `@WebMvcTest` slice loads servlet filters, which need a `Clock`.
+- Built and pushed the image, redeployed `dd-arm-c` (revision `dd-arm-c-00006-cdb`) and committed as `student0001` on Lab 1: 201 with a GCS V4 URL, then 200 on replay.
+
+**Why:** The stamp is the whole point of the design. It has to be taken before any slow work (security, body parsing, DB, signing), stored under the idempotency key, and survive a signing failure, so a student who got a stamp can always ask for a new upload URL later.
+
+**Trade-off:** Both unique-violation cases (same-key race, different-key race) are handled by one generic retry of the whole transaction instead of two bespoke recovery paths. It is simpler and correct for both, but a second consecutive collision returns 409 `VERSION_CONFLICT` and the client must retry.
+
+**File to read first:** `src/main/java/com/deadlinedrop/service/CommitService.java` — the transaction order, the retry on unique violations, and why signing happens after commit.

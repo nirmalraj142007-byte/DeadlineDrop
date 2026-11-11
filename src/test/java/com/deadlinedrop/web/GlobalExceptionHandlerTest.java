@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = GlobalExceptionHandlerTest.TestController.class)
 @AutoConfigureMockMvc(addFilters = false)
-@Import({GlobalExceptionHandler.class, GlobalExceptionHandlerTest.TestController.class})
+@Import({GlobalExceptionHandler.class, GlobalExceptionHandlerTest.TestController.class, com.deadlinedrop.config.ClockConfig.class})
 class GlobalExceptionHandlerTest {
 
     private final MockMvc mockMvc;
