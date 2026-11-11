@@ -22,16 +22,27 @@ echo "1. POST direct-uploads"
 CREATED=$(curl -s -f -X POST "${BASE}/api/assignments/${ASSIGNMENT_ID}/direct-uploads" \
   -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" \
   -d "{\"sizeBytes\":${SIZE},\"contentType\":\"application/pdf\"}")
-echo "${CREATED}"
+echo "${CREATED}" | sed 's/"uploadUrl":"[^"]*"/"uploadUrl":"<signed>"/'
 UPLOAD_ID=$(echo "${CREATED}" | grep -o '"uploadId":"[^"]*"' | cut -d'"' -f4)
-UPLOAD_URL=$(echo "${CREATED}" | grep -o '"uploadUrl":"[^"]*"' | cut -d'"' -f4 | sed 's/\\u0026/\&/g; s/\\\//\//g')
+UPLOAD_URL=$(echo "${CREATED}" | grep -o '"uploadUrl":"[^"]*"' | cut -d'"' -f4 | sed 's/\\u0026/\&/g')
 
-echo "2. PUT bytes to ${UPLOAD_URL%%\?*}"
-PUT_CODE=$(curl -sS -o /dev/null -w "%{http_code}" -X PUT "${UPLOAD_URL}" -H "Content-Type: application/pdf" --data-binary "@${CFILE}")
+# Send every header the server returned: the cloud URL signs x-goog-content-length-range.
+HEADERS_JSON=$(echo "${CREATED}" | grep -o '"uploadHeaders":{[^}]*}' | sed 's/^"uploadHeaders":{//; s/}$//')
+HEADER_ARGS=()
+IFS='|' read -r -a PAIRS <<< "${HEADERS_JSON//\",\"/\"|\"}"
+for pair in "${PAIRS[@]}"; do
+  name=$(echo "${pair}" | cut -d'"' -f2)
+  value=$(echo "${pair}" | cut -d'"' -f4)
+  HEADER_ARGS+=(-H "${name}: ${value}")
+done
+
+echo "2. PUT bytes to ${UPLOAD_URL%%\?*} with headers: ${HEADER_ARGS[*]}"
+PUT_CODE=$(curl -sS -o /dev/null -w "%{http_code}" -X PUT "${UPLOAD_URL}" "${HEADER_ARGS[@]}" --data-binary "@${CFILE}")
 echo "PUT status ${PUT_CODE}"
 [ "${PUT_CODE}" = "200" ] || exit 1
 
 echo "3. POST finalize"
-curl -s -f -X POST "${BASE}/api/assignments/${ASSIGNMENT_ID}/direct-uploads/${UPLOAD_ID}/finalize" \
-  -H "Authorization: Bearer ${TOKEN}"
+# An empty body makes curl send Content-Length: 0, which Cloud Run's front end requires on POST.
+curl -sS -f -X POST "${BASE}/api/assignments/${ASSIGNMENT_ID}/direct-uploads/${UPLOAD_ID}/finalize" \
+  -H "Authorization: Bearer ${TOKEN}" --data ""
 echo

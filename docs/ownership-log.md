@@ -245,3 +245,24 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Trade-off:** Both unique-violation cases (same-key race, different-key race) are handled by one generic retry of the whole transaction instead of two bespoke recovery paths. It is simpler and correct for both, but a second consecutive collision returns 409 `VERSION_CONFLICT` and the client must retry.
 
 **File to read first:** `src/main/java/com/deadlinedrop/service/CommitService.java` — the transaction order, the retry on unique violations, and why signing happens after commit.
+
+
+---
+
+## Phase 11 — 2026-11-11
+
+**What changed:** Built arm B, the baseline a competent engineer writes today: direct upload to storage, then finalize stamps the time.
+- `api/DirectUploadController` (`@Profile("direct-finalize")`): `POST .../direct-uploads` (415/413 checks, signed PUT URL, no database write) and `POST .../direct-uploads/{uploadId}/finalize` (object path rebuilt from the authenticated student id, 404 `BYTES_NOT_FOUND`, 422 `SIZE_MISMATCH` plus delete, `submittedAt = clock.instant()` after the bytes landed, `stampSource FINALIZE`).
+- `BaselineSubmissionRepository.insertIfAbsent` (`ON CONFLICT (idempotency_key) WHERE idempotency_key IS NOT NULL DO NOTHING`) and `findByIdempotencyKey`, reached through `BaselineSubmissionService.insertIfAbsentAndRead` because ArchUnit forbids `api` touching `repository`. New `domain/BaselineSubmissionRow`.
+- `docker-compose.yml`: `app-armb` under profile `arms` (`local,direct-finalize`, `dd_b`, port 8083). `DirectFinalizeIT` (13 cases). `tools/direct-flow.sh` runs URL, PUT, finalize against any base URL.
+- Fixed a phase 10 regression: the `storage` container would not start because `CommitService` needs a transaction manager. Database-dependent beans (`CommitService`, `CommitController`, `AssignmentAccess`, `BaselineSubmissionService`, both JDBC repositories) are now `@Profile("!storage")`.
+- Set `DEPLOY_ARMS` to `a b c`; CI deployed `dd-arm-b`; seeded `dd_b` with 50 students; bucket CORS now lists all three arm URLs. The connection budget is unchanged: 3 x 1 x 5 = 15 <= 20.
+- Verified the flow locally on :8083 and on `dd-arm-b`: both return `stampSource FINALIZE`.
+
+**Why:** Arms B and C differ only in when the stamp is taken, so the B-vs-C comparison isolates the hash commitment. `DirectFinalizeIT` includes a case where finalize after the deadline is LATE even though the upload began before it, which is the unfairness arm C removes.
+
+**Trade-off:** Replay safety comes from reusing `uploadId` as the idempotency key and reading the row back, instead of adding a state machine. It keeps arm B a faithful "typical" baseline, but it means arm B has no `COMMITTED` state, so a student whose browser dies after the PUT has no record until they call finalize.
+
+**Gotchas found:** Cloud Run's front end rejects a POST without `Content-Length` (411), so a curl finalize needs an empty body; browsers send it automatically. The cloud signed URL also requires the `x-goog-content-length-range` header, so clients must send every header in `uploadHeaders`.
+
+**File to read first:** `src/main/java/com/deadlinedrop/api/DirectUploadController.java` — see where the stamp is taken after `stat`, and how the object path is built from the authenticated student.
