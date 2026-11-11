@@ -19,10 +19,15 @@ if command -v cygpath >/dev/null 2>&1; then CFILE=$(cygpath -m "${FILE}"); else 
 SIZE=$(wc -c < "${FILE}" | tr -d ' ')
 SHA=$(sha256sum "${FILE}" | cut -d' ' -f1)
 
+# Random version-4 UUID from /dev/urandom (Git Bash on Windows has no uuidgen).
+HEX=$(od -An -N16 -tx1 /dev/urandom | tr -d ' \n')
+VARIANT=$(printf '%x' $(( (0x${HEX:16:1} & 0x3) | 0x8 )))
+IDEMPOTENCY_KEY="${HEX:0:8}-${HEX:8:4}-4${HEX:13:3}-${VARIANT}${HEX:17:3}-${HEX:20:12}"
+
 echo "1. POST commits (sha256 ${SHA}, ${SIZE} bytes)"
 COMMITTED=$(curl -s -f -X POST "${BASE}/api/assignments/${ASSIGNMENT_ID}/commits" \
   -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" \
-  -H "Idempotency-Key: $(cat /proc/sys/kernel/random/uuid 2>/dev/null || uuidgen)" \
+  -H "Idempotency-Key: ${IDEMPOTENCY_KEY}" \
   -d "{\"sha256\":\"${SHA}\",\"sizeBytes\":${SIZE},\"contentType\":\"application/pdf\"}")
 echo "${COMMITTED}" | sed 's/"uploadUrl":"[^"]*"/"uploadUrl":"<signed>"/'
 SUBMISSION_ID=$(echo "${COMMITTED}" | grep -o '"submissionId":"[^"]*"' | cut -d'"' -f4)

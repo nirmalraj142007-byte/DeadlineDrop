@@ -266,3 +266,25 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Gotchas found:** Cloud Run's front end rejects a POST without `Content-Length` (411), so a curl finalize needs an empty body; browsers send it automatically. The cloud signed URL also requires the `x-goog-content-length-range` header, so clients must send every header in `uploadHeaders`.
 
 **File to read first:** `src/main/java/com/deadlinedrop/api/DirectUploadController.java` — see where the stamp is taken after `stat`, and how the object path is built from the authenticated student.
+
+
+---
+
+## Phase 12 — 2026-11-11
+
+**What changed:** Built the second half of the core: a committed submission moves to UPLOADED exactly once, whether the browser's finalize or the reconciler gets there first.
+- `repository/TransitionRepository`: `transition(id, from, to, now)` is one `UPDATE ... WHERE id = ? AND status = ?` that also sets the matching `uploaded_at` / `verified_at` / `expired_at`, and returns rows affected. `expireIfGraceOver` expires only a COMMITTED row whose `deadline_at + grace_seconds` is before the app-clock `now` passed in (no SQL `now()`).
+- `jobs/JobRepository.enqueueVerify`: `INSERT ... ON CONFLICT (type, submission_id) DO NOTHING`.
+- `service/SubmissionStateMachine`: `markUploaded` and `expire`, each `@Transactional`; only the caller whose UPDATE changed the row writes the event and enqueues the VERIFY job, in the same transaction; both return the status re-read from the row. Nested `RaceHook` test seam with a no-op production bean.
+- `service/FinalizeService`: 404 `SUBMISSION_NOT_FOUND`, 403 `FORBIDDEN` for another student, returns the current status if not COMMITTED, 404 `BYTES_NOT_FOUND` before the PUT, 422 `SIZE_MISMATCH` / `CONTENT_TYPE_MISMATCH` after deleting the object. `service/ReconcilerService.settle`: bytes present with the right size -> UPLOADED; absent -> `expire` (no-op until grace is over).
+- `api/FinalizeController`: `POST /api/submissions/{id}/finalize` -> `SubmissionStatusResponse(submissionId, status, timing, uploadedAt)`.
+- Tests: `race/FinalizeVsReconcilerRaceIT` (50/50 iterations: one UPLOADED event, one job, both callers see UPLOADED), `race/GuardRemovedRaceIT` (same race without the guard: invariant broken in 50/50), `api/FinalizeIT` (8 cases incl. reconciler upload and expiry exactly after grace). `./mvnw verify`: 35 unit + 74 integration, all green.
+- `tools/commit-flow.sh`: arm C commit -> PUT -> finalize against any base URL. Deployed `dd-arm-c` revision `dd-arm-c-00010-v28` (image `a6aeac6`); cloud flow returned 200 `UPLOADED`, `committedAt` 13:55:34Z unchanged, `uploadedAt` 13:55:42Z.
+
+**Why:** After the PUT, two actors can both see COMMITTED: the browser calling finalize and the reconciler cleaning up after dead browsers. Without a guard both would write an UPLOADED event and the audit trail would say the upload happened twice. The guarded UPDATE lets Postgres pick exactly one winner: the second UPDATE waits on the row lock, re-checks `status = 'COMMITTED'` after the first commits, and matches zero rows. The barrier hook forces both racers to read COMMITTED before either writes, so the test hits the dangerous interleaving on every iteration instead of by luck, and `GuardRemovedRaceIT` proves the test would catch a regression.
+
+**Trade-off:** The finalize endpoint reads the row twice (once in `finalize`, once in `describe` for the response) to keep the `Status finalize(...)` signature the race tests use. One extra primary-key read per finalize is cheap next to the storage `stat` call, and it keeps the racing code path identical to production.
+
+**Assumptions flagged:** `FinalizeController` also excludes the `storage` profile, like `CommitController`, because that container has no database. The reconciler leaves a wrong-size object alone (finalize rejects it); it does not check content type because both signed URLs (GCS and local) bind the type. Content types are compared on the base type, case-insensitive. Local `./mvnw verify` must run outside the agent sandbox on Windows: the sandbox blocks the JDK's loopback pipe and Tomcat fails to start.
+
+**File to read first:** `src/main/java/com/deadlinedrop/service/SubmissionStateMachine.java` — the rows-affected check is the whole idea; then `race/GuardRemovedRaceIT.java` to see it fail without the guard.
