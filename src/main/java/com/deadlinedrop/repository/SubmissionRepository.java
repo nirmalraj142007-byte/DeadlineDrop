@@ -4,6 +4,7 @@ import com.deadlinedrop.domain.Submission.Actor;
 import com.deadlinedrop.domain.Submission.Row;
 import com.deadlinedrop.domain.Submission.Status;
 import com.deadlinedrop.domain.Timing;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -23,6 +24,7 @@ import java.util.UUID;
  * parameters; enum columns are bound as text and cast in SQL.
  */
 @Repository
+@Profile("!storage")
 public class SubmissionRepository {
 
     /** A live submission that was just superseded, with the status it held beforehand. */

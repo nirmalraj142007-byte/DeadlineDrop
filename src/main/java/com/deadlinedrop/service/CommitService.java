@@ -13,6 +13,7 @@ import com.deadlinedrop.storage.StoragePort;
 import com.deadlinedrop.storage.StoragePort.SignedUrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -33,6 +34,7 @@ import java.util.UUID;
  * binds to, supersedes any live submission, and only then hands out a signed upload URL.
  */
 @Service
+@Profile("!storage")
 public class CommitService {
 
     static final String STUDENT_KEY_INDEX = "ux_sub_student_key";

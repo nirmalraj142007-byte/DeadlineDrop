@@ -34,7 +34,7 @@ import java.util.UUID;
  * pass through this application.
  */
 @RestController
-@Profile("!naive & !direct-finalize")
+@Profile("!naive & !direct-finalize & !storage")
 public class CommitController {
 
     private static final Logger log = LoggerFactory.getLogger(CommitController.class);

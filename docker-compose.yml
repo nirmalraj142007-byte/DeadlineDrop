@@ -50,6 +50,25 @@ services:
     ports:
       - "8082:8080"
 
+  app-armb:
+    profiles: ["arms"]
+    build: .
+    environment:
+      SPRING_PROFILES_ACTIVE: local,direct-finalize
+      DB_HOST: postgres
+      DB_NAME: dd_b
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      DD_STORAGE_HMAC_SECRET: ${DD_STORAGE_HMAC_SECRET}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - objects:/data/objects
+    ports:
+      - "8083:8080"
+
   storage:
     build: .
     environment:

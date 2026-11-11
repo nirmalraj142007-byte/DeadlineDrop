@@ -6,6 +6,7 @@ import com.deadlinedrop.domain.Assignment;
 import com.deadlinedrop.domain.Enrollment;
 import com.deadlinedrop.repository.AssignmentRepository;
 import com.deadlinedrop.repository.EnrollmentRepository;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import java.util.UUID;
  * Reused across Arm A, Arm B, and Arm C.
  */
 @Service
+@Profile("!storage")
 @Transactional(readOnly = true)
 public class AssignmentAccess {
 
