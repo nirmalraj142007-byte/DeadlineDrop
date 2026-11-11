@@ -33,3 +33,13 @@ Committed on day 1 (Fri 6 Nov 2026) before any code that could produce a result.
 ## Fallback rule (fixed now)
 
 If arm B's cohort rate is under 5%, the headline leads with the absolute count per 1,000-student course and the B-versus-C ablation; the cohort is never widened to raise the number.
+
+
+## Addendum 1 (day 6, 11 Nov 2026, buffering probe)
+
+The empirical buffering probe (`results/probe-buffering.md`) measured `request_arrived` at 164.554 s after `clientStart` on a 165.381 s upload, proving that Cloud Run's front end buffers the complete multipart request body before forwarding the request to the container.
+
+Because Cloud Run buffers rather than streams:
+- Slow uploads do not occupy container concurrency slots or Tomcat threads during transfer; slots are held by the front end while bytes trickle in.
+- The container sees arrivals not as long-lived open connections, but as concentrated bursts of complete bodies when uploads finish.
+- Arm A's failure mode under load is governed by memory pressure from multipart spooling per request and front-end queueing when bursts of completed bodies arrive simultaneously, rather than container thread exhaustion mid-transfer.
