@@ -211,6 +211,9 @@ echo "Configuring IAM roles for dd-deployer..."
 add_project_iam_binding_with_retry "serviceAccount:${DEPLOY_SA}" "roles/run.admin"
 add_project_iam_binding_with_retry "serviceAccount:${DEPLOY_SA}" "roles/artifactregistry.writer"
 add_sa_iam_binding_with_retry "${RUN_SA}" "serviceAccount:${DEPLOY_SA}" "roles/iam.serviceAccountUser"
+gcloud storage buckets add-iam-policy-binding "gs://${BUCKET}" \
+  --member="serviceAccount:${DEPLOY_SA}" \
+  --role="roles/storage.admin" >/dev/null
 
 PROJECT_NUMBER=$(gcloud projects describe "${PROJECT_ID}" --format="value(projectNumber)")
 WIF_PRINCIPAL="principalSet://iam.googleapis.com/projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/${POOL_ID}/attribute.repository/${REPO}"
