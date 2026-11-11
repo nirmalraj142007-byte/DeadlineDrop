@@ -8,6 +8,9 @@ import com.deadlinedrop.service.AssignmentAccess;
 import com.deadlinedrop.service.BaselineSubmissionService;
 import com.deadlinedrop.service.DeadlinePolicy;
 import com.deadlinedrop.storage.StoragePort;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,6 +40,8 @@ import java.util.UUID;
 @Profile("naive")
 public class NaiveSubmissionController {
 
+    private static final Logger log = LoggerFactory.getLogger(NaiveSubmissionController.class);
+
     private final AssignmentAccess assignmentAccess;
     private final DeadlinePolicy deadlinePolicy;
     private final BaselineSubmissionService baselineSubmissionService;
@@ -63,6 +68,16 @@ public class NaiveSubmissionController {
             @RequestParam("file") MultipartFile file,
             @RequestHeader(value = "Idempotency-Key", required = false) UUID idempotencyKey,
             Authentication authentication) {
+        long bodyCompleteEpochMs = clock.millis();
+        var bodyCompleteLog = log.atInfo()
+                .addKeyValue("event", "body_complete")
+                .addKeyValue("epochMs", bodyCompleteEpochMs);
+        if (MDC.get("requestId") == null) {
+            String reqId = CurrentUser.id(authentication) != null ? CurrentUser.id(authentication).toString() : "";
+            bodyCompleteLog.addKeyValue("requestId", reqId);
+        }
+        bodyCompleteLog.log("body_complete");
+
         UUID studentId = CurrentUser.id(authentication);
         Assignment assignment = assignmentAccess.loadForStudent(assignmentId, studentId);
 
@@ -86,6 +101,16 @@ public class NaiveSubmissionController {
         } catch (IOException e) {
             throw new UncheckedIOException("Failed to read upload stream", e);
         }
+
+        long storedEpochMs = clock.millis();
+        var storedLog = log.atInfo()
+                .addKeyValue("event", "stored")
+                .addKeyValue("epochMs", storedEpochMs);
+        if (MDC.get("requestId") == null) {
+            String reqId = CurrentUser.id(authentication) != null ? CurrentUser.id(authentication).toString() : "";
+            storedLog.addKeyValue("requestId", reqId);
+        }
+        storedLog.log("stored");
 
         // stamping after the bytes have arrived is exactly what makes this baseline unfair to slow uploads
         Instant stamp = clock.instant();

@@ -4,3 +4,6 @@ target/
 *.iml
 results/raw/
 backup/
+probe.pdf
+probe_response.json
+probe_logs.json

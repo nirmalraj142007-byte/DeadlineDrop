@@ -210,3 +210,21 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 
 **File to read first:** `src/main/java/com/deadlinedrop/storage/GcsStorageAdapter.java` — it encapsulates the V4 signed URL generation, IAM runtime signing, header bounding, and object lifecycle operations for Google Cloud Storage.
 
+
+---
+
+## Phase 9 — 2026-11-11
+
+**What changed:** Conducted empirical buffering probe on Google Cloud Run to discover whether slow multipart uploads stream to the container or buffer at the Google front end:
+- Created `com.deadlinedrop.web.RequestTimingLogFilter` (`@Component`, `@Order(Ordered.HIGHEST_PRECEDENCE + 2)`) filtering `POST /api/assignments/*/naive-submissions` to record structured log event `request_arrived` with `epochMs` and `contentLength`.
+- Updated `com.deadlinedrop.api.NaiveSubmissionController` to emit structured log events `body_complete` at controller entry (after multipart parsing) and `stored` after `storagePort.put` completes.
+- Rebuilt container image, pushed to Artifact Registry, and redeployed Arm A (`dd-arm-a`, revision `dd-arm-a-00006-rjv`) to Cloud Run in `asia-south1`.
+- Created `tools/probe-buffering.sh`: generated a 20 MB random test file `probe.pdf`, authenticated as `student0001`, assigned fixed `X-Request-Id` `f6ca69e2-3c92-415d-81dd-7c27da5a5308`, uploaded throttled to 125 kB/s (~1 Mbps) via curl, recorded `clientStartMs` and `clientEndMs`, and queried Cloud Logging JSON events.
+- Created `results/probe-buffering.md` documenting the empirical timing table: `clientStart` at 0.000 s, `request_arrived` at 164.554 s, `body_complete` at 164.689 s, `stored` at 165.568 s, and `clientEnd` at 165.381 s, establishing that Cloud Run buffers the full multipart body before dispatching the request to the container.
+- Appended approved `Addendum 1 (day 6, 11 Nov 2026, buffering probe)` to `PREDICTIONS.md` in its own commit, updating Arm A's predicted failure mode from streaming thread exhaustion to container memory pressure from burst multipart spooling.
+
+**Why:** Understanding whether Cloud Run streams or buffers request bodies is essential for modeling and predicting how Arm A behaves under deadline load. Streaming would mean slow clients hold Tomcat worker threads and concurrency slots for minutes; buffering means the Google front end holds connections and releases them to the container in sudden bursts when uploads complete, shifting the bottleneck to container memory and database connection contention.
+
+**Trade-off:** In Spring Boot 4's ECS structured logging, MDC attributes (such as `requestId` set by `RequestIdFilter`) are automatically ingested into top-level JSON fields. Manually adding duplicate `requestId` key-value pairs triggered `assertNotDuplicateNestedPairs` in `ContextPairs`. Delegating `requestId` propagation to MDC while logging `epochMs` and `contentLength` via SLF4J KeyValue pairs prevents runtime log appender failures while ensuring all three lifecycle events correlate cleanly in Cloud Logging.
+
+**File to read first:** `results/probe-buffering.md` — it contains the timing table, raw Cloud Logging events, and conclusion proving Cloud Run front-end buffering.
