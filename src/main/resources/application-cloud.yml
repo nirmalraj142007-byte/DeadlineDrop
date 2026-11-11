@@ -1,1 +1,13 @@
-# filled in phase 8
+spring:
+  datasource:
+    url: jdbc:postgresql:///${DB_NAME}?cloudSqlInstance=${CLOUD_SQL_INSTANCE}&socketFactory=com.google.cloud.sql.postgres.SocketFactory
+    username: dd
+    password: ${DB_PASSWORD}
+
+dd:
+  storage:
+    bucket: ${BUCKET}
+    hmac-secret: ${DD_STORAGE_HMAC_SECRET:unused-in-cloud}
+
+server:
+  forward-headers-strategy: framework

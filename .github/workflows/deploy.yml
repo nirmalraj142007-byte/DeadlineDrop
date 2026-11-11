@@ -1,0 +1,54 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    branches: ["main"]
+    types:
+      - completed
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SA }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: |
+          source deploy/env.sh
+          gcloud auth configure-docker "${REGION}-docker.pkg.dev" --quiet
+
+      - name: Build and push container image
+        run: |
+          source deploy/env.sh
+          IMAGE_TAG="${IMAGE}:${{ github.event.workflow_run.head_sha }}"
+          docker build -t "$IMAGE_TAG" -t "${IMAGE}:latest" .
+          docker push "$IMAGE_TAG"
+          docker push "${IMAGE}:latest"
+
+      - name: Deploy configured arms
+        run: |
+          source deploy/env.sh
+          IMAGE_TAG="${IMAGE}:${{ github.event.workflow_run.head_sha }}"
+          for arm in ${{ vars.DEPLOY_ARMS }}; do
+            echo "Deploying arm ${arm}..."
+            bash deploy/deploy-arm.sh "$arm" "$IMAGE_TAG"
+          done

@@ -1,7 +1,7 @@
 # Architectural and Project Decisions
 
-## D1: Deployment Region (2026-11-06)
-Region `asia-south1` (Mumbai) is selected for all cloud infrastructure: Cloud Run, Cloud SQL, the Google Cloud Storage bucket, and k6 load-testing VMs.
+## D1: Deployment Region and Project (2026-11-06)
+Project ID `deadlinedrop-nirmal` in region `asia-south1` (Mumbai) is selected for all cloud infrastructure: Cloud Run, Cloud SQL, the Google Cloud Storage bucket, and k6 load-testing VMs.
 
 ## D2: Scope Cuts and Replacements (2026-11-06)
 Features cut on day 1 to protect the core deadline guarantee and evaluation timeline, along with their replacements:
@@ -31,3 +31,9 @@ To maximize throughput and review quality within rate windows: generate implemen
 ## D6: Credit Balance on Day 1 (2026-11-06)
 Credit balance: 
 The project budget cap is approximately US$40. Because billing account `011506-D31873-0CFA73` operates in `INR` (Indian Rupee), the budget alert `dd-40` is expressed in INR, and the exact amount to use is `3500INR`.
+
+## D7: Cloud Run Live URLs (2026-11-11)
+Deployed Cloud Run service URLs for initial ablation arms in `asia-south1`:
+- **Arm A (`naive`)**: `https://dd-arm-a-aheo6nqyga-el.a.run.app`
+- **Arm C (real design)**: `https://dd-arm-c-aheo6nqyga-el.a.run.app`
+

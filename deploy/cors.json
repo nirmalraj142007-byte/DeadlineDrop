@@ -1,0 +1,8 @@
+[
+  {
+    "origin": ["https://dd-arm-a-aheo6nqyga-el.a.run.app", "https://dd-arm-c-aheo6nqyga-el.a.run.app"],
+    "method": ["PUT", "GET"],
+    "responseHeader": ["Content-Type", "Content-Disposition", "x-goog-content-length-range"],
+    "maxAgeSeconds": 3600
+  }
+]

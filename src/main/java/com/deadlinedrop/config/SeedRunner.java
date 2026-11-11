@@ -141,8 +141,8 @@ public class SeedRunner implements ApplicationRunner {
             Instant now = clock.instant();
             Instant deadlineAt = now.plus(Duration.ofDays(7));
             jdbcTemplate.update(
-                    "INSERT INTO assignments (course_id, title, deadline_at, grace_seconds, max_bytes, allowed_types, created_by) " +
-                    "VALUES (?, 'Lab 1', ?, 900, 26214400, ARRAY['application/pdf', 'application/zip', 'image/png']::text[], ?)",
+                    "INSERT INTO assignments (id, course_id, title, deadline_at, grace_seconds, max_bytes, allowed_types, created_by) " +
+                    "VALUES ('11111111-1111-1111-1111-111111111111'::uuid, ?, 'Lab 1', ?, 900, 26214400, ARRAY['application/pdf', 'application/zip', 'image/png']::text[], ?) ON CONFLICT DO NOTHING",
                     courseId,
                     Timestamp.from(deadlineAt),
                     teacherId

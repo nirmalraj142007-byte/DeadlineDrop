@@ -186,3 +186,27 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Trade-off:** Having the application server buffer and handle multipart uploads consumes application thread pool resources and server memory, contrasting with arms B and C which stream bytes straight to Cloud Storage via signed URLs. Stamping the submission post-transfer inherently binds the recorded timestamp to bandwidth and transfer latency. Additionally, to conform strictly with ArchUnit layering rules forbidding `api` classes from touching `repository`, baseline persistence operations are mediated by `BaselineSubmissionService`.
 
 **File to read first:** `src/main/java/com/deadlinedrop/api/NaiveSubmissionController.java` — it encapsulates the tutorial-style upload flow, post-transfer timestamping, and size/type validation.
+
+---
+
+## Phase 8 — 2026-11-11
+
+**What changed:** Deployed Arms A and C to Google Cloud Run in `asia-south1`, backed by Cloud SQL PostgreSQL 17 and Google Cloud Storage V4 signed URLs without service account keys:
+- Updated `pom.xml` importing `com.google.cloud:libraries-bom:26.54.0` and adding `google-cloud-storage` and `com.google.cloud.sql:postgres-socket-factory:1.23.1`.
+- Created `com.deadlinedrop.storage.GcsStorageAdapter` (`@Profile("cloud")`, implementing `StoragePort`): generates V4 PUT signed URLs enforcing `Content-Type` and `x-goog-content-length-range` extended headers, generates GET signed URLs with `response-content-disposition`, performs `stat`, `open` via `Channels.newInputStream`, `put` via `storage.createFrom`, and `delete`. On Cloud Run, IAM Credentials `signBlob` API signs directly via runtime service account `dd-run` without downloading service account keys.
+- Created `com.deadlinedrop.config.GcsConfig` providing `Storage` bean under profile `cloud`.
+- Updated `src/main/resources/application-cloud.yml` setting JDBC URL with Cloud SQL socket factory (`SocketFactory`), `dd.storage.bucket`, and `server.forward-headers-strategy=framework`.
+- Created `deploy/env.sh` defining target region (`asia-south1`), Cloud SQL instance (`dd-pg`), tier (`db-f1-micro`), bucket, Artifact Registry repo, and service accounts.
+- Created `deploy/arms.env` configuring standard container resource limits (`CPU=1`, `MEMORY=1Gi`, `CONCURRENCY=80`, `MAX_INSTANCES=1`, `MIN_INSTANCES=0`, `DB_POOL_MAX=5`, `TIMEOUT=300`) and documenting the connection budget (3 arms × 1 instance × pool 5 = 15 ≤ 25 - 5).
+- Created `deploy/bootstrap.sh` (idempotent, describing before creating): enabled GCP APIs, created Artifact Registry repository, provisioned Cloud SQL `dd-pg` (Postgres 17, Enterprise tier `db-f1-micro`), created databases `dd_a`, `dd_b`, `dd_c` and user `dd`, stored passwords in Secret Manager (`dd-db-password`, `dd-jwt-secret`, `dd-seed-password`), created GCS bucket with uniform bucket-level access and public access prevention, created service accounts `dd-run` and `dd-deployer` with least-privilege IAM bindings (including self `roles/iam.serviceAccountTokenCreator` on `dd-run`), established Workload Identity Federation pool and OIDC provider for GitHub Actions, and configured GitHub repo variables.
+- Created `deploy/deploy-arm.sh`: deploys Cloud Run services `dd-arm-a` (profiles `cloud,naive`, db `dd_a`) and `dd-arm-c` (profile `cloud`, db `dd_c`) with Cloud SQL connection, secrets, env vars, gen2 execution environment, and `--cpu-boost`; updates bucket CORS from live deployed service URLs; provides subcommand `seed <arm> <N>` creating and executing Cloud Run job `dd-seed-<arm>`.
+- Created `.github/workflows/deploy.yml`: triggers on successful completion of `CI` workflow on `main`, authenticates via Workload Identity Federation without keys, builds and pushes container image to Artifact Registry, and deploys configured arms from `vars.DEPLOY_ARMS`.
+- Created `deploy/smoke.sh`: tests actuator health `UP`, teacher login via Secret Manager seed credentials, and on arm A verifies student authentication, a 1 MB multipart upload (201 Created), and storage existence in GCS.
+- Added comprehensive unit tests in `src/test/java/com/deadlinedrop/storage/GcsStorageAdapterTest.java` and recorded live Cloud Run URLs in `docs/decisions.md` D7.
+
+**Why:** Deploying early to real cloud infrastructure in `asia-south1` ensures all IAM, networking, Cloud SQL socket connections, Cloud Storage signing, and GitHub Actions CI/CD pipelines are verified well ahead of load testing. Relying on Workload Identity Federation and the IAM `signBlob` API eliminates long-lived secret keys in accordance with cloud security best practices.
+
+**Trade-off:** Cloud Run uses the IAM Credentials `signBlob` API rather than a local RSA private key file to produce GCS V4 signed URLs. While this adds a small IAM network call on signed URL generation, it completely eliminates key management risks, credential rotation overhead, and security key exposure.
+
+**File to read first:** `src/main/java/com/deadlinedrop/storage/GcsStorageAdapter.java` — it encapsulates the V4 signed URL generation, IAM runtime signing, header bounding, and object lifecycle operations for Google Cloud Storage.
+
