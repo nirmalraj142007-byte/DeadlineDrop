@@ -288,3 +288,20 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Assumptions flagged:** `FinalizeController` also excludes the `storage` profile, like `CommitController`, because that container has no database. The reconciler leaves a wrong-size object alone (finalize rejects it); it does not check content type because both signed URLs (GCS and local) bind the type. Content types are compared on the base type, case-insensitive. Local `./mvnw verify` must run outside the agent sandbox on Windows: the sandbox blocks the JDK's loopback pipe and Tomcat fails to start.
 
 **File to read first:** `src/main/java/com/deadlinedrop/service/SubmissionStateMachine.java` — the rows-affected check is the whole idea; then `race/GuardRemovedRaceIT.java` to see it fail without the guard.
+
+
+---
+
+## Phase 6 fix — 2026-11-11
+
+**What changed:** Removed every swallowed exception in `storage/`.
+- New package-private `storage/LocalObjectFiles.stat`, used by both `LocalStorageAdapter.stat` and the local storage server's GET. It returns empty only on `NoSuchFileException` (object or `.meta` missing) or when the path is not a regular file; any other `IOException` becomes `UncheckedIOException("Failed to stat object <path>")`; unreadable or incomplete metadata becomes `IllegalStateException` naming the path. Both reach `GlobalExceptionHandler` as a 500 `INTERNAL` with a `requestId`.
+- `StorageServerController` GET: missing object or metadata -> 404 `BYTES_NOT_FOUND` (also if the file vanishes between stat and open); other I/O errors are wrapped with the path.
+- `StorageHmac.verify`: catches only the Base64 `IllegalArgumentException` from a malformed signature (-> false -> 403). It now reuses `sign`, so a broken HMAC setup throws instead of looking like a bad signature.
+- `StorageIT`: missing object -> empty; object without `.meta` -> empty; corrupt `.meta` -> exception naming the object.
+
+**Why:** AGENTS.md forbids swallowing exceptions. The old `catch (Exception ignored)` turned a corrupt or unreadable metadata file into `application/octet-stream`, which phase 12's finalize would then reject as `CONTENT_TYPE_MISMATCH` and delete the student's file: a disk problem would have looked like the student's fault.
+
+**Trade-off:** An object whose `.meta` file is missing now counts as absent instead of `application/octet-stream`. Writers move the object before the metadata, so this treats a half-finished write as "not arrived yet" (finalize answers 404 and the browser retries) rather than as a wrong type. The cost: an object whose metadata was lost for good stays invisible until someone repairs it.
+
+**File to read first:** `src/main/java/com/deadlinedrop/storage/LocalObjectFiles.java`.

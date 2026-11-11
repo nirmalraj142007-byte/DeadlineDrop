@@ -36,14 +36,14 @@ final class StorageHmac {
         if (presentedSig == null || secret == null || secret.isBlank()) {
             return false;
         }
+        byte[] expected = Base64.getUrlDecoder().decode(sign(data, secret));
+        byte[] actual;
         try {
-            Mac mac = Mac.getInstance(HMAC_SHA256);
-            mac.init(new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), HMAC_SHA256));
-            byte[] expected = mac.doFinal(data.getBytes(StandardCharsets.UTF_8));
-            byte[] actual = Base64.getUrlDecoder().decode(presentedSig);
-            return MessageDigest.isEqual(expected, actual);
-        } catch (Exception e) {
+            actual = Base64.getUrlDecoder().decode(presentedSig);
+        } catch (IllegalArgumentException e) {
+            // A signature that is not valid Base64url cannot match: the caller answers 403.
             return false;
         }
+        return MessageDigest.isEqual(expected, actual);
     }
 }

@@ -3,9 +3,7 @@ package com.deadlinedrop.storage;
 import com.deadlinedrop.api.ApiException;
 import com.deadlinedrop.api.ErrorCodes;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -88,27 +86,8 @@ public class LocalStorageAdapter implements StoragePort {
         Path targetPath = properties.getRoot().resolve(path).normalize();
         validatePath(targetPath);
 
-        if (!Files.exists(targetPath) || !Files.isRegularFile(targetPath)) {
-            return Optional.empty();
-        }
-
-        try {
-            long size = Files.size(targetPath);
-            String contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
-            Path metaPath = properties.getRoot().resolve(path + ".meta");
-            if (Files.exists(metaPath)) {
-                try {
-                    JsonNode node = objectMapper.readTree(Files.readAllBytes(metaPath));
-                    if (node != null && node.has("contentType")) {
-                        contentType = node.get("contentType").asText();
-                    }
-                } catch (Exception ignored) {
-                }
-            }
-            return Optional.of(new ObjectInfo(size, contentType));
-        } catch (IOException e) {
-            throw new UncheckedIOException("Failed to stat object: " + objectPath, e);
-        }
+        Path metaPath = properties.getRoot().resolve(path + ".meta");
+        return LocalObjectFiles.stat(targetPath, metaPath, objectPath, objectMapper);
     }
 
     @Override

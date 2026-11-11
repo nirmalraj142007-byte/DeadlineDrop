@@ -3,6 +3,7 @@ package com.deadlinedrop.storage;
 import com.deadlinedrop.api.ApiException;
 import com.deadlinedrop.api.ErrorCodes;
 import com.deadlinedrop.security.PublicEndpoint;
+import com.deadlinedrop.storage.StoragePort.ObjectInfo;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -15,15 +16,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.Clock;
@@ -159,29 +161,23 @@ public class StorageServerController {
         }
 
         Path targetFile = properties.getRoot().resolve(objectPath).normalize();
-        if (!Files.exists(targetFile) || !Files.isRegularFile(targetFile)) {
-            throw ApiException.notFound(ErrorCodes.BYTES_NOT_FOUND, "Object not found: " + objectPath);
-        }
-
-        String contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
         Path metaFile = properties.getRoot().resolve(objectPath + ".meta");
-        if (Files.exists(metaFile)) {
-            try {
-                JsonNode node = objectMapper.readTree(Files.readAllBytes(metaFile));
-                if (node != null && node.has("contentType")) {
-                    contentType = node.get("contentType").asText();
-                }
-            } catch (Exception ignored) {
-            }
-        }
+        ObjectInfo info = LocalObjectFiles.stat(targetFile, metaFile, objectPath, objectMapper)
+                .orElseThrow(() -> ApiException.notFound(ErrorCodes.BYTES_NOT_FOUND, "Object not found: " + objectPath));
 
-        long contentLength = Files.size(targetFile);
-        InputStream in = Files.newInputStream(targetFile);
+        InputStream in;
+        try {
+            in = Files.newInputStream(targetFile);
+        } catch (NoSuchFileException e) {
+            throw ApiException.notFound(ErrorCodes.BYTES_NOT_FOUND, "Object not found: " + objectPath);
+        } catch (IOException e) {
+            throw new UncheckedIOException("Failed to open object " + objectPath, e);
+        }
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fn + "\"")
-                .contentType(MediaType.parseMediaType(contentType))
-                .contentLength(contentLength)
+                .contentType(MediaType.parseMediaType(info.contentType()))
+                .contentLength(info.size())
                 .body(new InputStreamResource(in));
     }
 

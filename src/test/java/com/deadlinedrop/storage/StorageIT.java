@@ -29,6 +29,7 @@ import java.time.Duration;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -201,5 +202,33 @@ class StorageIT {
                 .isPresent()
                 .hasValueSatisfying(cd -> assertThat(cd).contains("attachment; filename=\"assignment-submission.pdf\""));
         assertThat(response.body()).isEqualTo(payload);
+    }
+
+    @Test
+    void statOfAMissingObjectIsEmpty() {
+        assertThat(storagePort.stat("submissions/never-uploaded/report.pdf")).isEmpty();
+    }
+
+    @Test
+    void statOfAnObjectWhoseMetadataIsNotWrittenYetIsEmpty() throws IOException {
+        // Writers move the object into place before its .meta file; until then the object is not finished.
+        Path object = TEMP_ROOT.resolve("submissions/half-written/report.pdf");
+        Files.createDirectories(object.getParent());
+        Files.write(object, new byte[] {1, 2, 3});
+
+        assertThat(storagePort.stat("submissions/half-written/report.pdf")).isEmpty();
+    }
+
+    @Test
+    void statWithUnreadableMetadataFailsLoudlyAndNamesTheObject() throws IOException {
+        String objectPath = "submissions/corrupt-meta/report.pdf";
+        Path object = TEMP_ROOT.resolve(objectPath);
+        Files.createDirectories(object.getParent());
+        Files.write(object, new byte[] {1, 2, 3});
+        Files.writeString(TEMP_ROOT.resolve(objectPath + ".meta"), "{not json", StandardCharsets.UTF_8);
+
+        assertThatThrownBy(() -> storagePort.stat(objectPath))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining(objectPath);
     }
 }
