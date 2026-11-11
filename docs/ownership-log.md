@@ -305,3 +305,25 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Trade-off:** An object whose `.meta` file is missing now counts as absent instead of `application/octet-stream`. Writers move the object before the metadata, so this treats a half-finished write as "not arrived yet" (finalize answers 404 and the browser retries) rather than as a wrong type. The cost: an object whose metadata was lost for good stays invisible until someone repairs it.
 
 **File to read first:** `src/main/java/com/deadlinedrop/storage/LocalObjectFiles.java`.
+
+
+---
+
+## Phase 13 — 2026-11-11
+
+**What changed:** Four more concurrency tests in `src/test/java/com/deadlinedrop/race/`. All passed on the first run; no production code changed.
+- `race/HttpRaceSupport`: shared fixture for tests that go through the real HTTP endpoints (one student, course, assignment, a JWT signed with wall-clock times, helpers for commit, PUT to the in-process storage server, finalize). The `@HttpRaceTest` meta-annotation gives three of the tests one Spring context and one Postgres container.
+- `DuplicateRetryIT`: 20 threads send the same commit (same Idempotency-Key and body) at once, 10 rounds. Every round: one 201, nineteen 200, one submissionId, one row, one COMMIT event. Then the same key with another sha256 -> 409 `IDEMPOTENCY_KEY_REUSED`. The full run logged 36 commit retries, so the unique-index retry path was really exercised.
+- `SupersedeOnResubmitIT`: v1 commit, PUT, finalize (UPLOADED); v2 with a new key supersedes v1 (`superseded_by = v2`, one `UPLOADED -> SUPERSEDED` event by `NEW_COMMIT`). Then two commits with different keys at once, 10 rounds: never a 500, exactly one live row after each round, every superseded row has a successor. The retry ran in all 10 rounds. A raw JDBC insert of a second live row fails with SQLSTATE 23505 on `ux_live_submission`.
+- `ExpiryAtGraceEndIT`: commit at T-10 s, no PUT. `settle` at grace end - 1 s -> COMMITTED; at grace end + 1 s -> EXPIRED with one RECONCILER event. Late PUT (URL still valid) is accepted by storage, but finalize returns EXPIRED and a second `settle` stays EXPIRED; 0 UPLOADED events, 0 jobs.
+- `JobEnqueueAtomicityIT`: a `@Primary` `JobRepository` subclass throws `DataAccessResourceFailureException` from `enqueueVerify`. Finalize -> 503 `DATABASE_UNAVAILABLE` with `Retry-After: 1`; the row is still COMMITTED with no `uploaded_at`, 0 jobs, 0 UPLOADED events. After the fake recovers, the retried finalize gives UPLOADED, 1 job, 1 event.
+- `docs/decisions.md` D8: the pilot gate line for Nirmal to fill.
+- `./mvnw verify`: 35 unit + 81 integration, all green.
+
+**Why:** Phase 12 proved finalize vs reconciler. These cover the other ways two writers meet one student's submission: browser retries (idempotency key), a resubmit racing a resubmit (partial unique index plus one retry), the reconciler racing a late upload at grace end (EXPIRED is final), and a crash between the transition and its job (one transaction, so it is all or nothing).
+
+**Trade-off:** `ExpiryAtGraceEndIT` uses a 300 s grace instead of the 900 s default. With 900 s, a URL signed at T-10 s expires at T+890 s, before grace ends, so storage itself would refuse the late PUT and the test would prove nothing about the state machine. The cost: the test does not run at the production grace value. It also shows that, with a 900 s grace, a student who commits in the last 10 s before the deadline must re-request a URL if their upload has not started within 15 minutes.
+
+**Assumptions flagged:** The failed enqueue throws a database-style exception, so the test expects 503 + `Retry-After` (the browser retries) instead of 500. `SupersedeOnResubmitIT` accepts 201 or 409 `VERSION_CONFLICT` for the concurrent pair; in practice both got 201 because the loser retried and superseded the winner. Tests run outside the agent sandbox on Windows (loopback pipe), as in phase 12.
+
+**File to read first:** `src/test/java/com/deadlinedrop/race/SupersedeOnResubmitIT.java` — then `CommitService.runWithOneRetry`, which it exercises on every round.
