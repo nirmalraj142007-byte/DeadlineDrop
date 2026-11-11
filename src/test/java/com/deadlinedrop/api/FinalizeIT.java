@@ -18,6 +18,7 @@ import com.deadlinedrop.security.JwtService;
 import com.deadlinedrop.service.ReconcilerService;
 import com.deadlinedrop.storage.StoragePort;
 import com.deadlinedrop.support.MutableClock;
+import com.deadlinedrop.support.TestTokens;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -164,7 +165,7 @@ class FinalizeIT {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         if (as != null) {
-            headers.setBearerAuth(jwtService.issue(as).accessToken());
+            headers.setBearerAuth(TestTokens.accessToken(jwtService, as));
         }
         return headers;
     }

@@ -327,3 +327,20 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Assumptions flagged:** The failed enqueue throws a database-style exception, so the test expects 503 + `Retry-After` (the browser retries) instead of 500. `SupersedeOnResubmitIT` accepts 201 or 409 `VERSION_CONFLICT` for the concurrent pair; in practice both got 201 because the loser retried and superseded the winner. Tests run outside the agent sandbox on Windows (loopback pipe), as in phase 12.
 
 **File to read first:** `src/test/java/com/deadlinedrop/race/SupersedeOnResubmitIT.java` — then `CommitService.runWithOneRetry`, which it exercises on every round.
+
+
+---
+
+## Phase 12 fix — 2026-11-11
+
+**What changed:** Integration tests now sign their JWTs with wall-clock time.
+- New `support/TestTokens.accessToken(jwtService, user)`: issued at `Instant.now()`, valid 1 hour.
+- Used in every IT that pairs a `MutableClock` with `jwtService.issue(user)`: `FinalizeIT`, `CommitIT`, `DirectFinalizeIT`, `NaiveSubmissionIT`; `race/HttpRaceSupport` now calls the same helper instead of its own copy.
+- Not changed: `AuthIT`, `CommitDisabledUnderNaiveIT`, `NaiveSubmissionDisabledIT` use the real system clock (no `MutableClock`), so `issue(user)` is already wall-clock; `FinalizeVsReconcilerRaceIT` and `GuardRemovedRaceIT` call services directly and send no token.
+- `./mvnw verify`: 35 unit + 81 integration, all green. No production code changed.
+
+**Why:** `JwtService.issue(user)` takes `iat`/`exp` from the injected `Clock`, which these tests replace with a `MutableClock` set to 20 Nov 2026 (up to 21 Nov 00:15 in the grace tests). The resource server checks `exp` against the real system clock. So tokens issued at simulated 20 Nov 12:00 + 12 h TTL would be rejected as expired (401) on any run after about 21 Nov 2026 00:00 UTC, and these suites would fail for a reason that has nothing to do with the code under test. The app's deadline logic (commit stamp, LATE, grace, URL expiry) still reads the `MutableClock`; only the test's login credential moved to real time.
+
+**Trade-off:** The tokens now carry an `iat` that disagrees with the simulated "now" the app sees. Nothing in the app compares the two, so this is harmless today; a future feature that checks token age against the app clock would need these tests revisited.
+
+**File to read first:** `src/test/java/com/deadlinedrop/support/TestTokens.java`.

@@ -14,6 +14,7 @@ import com.deadlinedrop.repository.EnrollmentRepository;
 import com.deadlinedrop.repository.UserRepository;
 import com.deadlinedrop.security.JwtService;
 import com.deadlinedrop.support.MutableClock;
+import com.deadlinedrop.support.TestTokens;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -37,8 +38,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.HexFormat;
 import java.util.List;
 import java.util.Objects;
@@ -146,10 +145,7 @@ final class HttpRaceSupport {
                     RaceTestSupport.DEADLINE, graceSeconds, 1_048_576L, List.of("application/pdf"), teacher.getId()));
             studentId = student.getId();
             assignmentId = assignment.getId();
-            // Signed with wall-clock times: the resource server checks expiry against the system
-            // clock, not the test clock, so the token must be valid now, not on the simulated day.
-            Instant issued = Instant.now();
-            token = jwtService.issue(student, issued, issued.plus(Duration.ofHours(1))).accessToken();
+            token = TestTokens.accessToken(jwtService, student);
         }
 
         void clean() {

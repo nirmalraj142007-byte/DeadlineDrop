@@ -1,7 +1,6 @@
 package com.deadlinedrop.api;
 
 import com.deadlinedrop.TestcontainersConfiguration;
-import com.deadlinedrop.api.dto.AuthDtos.TokenResponse;
 import com.deadlinedrop.api.dto.BaselineDtos.BaselineSubmissionResponse;
 import com.deadlinedrop.domain.Assignment;
 import com.deadlinedrop.domain.Course;
@@ -17,6 +16,7 @@ import com.deadlinedrop.repository.UserRepository;
 import com.deadlinedrop.security.JwtService;
 import com.deadlinedrop.storage.StoragePort;
 import com.deadlinedrop.support.MutableClock;
+import com.deadlinedrop.support.TestTokens;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -216,12 +216,12 @@ class NaiveSubmissionIT {
         payload[2] = 'D';
         payload[3] = 'F';
 
-        TokenResponse token = jwtService.issue(student1);
+        String token = TestTokens.accessToken(jwtService, student1);
         HttpEntity<MultiValueMap<String, Object>> request = buildMultipartRequest(
                 payload,
                 "sample.pdf",
                 "application/pdf",
-                token.accessToken()
+                token
         );
 
         String url = "/api/assignments/" + assignment.getId() + "/naive-submissions";
@@ -281,12 +281,12 @@ class NaiveSubmissionIT {
         clock.set(pastDeadline);
 
         byte[] payload = new byte[1024]; // 1 KB
-        TokenResponse token = jwtService.issue(student1);
+        String token = TestTokens.accessToken(jwtService, student1);
         HttpEntity<MultiValueMap<String, Object>> request = buildMultipartRequest(
                 payload,
                 "sample.pdf",
                 "application/pdf",
-                token.accessToken()
+                token
         );
 
         String url = "/api/assignments/" + assignment.getId() + "/naive-submissions";
@@ -315,12 +315,12 @@ class NaiveSubmissionIT {
     void twentySixMbFileReturns413FileTooLarge() {
         byte[] payload = new byte[26 * 1024 * 1024]; // 26 MB
 
-        TokenResponse token = jwtService.issue(student1);
+        String token = TestTokens.accessToken(jwtService, student1);
         HttpEntity<MultiValueMap<String, Object>> request = buildMultipartRequest(
                 payload,
                 "large.pdf",
                 "application/pdf",
-                token.accessToken()
+                token
         );
 
         String url = "/api/assignments/" + assignment.getId() + "/naive-submissions";
@@ -340,12 +340,12 @@ class NaiveSubmissionIT {
     void textPlainReturns415TypeNotAllowed() {
         byte[] payload = "plain text essay".getBytes();
 
-        TokenResponse token = jwtService.issue(student1);
+        String token = TestTokens.accessToken(jwtService, student1);
         HttpEntity<MultiValueMap<String, Object>> request = buildMultipartRequest(
                 payload,
                 "notes.txt",
                 "text/plain",
-                token.accessToken()
+                token
         );
 
         String url = "/api/assignments/" + assignment.getId() + "/naive-submissions";
@@ -366,12 +366,12 @@ class NaiveSubmissionIT {
         byte[] payload = new byte[1024];
 
         // student2 is not enrolled in course CS101
-        TokenResponse token = jwtService.issue(student2);
+        String token = TestTokens.accessToken(jwtService, student2);
         HttpEntity<MultiValueMap<String, Object>> request = buildMultipartRequest(
                 payload,
                 "sample.pdf",
                 "application/pdf",
-                token.accessToken()
+                token
         );
 
         String url = "/api/assignments/" + assignment.getId() + "/naive-submissions";

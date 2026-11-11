@@ -1,7 +1,6 @@
 package com.deadlinedrop.api;
 
 import com.deadlinedrop.TestcontainersConfiguration;
-import com.deadlinedrop.api.dto.AuthDtos.TokenResponse;
 import com.deadlinedrop.api.dto.BaselineDtos.BaselineSubmissionResponse;
 import com.deadlinedrop.api.dto.BaselineDtos.DirectUploadRequest;
 import com.deadlinedrop.api.dto.BaselineDtos.DirectUploadResponse;
@@ -18,6 +17,7 @@ import com.deadlinedrop.repository.UserRepository;
 import com.deadlinedrop.security.JwtService;
 import com.deadlinedrop.storage.StoragePort;
 import com.deadlinedrop.support.MutableClock;
+import com.deadlinedrop.support.TestTokens;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -188,8 +188,8 @@ class DirectFinalizeIT {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         if (as != null) {
-            TokenResponse token = jwtService.issue(as);
-            headers.setBearerAuth(token.accessToken());
+            String token = TestTokens.accessToken(jwtService, as);
+            headers.setBearerAuth(token);
         }
         return headers;
     }
