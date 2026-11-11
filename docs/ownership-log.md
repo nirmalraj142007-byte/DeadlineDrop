@@ -377,3 +377,20 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 - The local seed's assignment id is generated, so the acceptance flow ran with `ASSIGNMENT_ID` set. Tests ran outside the agent sandbox, as in earlier phases.
 
 **File to read first:** `src/main/java/com/deadlinedrop/jobs/DrainService.java` — then `JobRepository.claimNext`, which it depends on.
+
+
+---
+
+## Phase 14 follow-up — 2026-11-11
+
+**What changed:**
+- `jobs/ReconcilerSweep`: an exception while settling one row no longer stops the sweep. It is logged at ERROR (`event=reconcile_row_failed`, `submissionId`, `requestId` from the MDC, plus the cause), counted in a new `errors` field of `ReconcileResult(settled, expired, waiting, errors)`, and the sweep moves on to the next row. The row stays COMMITTED and is tried again on the next sweep. One exception is deliberate: `DataAccessResourceFailureException` (database unreachable, which includes "no connection from the pool") is rethrown, so the call fails visibly.
+- `jobs/JobsIT` now has one named test per required case: `matchingBytesAreVerifiedAfterOneDrain`, `differentBytesAreRejectedAsHashMismatch`, `twoDrainersOverTwentyUploadedSubmissionsProcessEachExactlyOnce`, `vanishedObjectIsRetriedWithBackoffAndFailsAfterFiveAttempts`, `sweepMovesStaleUnfinalizedCommitWithBytesToUploadedWithOneVerifyJob`, `sweepExpiresCommitWithNoBytesAfterDeadlinePlusGrace`. The first four were renamed from phase 14. The old combined sweep test was split into the last two plus `sweepLeavesFreshCommitsAndCommitsWithoutBytesInsideGraceAlone`.
+- New `sweepContinuesPastARowThatFails`: three stale commits with bytes. The oldest one's `.meta` sidecar is overwritten with garbage, so the real local adapter's `stat` throws for it. Result `(2, 0, 0, 1)`: the two behind it become UPLOADED and the broken one stays COMMITTED. After the metadata is repaired, the next sweep settles it.
+- `./mvnw verify`: 35 unit + 91 integration, all green.
+
+**Why:** The sweep takes rows oldest first. Before this change, one row that always failed (corrupt metadata, a permission problem on one object) would sit at the head of every sweep and stop all the rows behind it, so stranded submissions would never be settled.
+
+**Trade-off:** If the database itself is down, continuing would make each of up to 200 rows wait out the 2 s pool timeout, about 400 s, far past the scheduler's request. So that one class of error stops the sweep instead of being counted. The cost: a database blip during one row's settle aborts the rest of that sweep; the next run 60 s later picks them up.
+
+**File to read first:** `src/main/java/com/deadlinedrop/jobs/ReconcilerSweep.java`.

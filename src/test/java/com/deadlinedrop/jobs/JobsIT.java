@@ -162,7 +162,7 @@ class JobsIT {
     // --- verify outcomes -------------------------------------------------------------------
 
     @Test
-    void matchingBytesBecomeVerifiedAndTheJobIsDone() throws Exception {
+    void matchingBytesAreVerifiedAfterOneDrain() throws Exception {
         UUID id = uploaded(0, file(1));
 
         DrainResult result = drainService.drain(BUDGET);
@@ -181,7 +181,7 @@ class JobsIT {
     }
 
     @Test
-    void bytesThatDoNotMatchTheCommittedHashAreRejected() throws Exception {
+    void differentBytesAreRejectedAsHashMismatch() throws Exception {
         byte[] committed = file(2);
         byte[] swapped = file(3); // same size, so finalize's size check passes; only the hash differs
         CommitResult c = commit(0, committed);
@@ -214,7 +214,7 @@ class JobsIT {
     // --- retries ---------------------------------------------------------------------------
 
     @Test
-    void failingJobBacksOffOneTwoFourEightMinutesThenFailsOnTheFifthAttempt() throws Exception {
+    void vanishedObjectIsRetriedWithBackoffAndFailsAfterFiveAttempts() throws Exception {
         UUID id = uploaded(0, file(6));
         storage.delete(objectPath(id)); // storage.open now fails on every attempt
 
@@ -255,7 +255,7 @@ class JobsIT {
     // --- concurrency -----------------------------------------------------------------------
 
     @Test
-    void twoDrainersTogetherVerifyEachSubmissionExactlyOnce() throws Exception {
+    void twoDrainersOverTwentyUploadedSubmissionsProcessEachExactlyOnce() throws Exception {
         List<UUID> ids = new ArrayList<>();
         for (int i = 0; i < STUDENTS; i++) {
             ids.add(uploaded(i, file(100 + i)));
@@ -295,33 +295,82 @@ class JobsIT {
     // --- reconciler sweep ------------------------------------------------------------------
 
     @Test
-    void sweepSettlesStaleCommitsSkipsFreshOnesAndExpiresAfterGrace() throws Exception {
-        CommitResult withBytes = commit(0, file(7));
-        put(withBytes, file(7));                     // browser died before finalize
-        CommitResult noBytes = commit(1, file(8));   // browser died before the PUT
+    void sweepMovesStaleUnfinalizedCommitWithBytesToUploadedWithOneVerifyJob() throws Exception {
+        CommitResult c = commit(0, file(7));
+        put(c, file(7)); // bytes landed, but the browser died before finalize
         clock.advance(Duration.ofMinutes(3));
-        CommitResult fresh = commit(2, file(9));     // committed just now, still uploading
 
-        ReconcileResult first = reconcilerSweep.run(clock.instant());
+        ReconcileResult result = reconcilerSweep.run(clock.instant());
 
-        assertThat(first).isEqualTo(new ReconcileResult(1, 0, 1));
-        assertThat(status(withBytes.submissionId())).isEqualTo("UPLOADED");
-        assertThat(count("SELECT count(*) FROM submission_events WHERE submission_id = ? AND actor = 'RECONCILER'",
-                withBytes.submissionId())).isEqualTo(1);
-        assertThat(jobStatus(withBytes.submissionId())).isEqualTo("PENDING");
-        assertThat(status(noBytes.submissionId())).isEqualTo("COMMITTED");
-        assertThat(status(fresh.submissionId())).isEqualTo("COMMITTED");
+        assertThat(result).isEqualTo(new ReconcileResult(1, 0, 0, 0));
+        assertThat(status(c.submissionId())).isEqualTo("UPLOADED");
+        assertThat(count("SELECT count(*) FROM submission_events WHERE submission_id = ? AND actor = 'RECONCILER' "
+                + "AND from_status = 'COMMITTED' AND to_status = 'UPLOADED'", c.submissionId())).isEqualTo(1);
+        assertThat(count("SELECT count(*) FROM jobs WHERE submission_id = ? AND type = 'VERIFY'", c.submissionId()))
+                .isEqualTo(1);
+        assertThat(jobStatus(c.submissionId())).isEqualTo("PENDING");
 
+        // The job it enqueued closes the hash commitment like any other.
         assertThat(drainService.drain(BUDGET).processed()).isEqualTo(1);
-        assertThat(status(withBytes.submissionId())).isEqualTo("VERIFIED");
+        assertThat(status(c.submissionId())).isEqualTo("VERIFIED");
+    }
+
+    @Test
+    void sweepExpiresCommitWithNoBytesAfterDeadlinePlusGrace() {
+        CommitResult c = commit(0, file(8)); // browser died before the PUT
 
         clock.set(DEADLINE.plusSeconds(GRACE_SECONDS + 1));
-        ReconcileResult afterGrace = reconcilerSweep.run(clock.instant());
+        ReconcileResult result = reconcilerSweep.run(clock.instant());
 
-        assertThat(afterGrace).isEqualTo(new ReconcileResult(0, 2, 0));
-        assertThat(status(noBytes.submissionId())).isEqualTo("EXPIRED");
-        assertThat(status(fresh.submissionId())).isEqualTo("EXPIRED");
-        assertThat(status(withBytes.submissionId())).isEqualTo("VERIFIED");
+        assertThat(result).isEqualTo(new ReconcileResult(0, 1, 0, 0));
+        assertThat(status(c.submissionId())).isEqualTo("EXPIRED");
+        assertThat(count("SELECT count(*) FROM submission_events WHERE submission_id = ? AND actor = 'RECONCILER' "
+                + "AND to_status = 'EXPIRED'", c.submissionId())).isEqualTo(1);
+        assertThat(count("SELECT count(*) FROM jobs WHERE submission_id = ?", c.submissionId())).isZero();
+    }
+
+    @Test
+    void sweepLeavesFreshCommitsAndCommitsWithoutBytesInsideGraceAlone() {
+        CommitResult noBytes = commit(0, file(9));
+        clock.advance(Duration.ofMinutes(3));
+        CommitResult fresh = commit(1, file(10)); // younger than 2 minutes: still uploading
+
+        ReconcileResult result = reconcilerSweep.run(clock.instant());
+
+        assertThat(result).as("only the stale row is looked at, and it waits")
+                .isEqualTo(new ReconcileResult(0, 0, 1, 0));
+        assertThat(status(noBytes.submissionId())).isEqualTo("COMMITTED");
+        assertThat(status(fresh.submissionId())).isEqualTo("COMMITTED");
+        assertThat(count("SELECT count(*) FROM submission_events WHERE actor = 'RECONCILER'")).isZero();
+    }
+
+    @Test
+    void sweepContinuesPastARowThatFails() throws Exception {
+        // Three stale, never-finalized commits with bytes; the oldest is first in the sweep's order.
+        CommitResult broken = commit(0, file(11));
+        put(broken, file(11));
+        clock.advance(Duration.ofSeconds(1));
+        CommitResult second = commit(1, file(12));
+        put(second, file(12));
+        clock.advance(Duration.ofSeconds(1));
+        CommitResult third = commit(2, file(13));
+        put(third, file(13));
+        // Corrupt the oldest object's metadata on disk: the real local adapter's stat now throws for it.
+        Files.writeString(STORAGE_ROOT.resolve(objectPath(broken.submissionId()) + ".meta"), "not json");
+        clock.advance(Duration.ofMinutes(3));
+
+        ReconcileResult result = reconcilerSweep.run(clock.instant());
+
+        assertThat(result).isEqualTo(new ReconcileResult(2, 0, 0, 1));
+        assertThat(status(broken.submissionId())).as("left for the next sweep").isEqualTo("COMMITTED");
+        assertThat(status(second.submissionId())).isEqualTo("UPLOADED");
+        assertThat(status(third.submissionId())).isEqualTo("UPLOADED");
+
+        // Once the metadata is repaired, the next sweep settles the row it skipped.
+        Files.writeString(STORAGE_ROOT.resolve(objectPath(broken.submissionId()) + ".meta"),
+                "{\"contentType\":\"application/pdf\"}");
+        assertThat(reconcilerSweep.run(clock.instant())).isEqualTo(new ReconcileResult(1, 0, 0, 0));
+        assertThat(status(broken.submissionId())).isEqualTo("UPLOADED");
     }
 
     // --- who may call /internal/** ---------------------------------------------------------
@@ -356,6 +405,7 @@ class JobsIT {
         assertThat(r.get("settled").asInt()).isZero();
         assertThat(r.get("expired").asInt()).isZero();
         assertThat(r.get("waiting").asInt()).isZero();
+        assertThat(r.get("errors").asInt()).isZero();
     }
 
     private void assertUnauthenticated(HttpResponse<String> response) {
