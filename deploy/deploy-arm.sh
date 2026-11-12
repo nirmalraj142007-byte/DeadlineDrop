@@ -82,7 +82,8 @@ if [ "${ARM}" = "c" ]; then
   SERVICE_URL=$(gcloud run services describe "${SERVICE_NAME}" --region="${REGION}" --project="${PROJECT_ID}" \
     --format="value(status.url)" 2>/dev/null || true)
   if [ -n "${SERVICE_URL}" ]; then
-    OIDC_ENV="@INTERNAL_AUDIENCE=${SERVICE_URL}@SCHEDULER_SA_EMAIL=${SCHEDULER_SA}"
+    # Joined with "|", the --set-env-vars separator below; "@" cannot be used, the email contains one.
+    OIDC_ENV="|INTERNAL_AUDIENCE=${SERVICE_URL}|SCHEDULER_SA_EMAIL=${SCHEDULER_SA}"
   else
     echo "First deploy of ${SERVICE_NAME}: URL unknown until it exists; /internal/** denies all until the update below."
   fi
@@ -95,7 +96,7 @@ gcloud run deploy "${SERVICE_NAME}" \
   --service-account="${RUN_SA}" \
   --add-cloudsql-instances="${PROJECT_ID}:${REGION}:${SQL_INSTANCE}" \
   --set-secrets="JWT_SECRET=dd-jwt-secret:latest,DB_PASSWORD=dd-db-password:latest" \
-  --set-env-vars="^@^SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}@DB_NAME=${DB_NAME}@BUCKET=${BUCKET}@CLOUD_SQL_INSTANCE=${PROJECT_ID}:${REGION}:${SQL_INSTANCE}@DB_POOL_MAX=${DB_POOL_MAX}${OIDC_ENV}" \
+  --set-env-vars="^|^SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}|DB_NAME=${DB_NAME}|BUCKET=${BUCKET}|CLOUD_SQL_INSTANCE=${PROJECT_ID}:${REGION}:${SQL_INSTANCE}|DB_POOL_MAX=${DB_POOL_MAX}${OIDC_ENV}" \
   --cpu="${CPU}" \
   --memory="${MEMORY}" \
   --concurrency="${CONCURRENCY}" \
