@@ -14,7 +14,7 @@ Features cut on day 1 to protect the core deadline guarantee and evaluation time
 
 ## D3: Working Assumptions (2026-11-06)
 - Three resume impact bullets drafted upfront to guide benchmark targets.
-- Export endpoint is API-only.
+- Export endpoint is API-only (no UI button).
 - Predictions and accuracy metrics are defined strictly in cohort terms.
 - Deadline countdown race simulation begins at 0:30 in the demo.
 - Final project review scheduled after 27 Nov 2026, so the live demo runs locally.

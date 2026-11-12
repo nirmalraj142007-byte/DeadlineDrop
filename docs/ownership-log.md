@@ -420,3 +420,25 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 - No `roles/run.invoker` is granted to `dd-scheduler`: the arms are deployed `--allow-unauthenticated`, so the app's own OIDC check is the gate.
 
 **File to read first:** `src/main/java/com/deadlinedrop/security/InternalSecurityConfig.java` — then `GoogleOidcTokens.validator`.
+
+---
+
+## Phase 16 — 2026-11-12
+
+**What changed:** Implemented the complete teacher and student domain REST endpoints, service layer, export providers for ablation arms, and comprehensive test suite:
+- `api/dto/DomainDtos.java`: defined records `CreateCourseRequest`, `CourseDto`, `EnrollRequest`, `EnrollResult`, `CreateAssignmentRequest`, `UpdateAssignmentRequest`, `AssignmentDto`, `MySubmission`, `StudentAssignmentDto`, `ExportRow`, and `TimeResponse` with validation constraints.
+- `service/CourseService`: course creation with duplicate code check, listing own courses for teachers and enrolled courses for students with student counts, and batch enrollment returning counts for newly enrolled, already enrolled, and unknown emails.
+- `service/AssignmentService`: assignment creation and lookup with ownership and enrollment authorization checks; `PATCH` updating assignment via `Assignment.update` after checking optimistic locking version (`ObjectOptimisticLockingFailureException` -> 409 `VERSION_CONFLICT`) and refusing post-deadline updates with 409 `WRONG_STATE`; `getMyAssignments` reading enrollments, assignments ordered by deadline ascending, and mapping the student's live submission per assignment.
+- `service/ExportSource` + implementations: `SubmissionExportSource` (`!naive & !direct-finalize`) reading from `submissions` (`stampedAt = committed_at`, `stampSource = "COMMIT"`, including superseded and expired rows) and `BaselineExportSource` (`naive | direct-finalize`) reading from `baseline_submissions` (status `"SUBMITTED"`, `stampSource` from the row), both joining `users` for `studentEmail`.
+- `service/ExportService`: verifies assignment existence and authorizes ADMIN or owning TEACHER before querying the active `ExportSource`.
+- Controllers: `CourseController` (`POST /api/courses` TEACHER -> 201, `GET /api/courses` TEACHER/STUDENT, `POST /api/courses/{id}/enrollments` TEACHER owner); `AssignmentController` (`POST /api/courses/{courseId}/assignments` TEACHER owner -> 201, `GET /api/assignments/{id}` owner or enrolled student, `PATCH /api/assignments/{id}` owner, `GET /api/me/assignments` STUDENT); `TimeController` (`GET /api/time`, `@PublicEndpoint`, permitted in `SecurityConfig`, `Cache-Control: no-store`); `ExportController` (`GET /api/assignments/{id}/export?format=json|csv`, ADMIN or owning TEACHER, CSV with header row).
+- `SecurityConfig`: permitted unauthenticated `GET /api/time`.
+- `docs/decisions.md`: updated D3 clarifying that the export endpoint is API-only (no UI button).
+- Tests: `DomainApiIT` (17 tests covering course, assignment, time, and arm C export endpoints), `DomainExportNaiveIT` (testing export under `naive`), and `DomainExportDirectFinalizeIT` (testing export under `direct-finalize`). Full `./mvnw verify` green with 46 unit tests and 113 integration tests passing.
+
+**Why:** The UI and k6 benchmark load harness require endpoints to create courses and assignments, enroll students, synchronize client clock against server time, check assignment deadline status and student live submissions, and export submission records for grading and post-experiment evaluation across all ablation arms.
+
+**Trade-off:** When fetching `my-assignments`, live submissions are queried with a single student-scoped query (`status NOT IN ('EXPIRED', 'SUPERSEDED')`) and indexed in memory by assignment ID. This decouples submission queries from JPA entity navigation, avoids multi-table outer join complexity, and retains constant-time lookup for each enrolled assignment.
+
+**File to read first:** `src/main/java/com/deadlinedrop/service/AssignmentService.java` — it encapsulates the assignment lifecycle rules, ownership checks, optimistic locking version validation, deadline mutation protection, and live submission mapping.
+

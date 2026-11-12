@@ -31,6 +31,20 @@ public class SubmissionRepository {
     public record Superseded(UUID id, Status previousStatus) {
     }
 
+    public record LiveSubmissionSummary(
+            UUID id,
+            UUID assignmentId,
+            Status status,
+            Timing timing,
+            Instant committedAt
+    ) {
+    }
+
+    private static final String FIND_LIVE_BY_STUDENT_SQL =
+            "SELECT id, assignment_id, status, timing, committed_at "
+                    + "FROM submissions "
+                    + "WHERE student_id = ? AND status NOT IN ('EXPIRED','SUPERSEDED')";
+
     private static final String SELECT_COLUMNS =
             "SELECT id, assignment_id, student_id, idempotency_key, request_hash, sha256, size_bytes, content_type, "
                     + "object_path, status, timing, committed_at, db_committed_at, uploaded_at, verified_at, "
@@ -114,6 +128,19 @@ public class SubmissionRepository {
     public List<UUID> findCommittedBefore(Instant before, int limit) {
         Objects.requireNonNull(before, "before must not be null");
         return jdbcTemplate.queryForList(RECONCILE_CANDIDATES_SQL, UUID.class, utc(before), limit);
+    }
+
+    public List<LiveSubmissionSummary> findLiveByStudent(UUID studentId) {
+        Objects.requireNonNull(studentId, "studentId must not be null");
+        return jdbcTemplate.query(
+                FIND_LIVE_BY_STUDENT_SQL,
+                (rs, i) -> new LiveSubmissionSummary(
+                        rs.getObject("id", UUID.class),
+                        rs.getObject("assignment_id", UUID.class),
+                        Status.valueOf(rs.getString("status")),
+                        Timing.valueOf(rs.getString("timing")),
+                        instant(rs, "committed_at")),
+                studentId);
     }
 
     public void insertEvent(UUID id, Status from, Status to, Actor actor, Instant at) {

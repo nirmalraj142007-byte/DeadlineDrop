@@ -8,4 +8,7 @@ import java.util.UUID;
 
 public interface CourseRepository extends JpaRepository<Course, UUID> {
     List<Course> findByTeacherId(UUID teacherId);
+
+    boolean existsByCode(String code);
 }
+
