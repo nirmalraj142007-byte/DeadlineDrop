@@ -1,6 +1,8 @@
 package com.deadlinedrop.security;
 
 import com.deadlinedrop.api.ErrorCodes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +11,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.validation.annotation.Validated;
@@ -21,12 +25,16 @@ import java.util.Objects;
  *
  * <ul>
  *   <li>local and test: the {@code X-Internal-Token} header grants ROLE_INTERNAL.</li>
- *   <li>every other profile (the cloud): deny all until Google OIDC from Cloud Scheduler is added.</li>
+ *   <li>every other profile (the cloud): a Google-signed OIDC token from Cloud Scheduler grants
+ *       ROLE_INTERNAL when {@code INTERNAL_AUDIENCE} and {@code SCHEDULER_SA_EMAIL} are set (arm C);
+ *       with neither set (arms A and B, which have no scheduler) the chain denies all.</li>
  * </ul>
  */
 @Configuration(proxyBeanMethods = false)
 @Profile("!storage")
 public class InternalSecurityConfig {
+
+    private static final Logger log = LoggerFactory.getLogger(InternalSecurityConfig.class);
 
     private final ProblemDetailWriter problemDetailWriter;
 
@@ -54,10 +62,40 @@ public class InternalSecurityConfig {
     }
 
     @Bean
+    @Profile("!local & !test")
+    @ConfigurationProperties(prefix = "dd.internal.oidc")
+    @Validated
+    public InternalOidcProperties internalOidcProperties() {
+        return new InternalOidcProperties();
+    }
+
+    @Bean
     @Order(1)
     @Profile("!local & !test")
-    public SecurityFilterChain internalDenyAllFilterChain(HttpSecurity http) throws Exception {
-        base(http).authorizeHttpRequests(auth -> auth.anyRequest().denyAll());
+    public SecurityFilterChain internalCloudFilterChain(HttpSecurity http, InternalOidcProperties properties)
+            throws Exception {
+        if (!properties.isConfigured()) {
+            log.atInfo().addKeyValue("event", "internal_auth_mode").addKeyValue("mode", "deny_all")
+                    .log("INTERNAL_AUDIENCE and SCHEDULER_SA_EMAIL are not set; /internal/** denies every request");
+            base(http).authorizeHttpRequests(auth -> auth.anyRequest().denyAll());
+            return http.build();
+        }
+        log.atInfo().addKeyValue("event", "internal_auth_mode").addKeyValue("mode", "google_oidc")
+                .addKeyValue("audience", properties.getAudience())
+                .addKeyValue("schedulerEmail", properties.getSchedulerEmail())
+                .log("/internal/** accepts Google-signed OIDC tokens from the scheduler's service account");
+        JwtAuthenticationConverter toInternal = new JwtAuthenticationConverter();
+        // Every check is in the validator; a token that passes it is the scheduler and nothing else.
+        toInternal.setJwtGrantedAuthoritiesConverter(jwt -> AuthorityUtils.createAuthorityList("ROLE_INTERNAL"));
+        base(http)
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(jwt -> jwt
+                                .decoder(GoogleOidcTokens.decoder(properties))
+                                .jwtAuthenticationConverter(toInternal))
+                        .authenticationEntryPoint((request, response, e) -> problemDetailWriter.write(
+                                response, request, HttpStatus.UNAUTHORIZED, ErrorCodes.UNAUTHENTICATED,
+                                "Internal endpoints need the scheduler's OIDC token")))
+                .authorizeHttpRequests(auth -> auth.anyRequest().hasRole("INTERNAL"));
         return http.build();
     }
 

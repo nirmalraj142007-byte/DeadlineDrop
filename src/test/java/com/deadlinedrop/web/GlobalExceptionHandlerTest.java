@@ -144,6 +144,31 @@ class GlobalExceptionHandlerTest {
             throw new TransientDataAccessResourceException("Lock timeout");
         }
 
+        @GetMapping("/test/rollback-on-closed-connection")
+        public void throwRollbackOnClosedConnection() {
+            throw new org.springframework.orm.jpa.JpaSystemException(new RuntimeException(
+                    "Unable to rollback against JDBC Connection",
+                    new java.sql.SQLException("Connection is closed")));
+        }
+
+        @GetMapping("/test/statement-on-broken-connection")
+        public void throwStatementOnBrokenConnection() {
+            throw new org.springframework.dao.RecoverableDataAccessException("I/O error",
+                    new java.sql.SQLException("An I/O error occurred while sending to the backend.", "08006"));
+        }
+
+        @GetMapping("/test/data-access-not-connection")
+        public void throwDataAccessNotConnection() {
+            throw new org.springframework.dao.InvalidDataAccessApiUsageException("bad query shape",
+                    new java.sql.SQLException("syntax error", "42601"));
+        }
+
+        @GetMapping("/test/cannot-create-transaction")
+        public void throwCannotCreateTransaction() {
+            throw new org.springframework.transaction.CannotCreateTransactionException(
+                    "Could not open JPA EntityManager for transaction");
+        }
+
         @GetMapping("/test/internal-error")
         public void throwInternalError() {
             throw new RuntimeException("Unexpected NPE");
@@ -301,6 +326,40 @@ class GlobalExceptionHandlerTest {
                 .andExpect(jsonPath("$.code").value(ErrorCodes.DATABASE_UNAVAILABLE))
                 .andExpect(jsonPath("$.type").value("https://deadlinedrop.dev/problems/database-unavailable"))
                 .andExpect(jsonPath("$.requestId").isNotEmpty());
+    }
+
+    @Test
+    void cannotCreateTransactionReturns503DatabaseUnavailableWithRetryAfter() throws Exception {
+        mockMvc.perform(get("/test/cannot-create-transaction"))
+                .andExpect(status().isServiceUnavailable())
+                .andExpect(header().string("Content-Type", startsWith("application/problem+json")))
+                .andExpect(header().string("Retry-After", "1"))
+                .andExpect(jsonPath("$.code").value(ErrorCodes.DATABASE_UNAVAILABLE))
+                .andExpect(jsonPath("$.type").value("https://deadlinedrop.dev/problems/database-unavailable"))
+                .andExpect(jsonPath("$.requestId").isNotEmpty());
+    }
+
+    @Test
+    void connectionClosedUnderARollbackReturns503DatabaseUnavailable() throws Exception {
+        mockMvc.perform(get("/test/rollback-on-closed-connection"))
+                .andExpect(status().isServiceUnavailable())
+                .andExpect(header().string("Retry-After", "1"))
+                .andExpect(jsonPath("$.code").value(ErrorCodes.DATABASE_UNAVAILABLE));
+    }
+
+    @Test
+    void sqlStateClass08UnderAGenericDataAccessErrorReturns503() throws Exception {
+        mockMvc.perform(get("/test/statement-on-broken-connection"))
+                .andExpect(status().isServiceUnavailable())
+                .andExpect(header().string("Retry-After", "1"))
+                .andExpect(jsonPath("$.code").value(ErrorCodes.DATABASE_UNAVAILABLE));
+    }
+
+    @Test
+    void dataAccessErrorThatIsNotAConnectionFailureStays500() throws Exception {
+        mockMvc.perform(get("/test/data-access-not-connection"))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.code").value(ErrorCodes.INTERNAL));
     }
 
     @Test

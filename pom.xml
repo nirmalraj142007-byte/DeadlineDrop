@@ -111,6 +111,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Toxiproxy: real database behind a real network fault (2.x artifact name) -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers-toxiproxy</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Testcontainers JUnit Jupiter (2.x artifact name) -->
         <dependency>
             <groupId>org.testcontainers</groupId>

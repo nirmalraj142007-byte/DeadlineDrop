@@ -4,6 +4,11 @@ import com.deadlinedrop.api.ApiException;
 import com.deadlinedrop.api.ErrorCodes;
 import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
+import java.sql.SQLException;
+import java.sql.SQLTransientConnectionException;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Set;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -12,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.context.MessageSourceResolvable;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +30,8 @@ import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.transaction.CannotCreateTransactionException;
+import org.springframework.transaction.TransactionException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.method.ParameterValidationResult;
@@ -47,6 +55,17 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    /** SQL standard class 08: connection exception (08001 cannot connect, 08003 closed, 08006 failure). */
+    private static final String SQLSTATE_CONNECTION_EXCEPTION_CLASS = "08";
+
+    /**
+     * HikariCP (7.0.2) throws this, with no SQLState, from a connection it has already evicted
+     * because a statement failed with a class-08 error. Spring's TransactionTemplate then reports
+     * the failed rollback instead of the original error, so this is all that is left to recognise.
+     * DatabaseDownIT runs against the real pool and fails if a Hikari upgrade changes it.
+     */
+    private static final String HIKARI_EVICTED_CONNECTION_MESSAGE = "Connection is closed";
 
     public record ValidationError(String field, String message) {}
 
@@ -243,7 +262,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(pd);
     }
 
+    /**
+     * The database cannot be reached. {@link CannotCreateTransactionException} is how a pool timeout
+     * surfaces through {@code @Transactional} or a {@code TransactionTemplate}: the transaction
+     * manager needs a connection before any SQL runs. Answer fast with 503 and let the client retry.
+     */
     @ExceptionHandler({
+            CannotCreateTransactionException.class,
             CannotGetJdbcConnectionException.class,
             DataAccessResourceFailureException.class,
             TransientDataAccessResourceException.class
@@ -261,6 +286,43 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .header(HttpHeaders.RETRY_AFTER, "1")
                 .contentType(MediaType.APPLICATION_PROBLEM_JSON)
                 .body(pd);
+    }
+
+    /**
+     * Any other data-access or transaction failure. When the database vanishes under a connection
+     * that the pool had just handed out (Hikari skips its liveness check for a connection used in
+     * the last 500 ms), the SQL fails, the rollback fails too, and Spring reports a generic
+     * {@code JpaSystemException} or {@code TransactionSystemException}. If a JDBC connection
+     * failure (SQLState class 08) is anywhere in the cause chain, that is still "database
+     * unavailable"; anything else is a real bug and stays a 500.
+     */
+    @ExceptionHandler({DataAccessException.class, TransactionException.class})
+    public ResponseEntity<ProblemDetail> handleOtherDataAccessFailure(
+            Exception ex,
+            HttpServletRequest request) {
+        if (isConnectionFailure(ex)) {
+            return handleDatabaseUnavailable(ex, request);
+        }
+        return handleUnhandledException(ex, request);
+    }
+
+    static boolean isConnectionFailure(Throwable ex) {
+        Set<Throwable> seen = Collections.newSetFromMap(new IdentityHashMap<>());
+        for (Throwable t = ex; t != null && seen.add(t); t = t.getCause()) {
+            if (t instanceof SQLTransientConnectionException) {
+                return true;
+            }
+            if (t instanceof SQLException sql) {
+                String state = sql.getSQLState();
+                if (state != null && state.startsWith(SQLSTATE_CONNECTION_EXCEPTION_CLASS)) {
+                    return true;
+                }
+                if (state == null && HIKARI_EVICTED_CONNECTION_MESSAGE.equals(sql.getMessage())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @ExceptionHandler(Exception.class)

@@ -13,6 +13,8 @@ spring:
       maximum-pool-size: ${DB_POOL_MAX:5}
       minimum-idle: 2
       connection-timeout: 2000
+      # A pooled connection is checked before use; a dead one must fail well inside the 2 s budget.
+      validation-timeout: 1000
   flyway:
     locations: classpath:db/migration
 
@@ -22,6 +24,14 @@ server:
 dd:
   jwt:
     ttl: PT12H
+  internal:
+    # Cloud only (ignored under local and test): Cloud Scheduler's OIDC token. Both blank = deny all.
+    oidc:
+      audience: ${INTERNAL_AUDIENCE:}
+      scheduler-email: ${SCHEDULER_SA_EMAIL:}
+  chaos:
+    # Off by default: with the flag off /admin/chaos/** does not exist (404).
+    enabled: ${CHAOS_ENABLED:false}
   storage:
     root: ${DD_STORAGE_ROOT:/data/objects}
     public-base-url: ${DD_STORAGE_PUBLIC_BASE_URL:http://localhost:9000}

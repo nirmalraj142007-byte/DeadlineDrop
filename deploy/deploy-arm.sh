@@ -74,6 +74,20 @@ esac
 SERVICE_NAME="dd-arm-${ARM}"
 echo "=== Deploying Cloud Run service ${SERVICE_NAME} ==="
 
+# Arm C runs the transactional job queue: /internal/** accepts Cloud Scheduler's OIDC token, whose
+# audience is this service's own URL. Arms A and B set neither variable and deny /internal/** outright.
+OIDC_ENV=""
+SERVICE_URL=""
+if [ "${ARM}" = "c" ]; then
+  SERVICE_URL=$(gcloud run services describe "${SERVICE_NAME}" --region="${REGION}" --project="${PROJECT_ID}" \
+    --format="value(status.url)" 2>/dev/null || true)
+  if [ -n "${SERVICE_URL}" ]; then
+    OIDC_ENV="@INTERNAL_AUDIENCE=${SERVICE_URL}@SCHEDULER_SA_EMAIL=${SCHEDULER_SA}"
+  else
+    echo "First deploy of ${SERVICE_NAME}: URL unknown until it exists; /internal/** denies all until the update below."
+  fi
+fi
+
 gcloud run deploy "${SERVICE_NAME}" \
   --image="${IMAGE_REF}" \
   --region="${REGION}" \
@@ -81,7 +95,7 @@ gcloud run deploy "${SERVICE_NAME}" \
   --service-account="${RUN_SA}" \
   --add-cloudsql-instances="${PROJECT_ID}:${REGION}:${SQL_INSTANCE}" \
   --set-secrets="JWT_SECRET=dd-jwt-secret:latest,DB_PASSWORD=dd-db-password:latest" \
-  --set-env-vars="^@^SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}@DB_NAME=${DB_NAME}@BUCKET=${BUCKET}@CLOUD_SQL_INSTANCE=${PROJECT_ID}:${REGION}:${SQL_INSTANCE}@DB_POOL_MAX=${DB_POOL_MAX}" \
+  --set-env-vars="^@^SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}@DB_NAME=${DB_NAME}@BUCKET=${BUCKET}@CLOUD_SQL_INSTANCE=${PROJECT_ID}:${REGION}:${SQL_INSTANCE}@DB_POOL_MAX=${DB_POOL_MAX}${OIDC_ENV}" \
   --cpu="${CPU}" \
   --memory="${MEMORY}" \
   --concurrency="${CONCURRENCY}" \
@@ -91,6 +105,13 @@ gcloud run deploy "${SERVICE_NAME}" \
   --cpu-boost \
   --execution-environment=gen2 \
   --allow-unauthenticated
+
+if [ "${ARM}" = "c" ] && [ -z "${SERVICE_URL}" ]; then
+  SERVICE_URL=$(gcloud run services describe "${SERVICE_NAME}" --region="${REGION}" --project="${PROJECT_ID}" --format="value(status.url)")
+  echo "=== Setting INTERNAL_AUDIENCE=${SERVICE_URL} on ${SERVICE_NAME} ==="
+  gcloud run services update "${SERVICE_NAME}" --region="${REGION}" --project="${PROJECT_ID}" \
+    --update-env-vars="INTERNAL_AUDIENCE=${SERVICE_URL},SCHEDULER_SA_EMAIL=${SCHEDULER_SA}"
+fi
 
 echo "=== Updating Bucket CORS policy from deployed arm URLs ==="
 ORIGINS=$(gcloud run services list --region="${REGION}" --project="${PROJECT_ID}" --filter="metadata.name ~ ^dd-arm-" --format="value(status.url)" | grep -v '^$' || true)
