@@ -60,6 +60,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
       DD_STORAGE_HMAC_SECRET: ${DD_STORAGE_HMAC_SECRET}
+      INTERNAL_TOKEN: ${INTERNAL_TOKEN}
     depends_on:
       postgres:
         condition: service_healthy
@@ -79,6 +80,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
       DD_STORAGE_HMAC_SECRET: ${DD_STORAGE_HMAC_SECRET}
+      INTERNAL_TOKEN: ${INTERNAL_TOKEN}
     depends_on:
       postgres:
         condition: service_healthy

@@ -460,3 +460,24 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **File to read first:** `src/test/java/com/deadlinedrop/api/DomainApiIT.java` — `createAssignmentBoundaryValues`.
 
 
+---
+
+## Phase 17 — 2026-11-12
+
+**What changed:** Implemented the DeadlineDrop load generation harness and executed the live verification flow:
+- Installed and pinned Grafana k6 `v2.3.0` (`k6.exe v2.3.0 (commit/e088784614, go1.26.8, windows/amd64)`).
+- Created `tools/gen_schedule.py`: Python CLI supporting `--mode placeholder` and `--mode bootstrap`, generating student schedules partitioned into cohort shards (`shard-<cohort>.json`, `shard-all.json`, `schedule-meta.json`). In placeholder mode, generates log-normal upload speeds (medians 1, 4, 20 Mbps), size buckets {1,2,5,10,15,25} MB capped by `--max-mb`, hash calculation $T_{\text{hash}} = \text{size} / 80\text{ MB/s}$, and a convex last-minutes arrival curve concentrating 40% of cohort clicks in the final 60 s.
+- Created `tools/k6/files/make-files.sh`: generates test payloads for each size bucket in `tools/k6/files/out/` (git-ignored).
+- Created `tools/k6/lib/flows.js`: browser-identical retry policy using full jitter exponential backoff (base 500 ms, cap 8 s, retry on 0, 429, 5xx; never on 4xx; constant `Idempotency-Key`; give up at $T + \text{grace}$). Implements `armC`, `armB`, and `armA` flows logging structured JSON per virtual user iteration.
+- Created `tools/k6/rush.js`: multi-VU load execution script using `k6/experimental/fs` to open files once per VM, rate-limiting logins in `setup()` to $\le 20$/s, sleeping until scheduled click offsets, sleeping hash duration (arm C only), running the corresponding arm flow, and writing `summary.json`.
+- Created `tools/k6/sanity.js`: single VU check uploading a 20 MB file through Arm C, printing commit RTT and throughput in Mbps.
+- Created `tools/k6/run-local.sh` and updated `Makefile` with `k6-local ARM=<a|b|c> N=<num>`: automated end-to-end local load test running against ports 8080 (c), 8083 (b), and 8082 (a), waiting for $T + \text{grace} + 2\text{ min}$ for transactional job queue reconciliation, and fetching `/export` to report counts by status.
+- Updated `docker-compose.yml` to inject `INTERNAL_TOKEN` into `app-arma` and `app-armb`.
+- Created `tools/README.md`: documents usage, pinned versions, and what `PLACEHOLDER` means.
+- Successfully executed live flow against Cloud Run service `dd-arm-c` with $N=5$, verified all 5 reached `VERIFIED` status upon drain, and tagged git repository `flow-live`.
+
+**Why:** The load generator is written once and relied upon for all subsequent benchmark and evidence runs. Pinned schedules, identical retry semantics, and unified logging ensure that differences observed across arms A, B, and C stem solely from backend architectural design rather than client measurement artifacts.
+
+**Trade-off:** Virtual user payloads are opened via `k6/experimental/fs` at init rather than pre-loading entire ArrayBuffers across all VUs upfront. This prevents virtual user memory duplication from exhausting load generator RAM under high concurrency (1,000 VUs), while caching buffers locally within each VU during execution to preserve upload performance.
+
+**File to read first:** `tools/k6/lib/flows.js` — encapsulates the exact client-side execution path, retry backoff logic, and status emission for all three comparison arms.

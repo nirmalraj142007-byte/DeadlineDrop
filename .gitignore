@@ -3,6 +3,9 @@ target/
 .idea/
 *.iml
 results/raw/
+results/local/
+results/flow-live/
+tools/k6/files/out/
 backup/
 probe.pdf
 probe_response.json
