@@ -306,6 +306,78 @@ class DomainApiIT {
     }
 
     @Test
+    void createAssignmentBoundaryValues() throws Exception {
+        CourseDto course = restTemplate.exchange("/api/courses", HttpMethod.POST, new HttpEntity<>(new CreateCourseRequest("CS101", "CS 101"), authHeader(teacher1Token)), CourseDto.class).getBody();
+        Instant deadline = SIMULATED_TIME.plus(Duration.ofDays(7));
+
+        // 1. graceSeconds: 3600 -> 201
+        CreateAssignmentRequest reqGrace3600 = new CreateAssignmentRequest("Lab Grace 3600", deadline, 3600, 10485760L, List.of("application/pdf"));
+        ResponseEntity<AssignmentDto> respGrace3600 = restTemplate.exchange(
+                "/api/courses/" + course.id() + "/assignments",
+                HttpMethod.POST,
+                new HttpEntity<>(reqGrace3600, authHeader(teacher1Token)),
+                AssignmentDto.class
+        );
+        assertThat(respGrace3600.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(respGrace3600.getBody()).isNotNull();
+        assertThat(respGrace3600.getBody().graceSeconds()).isEqualTo(3600);
+
+        // 2. graceSeconds: 3601 -> 400 VALIDATION_FAILED with field "graceSeconds" in errors list
+        CreateAssignmentRequest reqGrace3601 = new CreateAssignmentRequest("Lab Grace 3601", deadline, 3601, 10485760L, List.of("application/pdf"));
+        ResponseEntity<String> respGrace3601 = restTemplate.exchange(
+                "/api/courses/" + course.id() + "/assignments",
+                HttpMethod.POST,
+                new HttpEntity<>(reqGrace3601, authHeader(teacher1Token)),
+                String.class
+        );
+        assertThat(respGrace3601.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        JsonNode jsonGrace3601 = objectMapper.readTree(respGrace3601.getBody());
+        assertThat(jsonGrace3601.path("code").asText()).isEqualTo(ErrorCodes.VALIDATION_FAILED);
+        assertThat(jsonGrace3601.path("errors")).isNotEmpty();
+        boolean hasGraceField = false;
+        for (JsonNode err : jsonGrace3601.path("errors")) {
+            if ("graceSeconds".equals(err.path("field").asText())) {
+                hasGraceField = true;
+                break;
+            }
+        }
+        assertThat(hasGraceField).isTrue();
+
+        // 3. maxBytes: 26214400 -> 201
+        CreateAssignmentRequest reqBytesMax = new CreateAssignmentRequest("Lab Max Bytes", deadline, 900, 26214400L, List.of("application/pdf"));
+        ResponseEntity<AssignmentDto> respBytesMax = restTemplate.exchange(
+                "/api/courses/" + course.id() + "/assignments",
+                HttpMethod.POST,
+                new HttpEntity<>(reqBytesMax, authHeader(teacher1Token)),
+                AssignmentDto.class
+        );
+        assertThat(respBytesMax.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(respBytesMax.getBody()).isNotNull();
+        assertThat(respBytesMax.getBody().maxBytes()).isEqualTo(26214400L);
+
+        // 4. maxBytes: 26214401 -> 400 VALIDATION_FAILED with field "maxBytes" in errors list
+        CreateAssignmentRequest reqBytesOver = new CreateAssignmentRequest("Lab Over Max Bytes", deadline, 900, 26214401L, List.of("application/pdf"));
+        ResponseEntity<String> respBytesOver = restTemplate.exchange(
+                "/api/courses/" + course.id() + "/assignments",
+                HttpMethod.POST,
+                new HttpEntity<>(reqBytesOver, authHeader(teacher1Token)),
+                String.class
+        );
+        assertThat(respBytesOver.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        JsonNode jsonBytesOver = objectMapper.readTree(respBytesOver.getBody());
+        assertThat(jsonBytesOver.path("code").asText()).isEqualTo(ErrorCodes.VALIDATION_FAILED);
+        assertThat(jsonBytesOver.path("errors")).isNotEmpty();
+        boolean hasBytesField = false;
+        for (JsonNode err : jsonBytesOver.path("errors")) {
+            if ("maxBytes".equals(err.path("field").asText())) {
+                hasBytesField = true;
+                break;
+            }
+        }
+        assertThat(hasBytesField).isTrue();
+    }
+
+    @Test
     void createAssignmentNonOwnerTeacherForbidden403() {
         CourseDto course = restTemplate.exchange("/api/courses", HttpMethod.POST, new HttpEntity<>(new CreateCourseRequest("CS101", "CS 101"), authHeader(teacher1Token)), CourseDto.class).getBody();
 

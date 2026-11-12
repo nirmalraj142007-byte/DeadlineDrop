@@ -442,3 +442,21 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 
 **File to read first:** `src/main/java/com/deadlinedrop/service/AssignmentService.java` — it encapsulates the assignment lifecycle rules, ownership checks, optimistic locking version validation, deadline mutation protection, and live submission mapping.
 
+---
+
+## Phase 16 fix — 2026-11-12
+
+**What changed:** Added explicit boundary limit verification for assignment creation in `DomainApiIT`:
+- Added test `createAssignmentBoundaryValues` in `src/test/java/com/deadlinedrop/api/DomainApiIT.java`:
+  - `graceSeconds`: 3600 -> 201 Created; 3601 -> 400 Bad Request with code `VALIDATION_FAILED` and `"graceSeconds"` in ProblemDetail `errors`.
+  - `maxBytes`: 26214400 -> 201 Created; 26214401 -> 400 Bad Request with code `VALIDATION_FAILED` and `"maxBytes"` in ProblemDetail `errors`.
+- Production validation in `DomainDtos.CreateAssignmentRequest` (`@Min(0) @Max(3600)`, `@Min(1) @Max(26214400)`) and `Assignment.validate` strictly match and enforce these boundary constraints.
+- `./mvnw verify`: 46 unit + 114 integration tests, all green.
+
+**Why:** Enforces that exact domain specification limits (1 hour max grace period, 25 MiB max upload size) are verified against the HTTP API contract and that exceeding boundaries returns descriptive RFC 9457 field-level error details.
+
+**Trade-off:** Boundary checks run against real Testcontainers PostgreSQL instead of unit-level mocks, verifying that both Bean Validation at the HTTP layer and entity-level guards stay aligned.
+
+**File to read first:** `src/test/java/com/deadlinedrop/api/DomainApiIT.java` — `createAssignmentBoundaryValues`.
+
+
