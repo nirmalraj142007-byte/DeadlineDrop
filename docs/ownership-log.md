@@ -518,3 +518,14 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Trade-off:** two test hooks live in production scripts; the alternative was editing real services to break them.
 
 **File to read first:** `tools/preflight.sh`
+
+## 2026-11-13 — Phase 18 fix 2: CI wrapper download, CORS script
+
+- CI run 43437263251 failed in 15 s because Maven Central answered HTTP 403 while `./mvnw` downloaded the Maven 3.9.9 distribution; no code was involved. `ci.yml` now caches `~/.m2/wrapper` and retries the download up to four times before the build.
+- New `deploy/cors.sh` regenerates `deploy/cors.json` from every `dd-arm-*` service (both URL forms each) and applies it without deploying; `deploy-arm.sh` calls it. The bucket already listed a, b, c after the last redeploy; it was re-applied and now lists both URL forms of all three.
+
+**Why:** one shared script means no arm's deploy can leave a partial origin list, and a transient registry error should not fail the build.
+
+**Trade-off:** retries can delay a genuinely broken wrapper URL by about a minute.
+
+**File to read first:** `deploy/cors.sh`

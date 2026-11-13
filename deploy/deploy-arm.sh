@@ -116,33 +116,4 @@ if [ "${ARM}" = "c" ] && [ -z "${SERVICE_URL}" ]; then
 fi
 
 echo "=== Updating Bucket CORS policy from deployed arm URLs ==="
-ORIGINS=$(gcloud run services list --region="${REGION}" --project="${PROJECT_ID}" --filter="metadata.name ~ ^dd-arm-" --format="value(status.url)" | grep -v '^$' || true)
-
-ORIGIN_JSON=""
-for url in $ORIGINS; do
-  if [ -n "$url" ]; then
-    if [ -n "$ORIGIN_JSON" ]; then
-      ORIGIN_JSON="${ORIGIN_JSON}, \"${url}\""
-    else
-      ORIGIN_JSON="\"${url}\""
-    fi
-  fi
-done
-
-if [ -z "$ORIGIN_JSON" ]; then
-  ORIGIN_JSON='"*"'
-fi
-
-cat <<EOF > "${SCRIPT_DIR}/cors.json"
-[
-  {
-    "origin": [${ORIGIN_JSON}],
-    "method": ["PUT", "GET"],
-    "responseHeader": ["Content-Type", "Content-Disposition", "x-goog-content-length-range"],
-    "maxAgeSeconds": 3600
-  }
-]
-EOF
-
-gcloud storage buckets update "gs://${BUCKET}" --cors-file="${SCRIPT_DIR}/cors.json" --project="${PROJECT_ID}"
-echo "Bucket CORS updated."
+bash "${SCRIPT_DIR}/cors.sh"
