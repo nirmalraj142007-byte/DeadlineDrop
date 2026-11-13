@@ -41,8 +41,11 @@ gv run services list --region="${REGION}" --project="${PROJECT_ID}" --format=jso
 BUDGET_JSON="${TMP}/budget.json"
 "${PY}" - "$(to_native_path "${SERVICES_JSON}")" "$(to_native_path "${BUDGET_JSON}")" <<'PYEOF' || fail "could not read maxScale / DB_POOL_MAX from the deployed services"
 import json
+import os
 import sys
 
+# Test hook: PREFLIGHT_MAX_INSTANCES_OVERRIDE replaces both limits on every arm.
+override = os.environ.get("PREFLIGHT_MAX_INSTANCES_OVERRIDE")
 with open(sys.argv[1], encoding="utf-8") as f:
     services = json.load(f)
 rows = []
@@ -51,10 +54,15 @@ for s in services:
     if not name.startswith("dd-arm-"):
         continue
     tmpl = s["spec"]["template"]
-    max_scale = int(tmpl["metadata"]["annotations"]["autoscaling.knative.dev/maxScale"])
+    revision_max = int(tmpl["metadata"]["annotations"]["autoscaling.knative.dev/maxScale"])
+    service_max = int(s["metadata"]["annotations"]["run.googleapis.com/maxScale"])
+    if override:
+        revision_max = service_max = int(override)
+    # Cloud Run enforces the smaller of the two limits, so the budget must too.
+    max_scale = min(revision_max, service_max)
     env = {e["name"]: e.get("value") for e in tmpl["spec"]["containers"][0].get("env", [])}
     pool = int(env["DB_POOL_MAX"])
-    rows.append({"service": name, "maxScale": max_scale, "dbPoolMax": pool, "connections": max_scale * pool})
+    rows.append({"service": name, "revisionMaxScale": revision_max, "serviceMaxScale": service_max, "maxScale": max_scale, "dbPoolMax": pool, "connections": max_scale * pool})
 with open(sys.argv[2], "w", encoding="utf-8") as f:
     json.dump(rows, f)
 for r in rows:

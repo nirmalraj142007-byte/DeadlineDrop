@@ -101,6 +101,7 @@ gcloud run deploy "${SERVICE_NAME}" \
   --memory="${MEMORY}" \
   --concurrency="${CONCURRENCY}" \
   --max-instances="${MAX_INSTANCES}" \
+  --max="${MAX_INSTANCES}" \
   --min-instances="${MIN_INSTANCES}" \
   --timeout="${TIMEOUT}" \
   --cpu-boost \

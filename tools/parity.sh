@@ -13,8 +13,21 @@ TMP="$(mktemp -d)"
 trap 'rm -rf "${TMP}"' EXIT
 
 ARMS=(a b c)
+status=0
 for arm in "${ARMS[@]}"; do
-  gv run services describe "dd-arm-${arm}" --region="${REGION}" --project="${PROJECT_ID}" --format=export > "${TMP}/${arm}.raw.yaml"
+  if [ -n "${PARITY_INPUT_DIR:-}" ]; then
+    # Test hook: read canned exports (<arm>.yaml) instead of calling gcloud.
+    tr -d '\r' < "${PARITY_INPUT_DIR}/${arm}.yaml" > "${TMP}/${arm}.raw.yaml"
+  else
+    gv run services describe "dd-arm-${arm}" --region="${REGION}" --project="${PROJECT_ID}" --format=export > "${TMP}/${arm}.raw.yaml"
+  fi
+  # Max instances exists at two levels and both must be set; the diff below compares their values.
+  for key in "run.googleapis.com/maxScale" "autoscaling.knative.dev/maxScale"; do
+    if ! grep -q "${key}:" "${TMP}/${arm}.raw.yaml"; then
+      echo "dd-arm-${arm}: missing ${key} (service-level is run.googleapis.com/maxScale, revision-level is autoscaling.knative.dev/maxScale)"
+      status=1
+    fi
+  done
   "${PY}" - "$(to_native_path "${TMP}/${arm}.raw.yaml")" "$(to_native_path "${TMP}/${arm}.yaml")" <<'PYEOF'
 import re
 import sys
@@ -65,7 +78,6 @@ with open(dst, "w", encoding="utf-8", newline="\n") as f:
 PYEOF
 done
 
-status=0
 for pair in "a b" "a c" "b c"; do
   set -- ${pair}
   if ! diff_out="$(diff -u --label "dd-arm-$1" --label "dd-arm-$2" "${TMP}/$1.yaml" "${TMP}/$2.yaml")"; then

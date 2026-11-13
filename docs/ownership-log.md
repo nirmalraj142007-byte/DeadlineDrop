@@ -506,3 +506,15 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Trade-off:** the skew probe uses the smallest-RTT sample's midpoint, which carries a fixed ~30 ms bias from asymmetric network paths; it is well inside the 100 ms limit, but the bias is not subtracted. Also, no psql on this machine, so the budget check runs psql from the postgres:17 Docker image through Docker Desktop's host.docker.internal.
 
 **File to read first:** `tools/run.sh`
+
+## 2026-11-13 — Phase 18 fix: service-level max instances
+
+- All three arms already carried the service-level `run.googleapis.com/maxScale: '20'` (not just arm C) while the revision-level limit was 1. `deploy/deploy-arm.sh` now also passes `--max="${MAX_INSTANCES}"` (the service-level flag), and a, b, c were redeployed with the same image; all three now show service 1 / revision 1.
+- `tools/parity.sh` fails if either level is missing and diffs both values; test hook `PARITY_INPUT_DIR` reads canned exports. `tools/preflight.sh` sums `min(service, revision) x DB_POOL_MAX`; test hook `PREFLIGHT_MAX_INSTANCES_OVERRIDE`.
+- Proved both failure paths (altered temp copy gives a diff and exit 1; override 6 gives 90 > 20 and exit 1).
+
+**Why:** Cloud Run enforces the smaller limit, so a stale 20 could hide a budget breach or an unfair arm.
+
+**Trade-off:** two test hooks live in production scripts; the alternative was editing real services to break them.
+
+**File to read first:** `tools/preflight.sh`
