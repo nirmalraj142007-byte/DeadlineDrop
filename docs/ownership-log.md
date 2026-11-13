@@ -481,3 +481,15 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Trade-off:** Virtual user payloads are opened via `k6/experimental/fs` at init rather than pre-loading entire ArrayBuffers across all VUs upfront. This prevents virtual user memory duplication from exhausting load generator RAM under high concurrency (1,000 VUs), while caching buffers locally within each VU during execution to preserve upload performance.
 
 **File to read first:** `tools/k6/lib/flows.js` — encapsulates the exact client-side execution path, retry backoff logic, and status emission for all three comparison arms.
+
+## 2026-11-13 — Phase 17 fix: per-run assignment for k6-local
+
+- `tools/k6/run-local.sh` now logs in as the teacher, finds DEMO101 via `GET /api/courses`, and creates a new assignment per run (`deadlineAt` = T, `graceSeconds` = GRACE_S, `maxBytes` 26214400, `application/pdf`). Its id is passed to `rush.js` as `ASSIGNMENT_ID` and used for the export, and is saved as `assignment-id.txt` in the run folder.
+- After the run it prints a table of `plannedClass` (from `vu-log.ndjson`) against recorded timing/status (from the export), plus the `vu-log.ndjson` line count.
+- Re-ran `make k6-local` for arms c, b and a with N=20: planned LATE students are recorded LATE on every arm.
+
+**Why:** The seeded "Lab 1" deadline is a week away, so every planned-LATE student was recorded ON_TIME and old rows accumulated in one export. A fresh assignment with deadline T makes the recorded timing comparable to the plan.
+
+**Trade-off:** One extra teacher login and two API calls per run, and each run leaves one more assignment row in the arm's database; isolation is worth more than tidiness for dry runs.
+
+**File to read first:** `tools/k6/run-local.sh`

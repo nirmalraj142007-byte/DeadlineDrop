@@ -77,6 +77,37 @@ WIN_REPO_ROOT="$(to_win_path "${REPO_ROOT}")"
   --grace-s "${GRACE_S}" \
   --out "${WIN_OUT_DIR}/schedule"
 
+# 4b. Log in as the teacher and create a NEW assignment for this run, so every run
+# has its own deadline (T) and its own export. The seeded "Lab 1" is never used.
+BASE="http://localhost:${PORT}"
+TEACHER_TOKEN=$(curl -s -f -X POST "${BASE}/api/auth/login" \
+  -H "Content-Type: application/json" \
+  -d "{\"email\":\"teacher@dd.local\",\"password\":\"${SEED_PASSWORD}\"}" \
+  | grep -o '"accessToken":"[^"]*"' | cut -d'"' -f4)
+: "${TEACHER_TOKEN:?teacher login failed on ${BASE}}"
+
+COURSE_ID=$(curl -s -f -H "Authorization: Bearer ${TEACHER_TOKEN}" "${BASE}/api/courses" \
+  | "${PYTHON}" -c "
+import json, sys
+courses = json.load(sys.stdin)
+match = [c['id'] for c in courses if c.get('code') == 'DEMO101']
+print(match[0] if match else '')
+" | tr -d '\r\n')
+: "${COURSE_ID:?course DEMO101 not found for the teacher on ${BASE}}"
+
+DEADLINE_ISO=$("${PYTHON}" -c "
+import datetime
+print(datetime.datetime.fromtimestamp(${T_S}, datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'))
+" | tr -d '\r\n')
+
+ASSIGNMENT_ID=$(curl -s -f -X POST "${BASE}/api/courses/${COURSE_ID}/assignments" \
+  -H "Authorization: Bearer ${TEACHER_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d "{\"title\":\"k6-local ${ARM_LOWER} ${TIMESTAMP}\",\"deadlineAt\":\"${DEADLINE_ISO}\",\"graceSeconds\":${GRACE_S},\"maxBytes\":26214400,\"allowedTypes\":[\"application/pdf\"]}" \
+  | grep -o '"id":"[^"]*"' | head -n1 | cut -d'"' -f4)
+: "${ASSIGNMENT_ID:?assignment creation failed on ${BASE}}"
+echo "Assignment: ${ASSIGNMENT_ID} (deadline ${DEADLINE_ISO}, grace ${GRACE_S} s)"
+
 # 5. Run k6 with --console-output
 echo "Starting k6 rush scenario..."
 k6 run \
@@ -86,6 +117,7 @@ k6 run \
   -e SHARD="${WIN_OUT_DIR}/schedule/shard-all.json" \
   -e T_EPOCH_MS="${T_EPOCH_MS}" \
   -e GRACE_S="${GRACE_S}" \
+  -e ASSIGNMENT_ID="${ASSIGNMENT_ID}" \
   -e PASSWORD="${SEED_PASSWORD}" \
   -e FILES_DIR="${WIN_FILES_DIR}" \
   -e COHORT_MINUTES="1" \
@@ -114,30 +146,51 @@ if [ -f .env ]; then
   fi
 fi
 
-# 7. Fetch /export as JSON into OUT_DIR
-echo "Fetching /export from http://localhost:${PORT}..."
-TEACHER_TOKEN=$(curl -s -f -X POST "http://localhost:${PORT}/api/auth/login" \
-  -H "Content-Type: application/json" \
-  -d "{\"email\":\"teacher@dd.local\",\"password\":\"${SEED_PASSWORD}\"}" \
-  | grep -o '"accessToken":"[^"]*"' | cut -d'"' -f4)
+# 7. Fetch /export for THIS run's assignment (re-login: the first token may have expired)
+echo "Fetching /export for assignment ${ASSIGNMENT_ID} from ${BASE}..."
+TEACHER_TOKEN=$(curl -s -f -X POST "${BASE}/api/auth/login"   -H "Content-Type: application/json"   -d "{\"email\":\"teacher@dd.local\",\"password\":\"${SEED_PASSWORD}\"}"   | grep -o '"accessToken":"[^"]*"' | cut -d'"' -f4)
 
-curl -s -f -H "Authorization: Bearer ${TEACHER_TOKEN}" \
-  "http://localhost:${PORT}/api/assignments/11111111-1111-1111-1111-111111111111/export" \
-  > "${OUT_DIR}/export.json"
+curl -s -f -H "Authorization: Bearer ${TEACHER_TOKEN}"   "${BASE}/api/assignments/${ASSIGNMENT_ID}/export"   > "${OUT_DIR}/export.json"
+echo "${ASSIGNMENT_ID}" > "${OUT_DIR}/assignment-id.txt"
 
-# 8. Print counts by status
-echo "=== Export Status Counts for Arm ${ARM_LOWER} ==="
+# 8. Planned class (vu-log.ndjson) against recorded timing/status (export)
+echo "=== Planned vs recorded for Arm ${ARM_LOWER} ==="
 "${PYTHON}" -c "
 import json
+import re
 from collections import Counter
 
 with open(r'${WIN_OUT_DIR}/export.json', 'r', encoding='utf-8') as f:
     rows = json.load(f)
+recorded = {r['studentEmail']: r for r in rows}
 
-counts = Counter(r.get('status') for r in rows)
-timings = Counter(r.get('timing') for r in rows)
+planned = {}
+lines = 0
+with open(r'${WIN_OUT_DIR}/vu-log.ndjson', 'r', encoding='utf-8') as f:
+    for raw in f:
+        raw = raw.strip()
+        if not raw:
+            continue
+        lines += 1
+        # k6 console output is logfmt: time=... level=info msg=\"<escaped json>\"
+        m = re.search(r'msg=(\".*\")\s*\$', raw)
+        if not m:
+            continue
+        try:
+            entry = json.loads(json.loads(m.group(1)))
+        except ValueError:
+            continue
+        if isinstance(entry, dict) and 'plannedClass' in entry:
+            planned[entry['email']] = entry['plannedClass']
 
+table = Counter()
+for email, cls in planned.items():
+    r = recorded.get(email)
+    table[(cls, r.get('timing') if r else 'MISSING', r.get('status') if r else '-')] += 1
+
+print(f'vu-log.ndjson lines: {lines}  (students with plannedClass: {len(planned)})')
+print(f'{\"plannedClass\":<14}{\"timing\":<12}{\"status\":<26}count')
+for (cls, timing, status), n in sorted(table.items()):
+    print(f'{cls:<14}{str(timing):<12}{str(status):<26}{n}')
 print(f'Total exported rows: {len(rows)}')
-print(f'Status counts: {dict(counts)}')
-print(f'Timing counts: {dict(timings)}')
 "
