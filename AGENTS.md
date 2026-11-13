@@ -200,3 +200,7 @@ Ports: app/arm C 8080, arm B 8083 (8081 in the demo stack), arm A 8082, storage 
 - UI respects prefers-reduced-motion in addition to the existing accessibility rules.
 - At the start of a phase: restate its goal in two lines and list the files you will create or change. Flag every assumption; never add scope the phase does not ask for.
 
+
+## Local environment
+
+On this Windows machine, if ./mvnw verify fails with 'Unable to establish loopback connection', run it from PowerShell outside the sandbox with $env:JAVA_TOOL_OPTIONS='-Djdk.net.unixdomain.tmpdir=C:/ddtmp'.

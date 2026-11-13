@@ -493,3 +493,16 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Trade-off:** One extra teacher login and two API calls per run, and each run leaves one more assignment row in the arm's database; isolation is worth more than tidiness for dry runs.
 
 **File to read first:** `tools/k6/run-local.sh`
+
+## 2026-11-13 — Phase 18: cloud run harness (VM fleet, parity, preflight, run.sh)
+
+- `tools/vm/`: `startup.sh` (pinned k6 v2.3.0 with checksum, python3, jq, chrony on the metadata NTP server; writes `/run/dd-k6-ready` only once chrony is synced), `create-fleet.sh [create|delete|status]` (three e2-standard-2 VMs in asia-south1-a, asserts total vCPU <= 8, no service account), `cohorts.env` (placeholder shaping values), `shape.sh` (netem delay+loss with an fq child for the rate cap), `common.sh`.
+- `tools/parity.sh` diffs the normalised Cloud Run export of arms A, B, C; `tools/preflight.sh <arm>` checks parity, the Cloud SQL connection budget (max_connections read through cloud-sql-proxy), VM-to-server clock skew and warmness, and writes `preflight.json`; `tools/run.sh` runs one arm end to end and writes `meta.json`.
+- `results/README.md` documents the evidence layout. AGENTS.md gained a "Local environment" note. cloud-sql-proxy v2.28.0 installed to `~/bin`.
+- Verified live: fq attaches under netem on the Debian 12 cloud kernel 6.1 (so U8 fallback is not needed); parity clean; preflight c OK (skew 31-33 ms, budget 15 <= 20); `./mvnw verify` green (114 unit tests plus ITs). `tools/run.sh` itself was NOT executed (it would create a real assignment and take 17+ minutes); it is only syntax-checked.
+
+**Why:** every counted run must start from identical, checked conditions and leave a self-describing folder, independent of application code.
+
+**Trade-off:** the skew probe uses the smallest-RTT sample's midpoint, which carries a fixed ~30 ms bias from asymmetric network paths; it is well inside the 100 ms limit, but the bias is not subtracted. Also, no psql on this machine, so the budget check runs psql from the postgres:17 Docker image through Docker Desktop's host.docker.internal.
+
+**File to read first:** `tools/run.sh`
