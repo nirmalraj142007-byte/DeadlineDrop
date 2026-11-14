@@ -94,6 +94,16 @@ public class JobRepository {
         return jdbcTemplate.update(FAILED_SQL, attempts, truncate(error), id) == 1;
     }
 
+    /** Counts failed jobs for submissions belonging to the given assignment. */
+    public long countFailedForAssignment(UUID assignmentId) {
+        Objects.requireNonNull(assignmentId, "assignmentId must not be null");
+        Long count = jdbcTemplate.queryForObject(
+                "SELECT count(*) FROM jobs j JOIN submissions s ON j.submission_id = s.id WHERE s.assignment_id = ? AND j.status = 'FAILED'",
+                Long.class,
+                assignmentId);
+        return count != null ? count : 0L;
+    }
+
     private static void expectOneRow(int rows, long id, String target) {
         if (rows != 1) {
             throw new IllegalStateException("Job " + id + " was not PENDING when marking it " + target);

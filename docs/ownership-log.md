@@ -542,3 +542,20 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Trade-off:** the 1,000-student run starts k6 about five minutes before the first click (0.5 s per login budget), so each large run takes longer; the alternative (pre-issued tokens) would add a code path the browser never uses.
 
 **File to read first:** `tools/analyze.py`
+
+## 2026-11-14 — Phase 20: Read side (teacher dashboard, receipts, and submission download)
+
+- **What changed:**
+  - Added read DTOs in `com.deadlinedrop.api.dto.ReadDtos`: `DashboardRow`, `DashboardDto`, `EventDto`, `ReceiptDto`, and `DownloadUrlResponse`.
+  - Added `countFailedForAssignment(UUID)` in `JobRepository` and `findEvents(UUID)` in `SubmissionRepository` returning records without violating ArchUnit package boundaries.
+  - Implemented `DashboardService`: executes a single SQL query joining `enrollments`, `users`, and the live submission per student via `LEFT JOIN LATERAL` with `ORDER BY CASE WHEN status NOT IN ('EXPIRED','SUPERSEDED') THEN 0 ELSE 1 END, committed_at DESC`, defaulting unsubmitted students to `NOT_SUBMITTED`; aggregates status and timing counts into deterministic maps; computes `failedJobs`; and calculates a quoted SHA-256 `ETag` over counts, row count, and `max(updated_at)`.
+  - Implemented `SubmissionQueryService`: verifies caller is the owning student or the course's teacher (returning 403 `FORBIDDEN` otherwise), and maps submission events in chronological order into `ReceiptDto`.
+  - Implemented `DownloadService`: provides `url` generating a 5-minute signed GET URL for teacher downloads of `UPLOADED` or `VERIFIED` submissions (refusing other states with 409 `NOT_UPLOADED`); and `downloadAll` streaming a `ZipOutputStream` of live uploaded/verified submissions while refusing downloads before `graceEndsAt` with 409 `GRACE_NOT_OVER`.
+  - Created controllers `DashboardController` (`GET /api/assignments/{id}/dashboard`, honoring `If-None-Match` with 304 Not Modified), `SubmissionQueryController` (`GET /api/submissions/{id}`), and `DownloadController` (`GET /api/submissions/{id}/download` and `GET /api/assignments/{id}/download-all`), all annotated with `@Profile("!naive & !direct-finalize & !storage")` for Arm C exclusivity and secured with `@PreAuthorize`.
+  - Added comprehensive test coverage in `DashboardIT`, `SubmissionQueryIT`, and `DownloadAuthorizationIT` verifying status/timing aggregation, superseded row filtering, ETag 304 caching, access control, receipt events, signed URL download verification, and streaming zip archives.
+
+- **Why:** Teachers and students require authoritative visibility into submission state, timing classifications, audit event trails, and file contents without interfering with rush-path commit latency or bypassing security and grace-window guarantees.
+
+- **Trade-off:** Validation for `downloadAll` is evaluated synchronously before streaming commits HTTP response headers to ensure 403 or 409 ProblemDetail errors are properly returned to the client rather than corrupting a partially written zip response; as a result, validation and initial zip streaming execute sequentially rather than in a single unbounded transaction.
+
+- **File to read first:** `src/main/java/com/deadlinedrop/service/DashboardService.java`

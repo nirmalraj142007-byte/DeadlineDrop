@@ -40,6 +40,14 @@ public class SubmissionRepository {
     ) {
     }
 
+    public record SubmissionEventRecord(
+            String from,
+            String to,
+            String actor,
+            Instant at
+    ) {
+    }
+
     private static final String FIND_LIVE_BY_STUDENT_SQL =
             "SELECT id, assignment_id, status, timing, committed_at "
                     + "FROM submissions "
@@ -149,6 +157,18 @@ public class SubmissionRepository {
         Objects.requireNonNull(actor, "actor must not be null");
         Objects.requireNonNull(at, "at must not be null");
         jdbcTemplate.update(EVENT_SQL, id, from == null ? null : from.name(), to.name(), actor.name(), utc(at));
+    }
+
+    public List<SubmissionEventRecord> findEvents(UUID submissionId) {
+        Objects.requireNonNull(submissionId, "submissionId must not be null");
+        return jdbcTemplate.query(
+                "SELECT from_status, to_status, actor, at FROM submission_events WHERE submission_id = ? ORDER BY at ASC, id ASC",
+                (rs, i) -> new SubmissionEventRecord(
+                        rs.getString("from_status"),
+                        rs.getString("to_status"),
+                        rs.getString("actor"),
+                        instant(rs, "at")),
+                submissionId);
     }
 
     private static OffsetDateTime utc(Instant instant) {
