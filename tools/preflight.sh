@@ -105,9 +105,19 @@ for i in $(seq 1 '"${SAMPLES}"'); do
   t0=$(date +%s%3N); body=$(curl -s --max-time 10 -w "|%{time_total}" '"${URL}"'/api/time); t1=$(date +%s%3N)
   echo "$t0 $t1 $body"
 done'
+# Skew and warmth describe the clocks and the server, not the link. netem delays only egress, so on a
+# shaped VM the probe's midpoint and time_total carry the cohort's one-way delay (phase 19 measured
+# 135-254 ms "skew" that scaled with the delay). Probe with shaping cleared, then put the cohort's
+# shaping back before k6 starts.
 for c in "${COHORTS[@]}"; do
   vm="$(vm_name "${c}")"
-  vm_ssh "${vm}" "${SAMPLE_CMD}" | tr -d '\r' > "${TMP}/samples-${c}.txt" || fail "ssh to ${vm} failed (is the fleet up? bash tools/vm/create-fleet.sh create)"
+  vm_ssh "${vm}" "mkdir -p ~/${VM_HOME_DIR}" >/dev/null || fail "ssh to ${vm} failed (is the fleet up? bash tools/vm/create-fleet.sh create)"
+  vm_scp "${REPO_ROOT}/tools/vm/shape.sh" "${REPO_ROOT}/tools/vm/cohorts.env" "${vm}:${VM_HOME_DIR}/" >/dev/null || fail "copy shape.sh to ${vm} failed"
+  vm_ssh "${vm}" "sudo bash ~/${VM_HOME_DIR}/shape.sh clear >/dev/null; ${SAMPLE_CMD}" | tr -d '\r' > "${TMP}/samples-${c}.txt"; rc=${PIPESTATUS[0]}
+  vm_ssh "${vm}" "sudo bash ~/${VM_HOME_DIR}/shape.sh ${c} >/dev/null && sudo tc qdisc show | grep -q netem" >/dev/null \
+    || fail "could not restore '${c}' shaping on ${vm}"
+  [ "${rc}" -eq 0 ] || fail "skew/warm probe on ${vm} failed"
+  echo "${vm}: probed unshaped, '${c}' shaping restored"
 done
 
 RESULT_JSON="${TMP}/vm-result.json"
