@@ -47,6 +47,17 @@ fi
 # (1) preflight
 OUT="${RUN_DIR}/preflight.json" bash "${REPO_ROOT}/tools/preflight.sh" "${ARM}"
 
+# (1b) payload files are generated ON each VM (make-files.sh keeps existing files of the right size),
+# before the assignment exists: copying ~58 MB per VM would not fit in the start margin below.
+prepare_files() {
+  local vm; vm="$(vm_name "$1")"
+  vm_scp "${REPO_ROOT}/tools/k6/files/make-files.sh" "${vm}:${VM_HOME_DIR}/make-files.sh" >/dev/null
+  vm_ssh "${vm}" "MAX_MB=${MAX_MB} OUT_DIR=\$HOME/${VM_HOME_DIR}/files bash ~/${VM_HOME_DIR}/make-files.sh" >/dev/null
+}
+pids=()
+for c in "${COHORTS[@]}"; do prepare_files "${c}" & pids+=($!); done
+for p in "${pids[@]}"; do wait "${p}" || { echo "payload file generation on a VM failed" >&2; exit 1; }; done
+
 BASE="$(arm_url "${ARM}")"
 SEED_PASSWORD="$(gv secrets versions access latest --secret=dd-seed-password --project="${PROJECT_ID}")"
 
@@ -82,16 +93,14 @@ SEED=$(( 16#$(printf 'dd-schedule:%s:%s' "${SIZE}" "${REPEAT}" | sha256sum | cut
 "${PY}" "$(to_native_path "${REPO_ROOT}/tools/gen_schedule.py")" \
   --mode "${SCHEDULE_MODE}" --n "${SIZE}" --cohort-minutes "${COHORT_MIN}" --grace-s "${GRACE_S}" \
   --max-mb "${MAX_MB}" --seed "${SEED}" --out "$(to_native_path "${RUN_DIR}/schedule")"
-MAX_MB="${MAX_MB}" bash "${REPO_ROOT}/tools/k6/files/make-files.sh" >/dev/null
 
-# (4) copy shard, files and k6 scripts to each VM (in parallel)
+# (4) copy shard and k6 scripts to each VM (in parallel)
 copy_to_vm() {
   local c="$1" vm; vm="$(vm_name "$1")"
-  vm_ssh "${vm}" "rm -rf ~/${VM_HOME_DIR}/run ~/${VM_HOME_DIR}/files && mkdir -p ~/${VM_HOME_DIR}/run/lib ~/${VM_HOME_DIR}/files"
+  vm_ssh "${vm}" "rm -rf ~/${VM_HOME_DIR}/run && mkdir -p ~/${VM_HOME_DIR}/run/lib"
   vm_scp "${RUN_DIR}/schedule/shard-${c}.json" "${vm}:${VM_HOME_DIR}/run/shard.json"
   vm_scp "${REPO_ROOT}/tools/k6/rush.js" "${vm}:${VM_HOME_DIR}/run/rush.js"
   vm_scp "${REPO_ROOT}/tools/k6/lib/flows.js" "${vm}:${VM_HOME_DIR}/run/lib/flows.js"
-  vm_scp "${REPO_ROOT}"/tools/k6/files/out/*.bin "${vm}:${VM_HOME_DIR}/files/"
   vm_put_secret "${vm}" "${VM_HOME_DIR}/run/pw" "${SEED_PASSWORD}"
 }
 pids=()

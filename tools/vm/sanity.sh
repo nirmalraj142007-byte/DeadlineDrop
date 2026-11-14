@@ -44,6 +44,10 @@ run_cohort() {
   vm="$(vm_name "${c}")"
   out="${OUT_DIR}/${c}.txt"
   email="$(printf 'student%04d@dd.local' "${i}")"
+  # Always ship the current profile: cohorts.env may have changed since create-fleet, and the SSH
+  # user (and so ~) differs between an operator's account and a controller's service account.
+  vm_ssh "${vm}" "mkdir -p ~/${VM_HOME_DIR}" >/dev/null
+  vm_scp "${SCRIPT_DIR}/shape.sh" "${SCRIPT_DIR}/cohorts.env" "${vm}:${VM_HOME_DIR}/" >/dev/null
   vm_ssh "${vm}" "sudo bash ~/${VM_HOME_DIR}/shape.sh ${c}" > "${out}.shape" 2>&1
   vm_ssh "${vm}" "rm -rf ~/${VM_HOME_DIR}/sanity && mkdir -p ~/${VM_HOME_DIR}/sanity/lib" >/dev/null
   vm_scp "${REPO_ROOT}/tools/k6/sanity.js" "${vm}:${VM_HOME_DIR}/sanity/sanity.js"

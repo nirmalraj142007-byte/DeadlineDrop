@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+# Phase 19 steps 5b-5e, run unattended on the controller VM (tools/vm/controller.sh start):
+#   b. sanity from each VM          c. 100-student dry runs a, b, c (stop if arm C exits 3)
+#   d. 1,000-student arm C dry run with free -m sampled on each VM every 5 s
+#   e. shaping cleared, then tools/coldstart.sh
+# Everything lands in this checkout's results/; progress goes to results/remote/progress.log.
+# The first failing step stops the batch and writes STOPPED to the log; DONE marks success.
+set -uo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=tools/vm/common.sh
+source "${SCRIPT_DIR}/common.sh"
+
+LOG_DIR="${REPO_ROOT}/results/remote"
+LOG="${LOG_DIR}/progress.log"
+MEM_DIR="${REPO_ROOT}/results/dryrun-1000"
+mkdir -p "${LOG_DIR}" "${MEM_DIR}"
+export SCHEDULE_MODE=placeholder
+
+say() { echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) $*" | tee -a "${LOG}"; }
+stop() { say "STOPPED: $*"; exit 1; }
+# step <name> <command...>: full output to results/remote/<name>.out, one line per step in the log
+step() {
+  local name="$1"; shift
+  say "START ${name}: $*"
+  "$@" > "${LOG_DIR}/${name}.out" 2>&1
+  local rc=$?
+  say "END ${name}: exit ${rc}"
+  return "${rc}"
+}
+
+say "batch started on $(hostname), commit $(git -C "${REPO_ROOT}" rev-parse --short HEAD)"
+
+# ---- b. sanity
+step sanity bash "${SCRIPT_DIR}/sanity.sh" || stop "sanity outside limits (results/sanity/*.txt)"
+for c in "${COHORTS[@]}"; do say "  ${c}: $(tail -n 1 "${REPO_ROOT}/results/sanity/${c}.txt")"; done
+
+# ---- c. 100-student dry runs
+for arm in a b c; do
+  step "run-${arm}-100" bash "${REPO_ROOT}/tools/run.sh" "${arm}" 100 1 none --dryrun
+  rc=$?
+  if [ "${arm}" = c ] && [ "${rc}" -eq 3 ]; then
+    say "arm C misjudged students (G3):"
+    grep -A 40 "G3 FAILED" "${LOG_DIR}/run-c-100.out" | tee -a "${LOG}"
+    stop "arm C analyze exit 3; not continuing"
+  fi
+  [ "${rc}" -eq 0 ] || stop "run.sh ${arm} 100 exited ${rc} (results/remote/run-${arm}-100.out)"
+  tail -n 6 "${LOG_DIR}/run-${arm}-100.out" | sed 's/^/  /' | tee -a "${LOG}"
+done
+
+# ---- d. 1,000-student arm C dry run with memory sampling
+SAMPLER='nohup bash -c "while :; do echo \"== \$(date -u +%Y-%m-%dT%H:%M:%SZ)\"; free -m; sleep 5; done" > ~/dd/mem.log 2>&1 < /dev/null & echo $! > ~/dd/mem.pid'
+for c in "${COHORTS[@]}"; do vm_ssh "$(vm_name "${c}")" "mkdir -p ~/dd; ${SAMPLER}" >/dev/null 2>&1 || stop "memory sampler on ${c}"; done
+say "memory samplers started"
+step run-c-1000 bash "${REPO_ROOT}/tools/run.sh" c 1000 1 none --dryrun
+RC1000=$?
+for c in "${COHORTS[@]}"; do
+  vm="$(vm_name "${c}")"
+  vm_ssh "${vm}" 'kill $(cat ~/dd/mem.pid) 2>/dev/null; true' >/dev/null 2>&1
+  vm_scp "${vm}:dd/mem.log" "${MEM_DIR}/mem-${c}.log" >/dev/null 2>&1 || stop "fetching mem.log from ${vm}"
+done
+python3 - "${MEM_DIR}" "${COHORTS[@]}" > "${MEM_DIR}/vm-memory.txt" <<'PYEOF'
+import sys
+from pathlib import Path
+d, cohorts = Path(sys.argv[1]), sys.argv[2:]
+print("# free -m on each k6 VM every 5 s during the 1,000-student arm C dry run (phase 19, step 5d)")
+print("# columns: vm, UTC time, total MiB, used MiB, available MiB, used %")
+peaks = []
+for c in cohorts:
+    vm, at, peak = f"dd-k6-{c}", None, (0.0, None)
+    for line in (d / f"mem-{c}.log").read_text(encoding="utf-8").splitlines():
+        if line.startswith("== "):
+            at = line[3:].strip()
+        elif line.startswith("Mem:"):
+            f = line.split()
+            total, used, avail = int(f[1]), int(f[2]), int(f[6])
+            pct = 100.0 * (total - avail) / total
+            print(f"{vm} {at} {total} {used} {avail} {pct:.1f}")
+            if pct > peak[0]:
+                peak = (pct, at)
+    peaks.append((vm, peak))
+for vm, (pct, at) in peaks:
+    print(f"PEAK {vm} {pct:.1f}% (total - available) at {at}")
+PYEOF
+rm -f "${MEM_DIR}"/mem-*.log
+tail -n 3 "${MEM_DIR}/vm-memory.txt" | sed 's/^/  /' | tee -a "${LOG}"
+tail -n 6 "${LOG_DIR}/run-c-1000.out" | sed 's/^/  /' | tee -a "${LOG}"
+say "run-c-1000 exit ${RC1000} (a dry run: reported, not a stop condition)"
+
+# ---- e. cold start, from an unshaped link
+for c in "${COHORTS[@]}"; do vm_ssh "$(vm_name "${c}")" "sudo bash ~/dd/shape.sh clear" >/dev/null 2>&1; done
+say "shaping cleared on all VMs"
+step coldstart bash "${REPO_ROOT}/tools/coldstart.sh" || stop "coldstart.sh failed (results/remote/coldstart.out)"
+python3 -c "import json; r=json.load(open('${REPO_ROOT}/results/coldstart.json')); print('  coldstart median', r['median'], 'ms;', [s['ms'] for s in r['samples']])" | tee -a "${LOG}"
+
+say "DONE"
