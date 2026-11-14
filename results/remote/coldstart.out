@@ -4,57 +4,63 @@ Job has been paused.
 dd-arm-c: min-instances already 0
 == sample 1/5: waiting for 120s at zero instances ==
   zero instances for >= 120s
-  GET /api/time: 15.291655s, HTTP 200
+  GET /api/time: 16.132254s, HTTP 200
 == sample 2/5: waiting for 120s at zero instances ==
   zero instances for >= 120s
-  GET /api/time: 0.139803s, HTTP 200
+  GET /api/time: 14.823886s, HTTP 200
 == sample 3/5: waiting for 120s at zero instances ==
   zero instances for >= 120s
-  GET /api/time: 0.175889s, HTTP 200
+  GET /api/time: 14.842594s, HTTP 200
 == sample 4/5: waiting for 120s at zero instances ==
   zero instances for >= 120s
-  GET /api/time: 0.140849s, HTTP 200
+  GET /api/time: 14.826571s, HTTP 200
 == sample 5/5: waiting for 120s at zero instances ==
   zero instances for >= 120s
-  GET /api/time: 0.128657s, HTTP 200
+  GET /api/time: 15.211389s, HTTP 200
 {
   "service": "dd-arm-c",
   "url": "https://dd-arm-c-aheo6nqyga-el.a.run.app/api/time",
   "samples": [
     {
-      "at": "2026-11-14T14:27:44Z",
-      "ms": 15291.7,
+      "at": "2026-11-14T14:58:37Z",
+      "ms": 16132.3,
       "httpCode": 200,
-      "zeroInstancesForS": 120
+      "zeroInstancesForS": 120,
+      "likelyWarm": false
     },
     {
-      "at": "2026-11-14T14:28:04Z",
-      "ms": 139.8,
+      "at": "2026-11-14T15:16:38Z",
+      "ms": 14823.9,
       "httpCode": 200,
-      "zeroInstancesForS": 120
+      "zeroInstancesForS": 120,
+      "likelyWarm": false
     },
     {
-      "at": "2026-11-14T14:28:08Z",
-      "ms": 175.9,
+      "at": "2026-11-14T15:34:27Z",
+      "ms": 14842.6,
       "httpCode": 200,
-      "zeroInstancesForS": 120
+      "zeroInstancesForS": 120,
+      "likelyWarm": false
     },
     {
-      "at": "2026-11-14T14:28:11Z",
-      "ms": 140.8,
+      "at": "2026-11-14T15:52:34Z",
+      "ms": 14826.6,
       "httpCode": 200,
-      "zeroInstancesForS": 120
+      "zeroInstancesForS": 120,
+      "likelyWarm": false
     },
     {
-      "at": "2026-11-14T14:28:15Z",
-      "ms": 128.7,
+      "at": "2026-11-14T16:10:48Z",
+      "ms": 15211.4,
       "httpCode": 200,
-      "zeroInstancesForS": 120
+      "zeroInstancesForS": 120,
+      "likelyWarm": false
     }
   ],
-  "median": 140.8,
+  "median": 14842.6,
+  "coldSamples": 5,
   "unit": "ms",
-  "method": "min-instances 0 and Cloud Scheduler jobs dd-drain-c/dd-reconcile-c paused; before each sample, poll Cloud Monitoring run.googleapis.com/container/instance_count (REST, gcloud access token) until the service has had zero instances for 120 s; then one GET /api/time from the operator's machine, timed by curl -w %{time_total} (DNS + TCP + TLS + cold start + response). Median over HTTP 200 samples."
+  "method": "min-instances 0 and Cloud Scheduler jobs dd-drain-c/dd-reconcile-c paused; before each sample, poll Cloud Monitoring run.googleapis.com/container/instance_count (REST, gcloud access token) until the service has had zero instances for 120 s; then one GET /api/time from the operator's machine, timed by curl -w %{time_total} (DNS + TCP + TLS + cold start + response). Median over HTTP 200 samples not flagged likelyWarm (< 1000 ms). For samples 2-5 the wait only counts zero points after Monitoring has reported the instance the previous sample started."
 }
 == restoring: resume scheduler jobs, min-instances 0 ==
 Job has been resumed.

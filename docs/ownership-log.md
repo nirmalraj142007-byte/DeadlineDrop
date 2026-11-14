@@ -529,3 +529,16 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Trade-off:** retries can delay a genuinely broken wrapper URL by about a minute.
 
 **File to read first:** `deploy/cors.sh`
+
+## 2026-11-14 — Phase 19: analysis script and first cloud runs
+
+- **Built:** `tools/analyze.py` (joins every `vu-log*.ndjson` with the export; truth from k6 clickMs only, 5 s margin; confusion cells, lost/duplicate/pending checks, connection errors, latency percentiles, Server-Timing medians; exit 3 on any arm C error; rebuilds `results/SUMMARY.md` from counted runs) with 9 pytest cases; `flows.js` logs `serverTiming`, `commitMs`, `finalizeMs`, `failedStatuses`; `tools/coldstart.sh`; `tools/vm/sanity.sh`; `tools/vm/phase19-batch.sh`.
+- **Ran:** Cloud SQL db-g1-small, MAX_INSTANCES=3 (45 <= 50 - 5), 1,000 students seeded per arm; sanity (all cohorts pass after MEDIUM_LOSS 0.5% -> 0.2%, D10); 100-student dry runs A, B, C; 1,000-student arm C run with VM memory; cold start. Numbers are in D10 and `results/`.
+- **Harness bugs found and fixed (none in the app):** seed password piped into `vm_ssh` never reached the VMs (plink owns stdin on Windows; now scp'd); k6's 60 s request timeout would cut slow uploads (900 s); k6's 60 s setupTimeout killed the first 1,000-student run (now 0.5 s per login, and k6 starts earlier); preflight read the shaped link's one-way delay as clock skew (now probes unshaped, then restores shaping); `nohup k6 &` held the SSH call open until k6 exited (`setsid -f`); payload files copied after T was fixed could not fit the start margin (generated on each VM, schedule and copies before T); `deploy/env.sh`'s errexit silently ended the batch; every VM call now has a timeout and idempotent ones retry; coldstart sampled a warm instance because Monitoring reports new instances minutes late (now waits for the previous sample's instance to appear, then vanish).
+- **Not the code:** three arm C attempts died because the laptop entered Modern Standby (Kernel-Power 506/507 times match each failure), and once because it restarted. The controller-VM route (dd-k6-slow + dd-ctl) was set up and torn down; it is parked for phase 32.
+
+**Why:** the ablation's only trustworthy output is a confusion table built from k6 click times and the server's own export; every step here makes that table reproducible and keeps the harness from inventing errors (a dropped SSH call or a timeout must never show up as a misjudged student).
+
+**Trade-off:** the 1,000-student run starts k6 about five minutes before the first click (0.5 s per login budget), so each large run takes longer; the alternative (pre-issued tokens) would add a code path the browser never uses.
+
+**File to read first:** `tools/analyze.py`

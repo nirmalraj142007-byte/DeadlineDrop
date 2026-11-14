@@ -50,3 +50,9 @@ Outcome of the D4 gate. Nirmal fills in exactly one line and deletes the other:
   loss bound (Mathis, MSS 1460) is about 3.29 Mbit/s, so the profile asked for a rate TCP cannot reach.
   At 0.2% the bound is about 5.2 Mbit/s, so the 4 Mbit/s cap is what limits the link again. Slow
   (1%, 80 ms, bound 1.76 Mbit/s > 1 Mbit/s) and fast (0%) were within limits and are unchanged.
+- **What the first runs showed (all dry runs on PLACEHOLDER inputs, `"counted": false`):**
+  1. Same 100-student schedule: arms A and B each recorded 13 of 85 truly on-time students LATE (rate 0.153; `results/runs/*_A_100_r1_dryrun`, `*_B_100_r1_dryrun`); arm C recorded 0 (85/85 on time, 10/10 late; `*_C_100_r1_dryrun`), so G3 held.
+  2. 1,000 students on arm C: 868/868 on time, 100/100 late, 0 lost, 0 duplicates, 0 connection errors; 3 late students were still COMMITTED at export (upload done, k6 gave up finalize at T + grace; reconcile had not run yet) — check reconcile timing before F2 (`*_C_1000_r1_dryrun/confusion.json`).
+  3. **First-bottleneck candidate: URL signing.** Arm C commit Server-Timing medians: app 128 ms, sign 99, db 24 (100 students); app 104, sign 77, db 24 (1,000). Signing (IAM signBlob) is the largest phase of the commit.
+  4. k6 VM memory peaked at 86.9% (slow), 75.4% (medium), 53.7% (fast) during the 1,000-student run (`results/dryrun-1000/vm-memory.txt`): the slow VM has little headroom for larger runs.
+  5. Arm C cold start (GET /api/time after 120 s at zero instances, laptop curl): median 14,842.6 ms over 5 cold samples (`results/coldstart.json`). Harness faults fixed along the way (seed password piped to plink, 60 s k6 timeouts, shaped-link preflight skew, nohup holding SSH, laptop standby) are in the phase-19 ownership-log entry; failed attempts are kept in `results/aborted/`.

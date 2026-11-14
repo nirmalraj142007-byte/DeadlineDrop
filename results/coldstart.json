@@ -1,0 +1,45 @@
+{
+  "service": "dd-arm-c",
+  "url": "https://dd-arm-c-aheo6nqyga-el.a.run.app/api/time",
+  "samples": [
+    {
+      "at": "2026-11-14T14:58:37Z",
+      "ms": 16132.3,
+      "httpCode": 200,
+      "zeroInstancesForS": 120,
+      "likelyWarm": false
+    },
+    {
+      "at": "2026-11-14T15:16:38Z",
+      "ms": 14823.9,
+      "httpCode": 200,
+      "zeroInstancesForS": 120,
+      "likelyWarm": false
+    },
+    {
+      "at": "2026-11-14T15:34:27Z",
+      "ms": 14842.6,
+      "httpCode": 200,
+      "zeroInstancesForS": 120,
+      "likelyWarm": false
+    },
+    {
+      "at": "2026-11-14T15:52:34Z",
+      "ms": 14826.6,
+      "httpCode": 200,
+      "zeroInstancesForS": 120,
+      "likelyWarm": false
+    },
+    {
+      "at": "2026-11-14T16:10:48Z",
+      "ms": 15211.4,
+      "httpCode": 200,
+      "zeroInstancesForS": 120,
+      "likelyWarm": false
+    }
+  ],
+  "median": 14842.6,
+  "coldSamples": 5,
+  "unit": "ms",
+  "method": "min-instances 0 and Cloud Scheduler jobs dd-drain-c/dd-reconcile-c paused; before each sample, poll Cloud Monitoring run.googleapis.com/container/instance_count (REST, gcloud access token) until the service has had zero instances for 120 s; then one GET /api/time from the operator's machine, timed by curl -w %{time_total} (DNS + TCP + TLS + cold start + response). Median over HTTP 200 samples not flagged likelyWarm (< 1000 ms). For samples 2-5 the wait only counts zero points after Monitoring has reported the instance the previous sample started."
+}
