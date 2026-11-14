@@ -52,6 +52,19 @@ vm_scp() {
     --strict-host-key-checking=no "$@"
 }
 
+# Copy a secret to a file on a VM (mode 600). Never pipe it into vm_ssh: on Windows gcloud runs
+# PuTTY plink and writes "y" to its stdin to accept the host key, replacing what was piped in.
+vm_put_secret() { # vm_put_secret <vm> <path relative to the VM home> <value>
+  local vm="$1" dest="$2" value="$3" tmp rc=0
+  tmp="$(mktemp)"
+  chmod 600 "${tmp}"
+  printf '%s' "${value}" > "${tmp}"
+  vm_scp "${tmp}" "${vm}:${dest}" >/dev/null || rc=$?
+  rm -f "${tmp}"
+  [ "${rc}" -eq 0 ] || return "${rc}"
+  vm_ssh "${vm}" "chmod 600 ~/${dest}" >/dev/null
+}
+
 # URL of one arm's Cloud Run service.
 arm_url() {
   gv run services describe "dd-arm-$1" --region="${REGION}" --project="${PROJECT_ID}" --format="value(status.url)"

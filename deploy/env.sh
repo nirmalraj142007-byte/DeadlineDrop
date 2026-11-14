@@ -11,7 +11,7 @@ export PROJECT_ID
 export REGION="asia-south1"
 export ZONE="asia-south1-a"
 export SQL_INSTANCE="dd-pg"
-export SQL_TIER="db-f1-micro"
+export SQL_TIER="db-g1-small"
 export BUCKET="${PROJECT_ID}-dd-objects"
 export AR_REPO="dd"
 export IMAGE="${REGION}-docker.pkg.dev/${PROJECT_ID}/${AR_REPO}/app"

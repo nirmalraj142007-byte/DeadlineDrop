@@ -9,10 +9,22 @@ export function generateUuid() {
   });
 }
 
+// A browser never times out an upload; k6's default is 60 s, which a 25 MB file at 1 Mbit/s
+// (about 210 s) would hit. Byte-carrying requests get a timeout longer than any run's window.
+export const UPLOAD_TIMEOUT = '900s';
+
 export function shouldRetry(status) {
   if (status === 0 || status === 429) return true;
   if (status >= 500 && status <= 599) return true;
   return false;
+}
+
+// Records every non-2xx response (status 0 = connection-level failure), retries included,
+// so tools/analyze.py can count 503s and connection errors that a later retry hid.
+export function noteFailure(list, step, status) {
+  if (!(status >= 200 && status < 300)) {
+    list.push({ step: step, status: status });
+  }
 }
 
 export function calculateJitterMs(attempt, baseMs = 500, capMs = 8000) {
@@ -44,6 +56,10 @@ export function armC(ctx) {
   let uploadUrl = null;
   let uploadHeaders = {};
   let error = null;
+  let commitMs = null;
+  let finalizeMs = null;
+  let serverTiming = null;
+  const failedStatuses = [];
   const skipFinalize = Boolean(student.skipFinalize);
 
   const cutoffMs = deadlineEpochMs + graceSeconds * 1000;
@@ -72,6 +88,9 @@ export function armC(ctx) {
       }
     );
     commitStatus = res.status;
+    commitMs = res.timings.duration;
+    serverTiming = res.headers['Server-Timing'] || null;
+    noteFailure(failedStatuses, 'commit', commitStatus);
     if (commitStatus === 200 || commitStatus === 201) {
       try {
         const json = res.json();
@@ -102,9 +121,10 @@ export function armC(ctx) {
       headers['Content-Type'] = 'application/pdf';
     }
     const putStart = Date.now();
-    const putRes = http.put(uploadUrl, fileBytes, { headers: headers });
+    const putRes = http.put(uploadUrl, fileBytes, { headers: headers, timeout: UPLOAD_TIMEOUT });
     putMs = Date.now() - putStart;
     putStatus = putRes.status;
+    noteFailure(failedStatuses, 'put', putStatus);
 
     if (putStatus !== 200) {
       error = `put_failed_status_${putStatus}`;
@@ -127,6 +147,8 @@ export function armC(ctx) {
           }
         );
         finalizeStatus = finRes.status;
+        finalizeMs = finRes.timings.duration;
+        noteFailure(failedStatuses, 'finalize', finalizeStatus);
         if (finalizeStatus === 200 || finalizeStatus === 201) {
           break;
         }
@@ -152,10 +174,14 @@ export function armC(ctx) {
     hashWaitMs: hashWaitMs,
     commitStatus: commitStatus,
     commitAttempts: commitAttempts,
+    commitMs: commitMs,
+    serverTiming: serverTiming,
     putStatus: putStatus,
     putMs: putMs,
     finalizeStatus: finalizeStatus,
     finalizeAttempts: finalizeAttempts,
+    finalizeMs: finalizeMs,
+    failedStatuses: failedStatuses,
     submissionId: submissionId,
     skipFinalize: skipFinalize,
     error: error,
@@ -188,6 +214,10 @@ export function armB(ctx) {
   let uploadUrl = null;
   let uploadHeaders = {};
   let error = null;
+  let commitMs = null;
+  let finalizeMs = null;
+  let serverTiming = null;
+  const failedStatuses = [];
   const skipFinalize = Boolean(student.skipFinalize);
 
   const cutoffMs = deadlineEpochMs + graceSeconds * 1000;
@@ -213,6 +243,9 @@ export function armB(ctx) {
       }
     );
     commitStatus = res.status;
+    commitMs = res.timings.duration;
+    serverTiming = res.headers['Server-Timing'] || null;
+    noteFailure(failedStatuses, 'commit', commitStatus);
     if (commitStatus === 200 || commitStatus === 201) {
       try {
         const json = res.json();
@@ -243,9 +276,10 @@ export function armB(ctx) {
       headers['Content-Type'] = 'application/pdf';
     }
     const putStart = Date.now();
-    const putRes = http.put(uploadUrl, fileBytes, { headers: headers });
+    const putRes = http.put(uploadUrl, fileBytes, { headers: headers, timeout: UPLOAD_TIMEOUT });
     putMs = Date.now() - putStart;
     putStatus = putRes.status;
+    noteFailure(failedStatuses, 'put', putStatus);
 
     if (putStatus !== 200) {
       error = `put_failed_status_${putStatus}`;
@@ -268,6 +302,8 @@ export function armB(ctx) {
           }
         );
         finalizeStatus = finRes.status;
+        finalizeMs = finRes.timings.duration;
+        noteFailure(failedStatuses, 'finalize', finalizeStatus);
         if (finalizeStatus === 200 || finalizeStatus === 201) {
           try {
             const json = finRes.json();
@@ -299,10 +335,14 @@ export function armB(ctx) {
     hashWaitMs: hashWaitMs,
     commitStatus: commitStatus,
     commitAttempts: commitAttempts,
+    commitMs: commitMs,
+    serverTiming: serverTiming,
     putStatus: putStatus,
     putMs: putMs,
     finalizeStatus: finalizeStatus,
     finalizeAttempts: finalizeAttempts,
+    finalizeMs: finalizeMs,
+    failedStatuses: failedStatuses,
     submissionId: submissionId,
     skipFinalize: skipFinalize,
     error: error,
@@ -332,6 +372,10 @@ export function armA(ctx) {
   let finalizeAttempts = 0;
   let submissionId = null;
   let error = null;
+  let commitMs = null;
+  let finalizeMs = null;
+  let serverTiming = null;
+  const failedStatuses = [];
   const skipFinalize = Boolean(student.skipFinalize);
 
   const cutoffMs = deadlineEpochMs + graceSeconds * 1000;
@@ -356,12 +400,16 @@ export function armA(ctx) {
           'Authorization': `Bearer ${token}`,
           'Idempotency-Key': idempotencyKey,
         },
+        timeout: UPLOAD_TIMEOUT,
       }
     );
     putMs = Date.now() - putStart;
     commitStatus = res.status;
     putStatus = res.status;
     finalizeStatus = res.status;
+    commitMs = res.timings.duration;
+    finalizeMs = res.timings.duration;
+    noteFailure(failedStatuses, 'naive', res.status);
 
     if (res.status === 200 || res.status === 201) {
       try {
@@ -392,10 +440,14 @@ export function armA(ctx) {
     hashWaitMs: hashWaitMs,
     commitStatus: commitStatus,
     commitAttempts: commitAttempts,
+    commitMs: commitMs,
+    serverTiming: serverTiming,
     putStatus: putStatus,
     putMs: putMs,
     finalizeStatus: finalizeStatus,
     finalizeAttempts: finalizeAttempts,
+    finalizeMs: finalizeMs,
+    failedStatuses: failedStatuses,
     submissionId: submissionId,
     skipFinalize: skipFinalize,
     error: error,

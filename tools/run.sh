@@ -31,9 +31,10 @@ TEACHER_EMAIL="teacher@dd.local"
 PY="$(find_python)"
 
 STAMP="$(date -u +%Y%m%dT%H%M%SZ)"
-RUN_NAME="${STAMP}-${ARM}-n${SIZE}-r${REPEAT}"
-[ "${FAULT}" != "none" ] && RUN_NAME="${RUN_NAME}-${FAULT}"
-[ "${DRYRUN}" = true ] && RUN_NAME="${RUN_NAME}-dry"
+ARM_UPPER="$(echo "${ARM}" | tr '[:lower:]' '[:upper:]')"
+RUN_NAME="${STAMP}_${ARM_UPPER}_${SIZE}_r${REPEAT}"
+[ "${FAULT}" != "none" ] && RUN_NAME="${RUN_NAME}_${FAULT}"
+[ "${DRYRUN}" = true ] && RUN_NAME="${RUN_NAME}_dryrun"
 RUN_DIR="${REPO_ROOT}/results/runs/${RUN_NAME}"
 mkdir -p "${RUN_DIR}"
 echo "Run folder: ${RUN_DIR}"
@@ -91,7 +92,7 @@ copy_to_vm() {
   vm_scp "${REPO_ROOT}/tools/k6/rush.js" "${vm}:${VM_HOME_DIR}/run/rush.js"
   vm_scp "${REPO_ROOT}/tools/k6/lib/flows.js" "${vm}:${VM_HOME_DIR}/run/lib/flows.js"
   vm_scp "${REPO_ROOT}"/tools/k6/files/out/*.bin "${vm}:${VM_HOME_DIR}/files/"
-  printf '%s' "${SEED_PASSWORD}" | vm_ssh "${vm}" "umask 077; cat > ~/${VM_HOME_DIR}/run/pw"
+  vm_put_secret "${vm}" "${VM_HOME_DIR}/run/pw" "${SEED_PASSWORD}"
 }
 pids=()
 for c in "${COHORTS[@]}"; do copy_to_vm "${c}" & pids+=($!); done
@@ -200,15 +201,14 @@ with open(out, "w", encoding="utf-8") as f:
 PYEOF
 rm -f "${SERVICE_JSON}"
 
-# (10) analysis (phase 19 writes tools/analyze.py)
-if [ -f "${REPO_ROOT}/tools/analyze.py" ]; then
-  "${PY}" "$(to_native_path "${REPO_ROOT}/tools/analyze.py")" "$(to_native_path "${RUN_DIR}")"
-else
-  echo "tools/analyze.py does not exist yet (phase 19); skipping analysis."
-fi
+# (10) analysis: exit 3 means arm C misjudged a student (review G3). The bucket is still cleaned
+# below, then run.sh exits with analyze.py's code.
+ANALYZE_EXIT=0
+"${PY}" "$(to_native_path "${REPO_ROOT}/tools/analyze.py")" "$(to_native_path "${RUN_DIR}")" || ANALYZE_EXIT=$?
 
 # (11) remove this run's objects from the bucket (object keys: a/<assignmentId>/...)
 gcloud storage rm --recursive "gs://${BUCKET}/a/${ASSIGNMENT_ID}/" --project="${PROJECT_ID}" 2>&1 \
   | tail -n 3 || echo "No objects to delete (or already gone)."
 
-echo "Run complete: ${RUN_DIR} (counted=${COUNTED})"
+echo "Run complete: ${RUN_DIR} (counted=${COUNTED}, analyze exit ${ANALYZE_EXIT})"
+exit "${ANALYZE_EXIT}"
