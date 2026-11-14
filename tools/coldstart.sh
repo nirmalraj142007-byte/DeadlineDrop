@@ -70,27 +70,31 @@ zero_seconds() {
   printf '%s' "${resp}" | "${PY}" -c "
 import json, sys, time
 from datetime import datetime
-lag, last_request = int(sys.argv[1]), int(sys.argv[2])
+lag, last_request, first = int(sys.argv[1]), int(sys.argv[2]), sys.argv[3] == '1'
 now = time.time()
-pts = []
+total = {}  # instances per minute, summed over the active and idle series (and revisions)
 for ts in json.load(sys.stdin).get('timeSeries', []):
     for p in ts.get('points', []):
         t = datetime.fromisoformat(p['interval']['endTime'].replace('Z', '+00:00')).timestamp()
         v = p['value']
-        pts.append((t, float(v.get('doubleValue', v.get('int64Value', 0)))))
-nonzero = [t for t, v in pts if v > 0]
+        total[t] = total.get(t, 0.0) + float(v.get('doubleValue', v.get('int64Value', 0)))
+nonzero = [t for t, v in total.items() if v > 0]
+if not first:
+    # Our previous sample started an instance; Monitoring reports it minutes later. Until that
+    # instance has been seen, older zero points prove nothing (phase 19 attempt 1 sampled warm).
+    nonzero = [t for t in nonzero if t >= last_request - 60]
+    if not nonzero:
+        print(-1); sys.exit(0)
 if nonzero:
     last_nz = max(nonzero)
-    zeros_after = [t for t, v in pts if v == 0 and t > last_nz]
-    # zero-valued points observed after the last instance
+    zeros_after = [t for t, v in total.items() if v == 0 and t > last_nz]
     print(int(max(zeros_after) - last_nz) if zeros_after else -1)
 elif now - last_request >= lag:
-    # no instance at all in the lookback window, and long enough since our own request
-    # that its instance would have been reported by now
+    # first sample only: no instance in the whole lookback window
     print(int(now - last_request))
 else:
     print(-1)
-" "${INGEST_LAG_S}" "${LAST_REQUEST_S}" | tr -d '\r'
+" "${INGEST_LAG_S}" "${LAST_REQUEST_S}" "${FIRST_SAMPLE}" | tr -d '\r'
 }
 
 echo "== pausing Cloud Scheduler jobs that keep ${SERVICE} warm =="
@@ -103,6 +107,7 @@ LAST_REQUEST_S="$(date +%s)"
 for i in $(seq 1 "${SAMPLES}"); do
   echo "== sample ${i}/${SAMPLES}: waiting for ${ZERO_FOR_S}s at zero instances =="
   waited_from="$(date +%s)"
+  FIRST_SAMPLE=0; [ "${i}" -eq 1 ] && FIRST_SAMPLE=1
   while true; do
     z="$(zero_seconds)"
     if [ "${z}" -ge "${ZERO_FOR_S}" ]; then echo "  zero instances for >= ${z}s"; break; fi
@@ -128,19 +133,26 @@ samples = []
 for line in open(src, encoding="utf-8"):
     at, secs, code, z = line.split()
     samples.append({"at": at, "ms": round(float(secs) * 1000, 1), "httpCode": int(code), "zeroInstancesForS": int(z)})
-ok = [s["ms"] for s in samples if s["httpCode"] == 200]
+# A cold start of this Spring Boot app takes seconds; an answer under WARM_MS means the request hit a
+# live instance, so that sample is flagged and kept out of the median.
+WARM_MS = 1000
+for s in samples:
+    s["likelyWarm"] = s["ms"] < WARM_MS
+ok = [s["ms"] for s in samples if s["httpCode"] == 200 and not s["likelyWarm"]]
 result = {
     "service": "dd-arm-c",
     "url": url + "/api/time",
     "samples": samples,
     "median": round(statistics.median(ok), 1) if ok else None,
+    "coldSamples": len(ok),
     "unit": "ms",
     "method": (
         f"min-instances 0 and Cloud Scheduler jobs dd-drain-c/dd-reconcile-c paused; before each sample, "
         f"poll Cloud Monitoring run.googleapis.com/container/instance_count (REST, gcloud access token) "
         f"until the service has had zero instances for {zero_for} s; then one GET /api/time from the "
         f"operator's machine, timed by curl -w %{{time_total}} (DNS + TCP + TLS + cold start + response). "
-        f"Median over HTTP 200 samples."
+        f"Median over HTTP 200 samples not flagged likelyWarm (< 1000 ms). For samples 2-5 the wait only "
+        f"counts zero points after Monitoring has reported the instance the previous sample started."
     ),
 }
 with open(out, "w", encoding="utf-8") as f:

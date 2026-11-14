@@ -1,0 +1,39 @@
+{
+  "service": "dd-arm-c",
+  "url": "https://dd-arm-c-aheo6nqyga-el.a.run.app/api/time",
+  "samples": [
+    {
+      "at": "2026-11-14T14:27:44Z",
+      "ms": 15291.7,
+      "httpCode": 200,
+      "zeroInstancesForS": 120
+    },
+    {
+      "at": "2026-11-14T14:28:04Z",
+      "ms": 139.8,
+      "httpCode": 200,
+      "zeroInstancesForS": 120
+    },
+    {
+      "at": "2026-11-14T14:28:08Z",
+      "ms": 175.9,
+      "httpCode": 200,
+      "zeroInstancesForS": 120
+    },
+    {
+      "at": "2026-11-14T14:28:11Z",
+      "ms": 140.8,
+      "httpCode": 200,
+      "zeroInstancesForS": 120
+    },
+    {
+      "at": "2026-11-14T14:28:15Z",
+      "ms": 128.7,
+      "httpCode": 200,
+      "zeroInstancesForS": 120
+    }
+  ],
+  "median": 140.8,
+  "unit": "ms",
+  "method": "min-instances 0 and Cloud Scheduler jobs dd-drain-c/dd-reconcile-c paused; before each sample, poll Cloud Monitoring run.googleapis.com/container/instance_count (REST, gcloud access token) until the service has had zero instances for 120 s; then one GET /api/time from the operator's machine, timed by curl -w %{time_total} (DNS + TCP + TLS + cold start + response). Median over HTTP 200 samples."
+}
