@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Phase 19 steps 5b-5e, run unattended on the controller VM (tools/vm/controller.sh start):
+# Phase 19 steps 5b-5e, run unattended from the operator's machine (or, parked until phase 32, from the
+# controller VM via tools/vm/controller.sh start):
 #   b. sanity from each VM          c. 100-student dry runs a, b, c (stop if arm C exits 3)
 #   d. 1,000-student arm C dry run with free -m sampled on each VM every 5 s
 #   e. shaping cleared, then tools/coldstart.sh
@@ -20,6 +21,7 @@ LOG="${LOG_DIR}/progress.log"
 MEM_DIR="${REPO_ROOT}/results/dryrun-1000"
 mkdir -p "${LOG_DIR}" "${MEM_DIR}"
 export SCHEDULE_MODE=placeholder
+PY="$(find_python)"
 
 say() { echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) $*" | tee -a "${LOG}"; }
 stop() { say "STOPPED: $*"; exit 1; }
@@ -70,7 +72,7 @@ for c in "${COHORTS[@]}"; do
   vm_ssh "${vm}" 'kill $(cat ~/dd/mem.pid) 2>/dev/null; true' >/dev/null 2>&1
   vm_scp "${vm}:dd/mem.log" "${MEM_DIR}/mem-${c}.log" >/dev/null 2>&1 || stop "fetching mem.log from ${vm}"
 done
-python3 - "${MEM_DIR}" "${COHORTS[@]}" > "${MEM_DIR}/vm-memory.txt" <<'PYEOF'
+"${PY}" - "$(to_native_path "${MEM_DIR}")" "${COHORTS[@]}" > "${MEM_DIR}/vm-memory.txt" <<'PYEOF'
 import sys
 from pathlib import Path
 d, cohorts = Path(sys.argv[1]), sys.argv[2:]
@@ -102,6 +104,6 @@ say "run-c-1000 exit ${RC1000} (a dry run: reported, not a stop condition)"
 for c in "${COHORTS[@]}"; do vm_ssh "$(vm_name "${c}")" "sudo bash ~/dd/shape.sh clear" >/dev/null 2>&1; done
 say "shaping cleared on all VMs"
 step coldstart bash "${REPO_ROOT}/tools/coldstart.sh" || stop "coldstart.sh failed (results/remote/coldstart.out)"
-python3 -c "import json; r=json.load(open('${REPO_ROOT}/results/coldstart.json')); print('  coldstart median', r['median'], 'ms;', [s['ms'] for s in r['samples']])" | tee -a "${LOG}"
+"${PY}" -c "import json; r=json.load(open(r'$(to_native_path "${REPO_ROOT}/results/coldstart.json")')); print('  coldstart median', r['median'], 'ms;', [s['ms'] for s in r['samples']])" | tee -a "${LOG}"
 
 say "DONE"
