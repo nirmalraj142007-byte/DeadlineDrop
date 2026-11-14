@@ -1,0 +1,10 @@
+Sanity assignment 4a95ba6a-25a2-476b-86cf-a3d743b189a4 on https://dd-arm-c-aheo6nqyga-el.a.run.app
+sanity.js                 | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  93%sanity.js                 | 4 kB |   4.3 kB/s | ETA: 00:00:00 | 100%
+sanity.js                 | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  93%sanity.js                 | 4 kB |   4.3 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  31%flows.js                  | 12 kB |  12.6 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  31%flows.js                  | 12 kB |  12.6 kB/s | ETA: 00:00:00 | 100%
+sanity.js                 | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  93%sanity.js                 | 4 kB |   4.3 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  31%flows.js                  | 12 kB |  12.6 kB/s | ETA: 00:00:00 | 100%
+slow: PASS throughput 0.945 Mbit/s vs 1.0 (-5.5%, limit +/-10%); RTT 81 ms vs 80.0 (+1.0 ms, limit +/-10 ms)
+medium: PASS throughput 3.774 Mbit/s vs 4.0 (-5.6%, limit +/-10%); RTT 61.1 ms vs 60.0 (+1.1 ms, limit +/-10 ms)
+fast: PASS throughput 18.29 Mbit/s vs 20.0 (-8.6%, limit +/-10%); RTT 41.2 ms vs 40.0 (+1.2 ms, limit +/-10 ms)

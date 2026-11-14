@@ -1,0 +1,26 @@
+2026-11-14T08:51:06Z batch started on DESKTOP-T7TBPCV, commit ce57473
+2026-11-14T08:51:43Z ssh to all VMs ok
+2026-11-14T08:51:43Z START sanity: bash /c/dev/deadlinedrop/tools/vm/sanity.sh
+2026-11-14T08:57:26Z END sanity: exit 0
+2026-11-14T08:57:27Z   slow: PASS throughput 0.945 Mbit/s vs 1.0 (-5.5%, limit +/-10%); RTT 81 ms vs 80.0 (+1.0 ms, limit +/-10 ms)
+2026-11-14T08:57:27Z   medium: PASS throughput 3.774 Mbit/s vs 4.0 (-5.6%, limit +/-10%); RTT 61.1 ms vs 60.0 (+1.1 ms, limit +/-10 ms)
+2026-11-14T08:57:27Z   fast: PASS throughput 18.29 Mbit/s vs 20.0 (-8.6%, limit +/-10%); RTT 41.2 ms vs 40.0 (+1.2 ms, limit +/-10 ms)
+2026-11-14T08:57:28Z START run-a-100: bash /c/dev/deadlinedrop/tools/run.sh a 100 1 none --dryrun
+2026-11-14T09:24:56Z END run-a-100: exit 0
+    onTime_onTime 72  onTime_lateOrMissing 13  late_late 10  late_onTime 0  rate 0.1529
+    lost 0  duplicates 0  pending 0  connectionErrors 0
+  C:\Users\Nirmalraj\AppData\Local\Google\Cloud SDK\google-cloud-sdk\lib\third_party\google\api_core\_python_version_support.py:266: FutureWarning: You are using a Python version (3.11.9) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+    warnings.warn(message, FutureWarning)
+  ................................
+  Run complete: /c/dev/deadlinedrop/results/runs/20261114T085729Z_A_100_r1_dryrun (counted=false, analyze exit 0)
+2026-11-14T09:24:57Z START run-b-100: bash /c/dev/deadlinedrop/tools/run.sh b 100 1 none --dryrun
+2026-11-14T09:51:54Z END run-b-100: exit 0
+    onTime_onTime 72  onTime_lateOrMissing 13  late_late 10  late_onTime 0  rate 0.1529
+    lost 0  duplicates 0  pending 0  connectionErrors 0
+  C:\Users\Nirmalraj\AppData\Local\Google\Cloud SDK\google-cloud-sdk\lib\third_party\google\api_core\_python_version_support.py:266: FutureWarning: You are using a Python version (3.11.9) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+    warnings.warn(message, FutureWarning)
+  ...............................
+  Run complete: /c/dev/deadlinedrop/results/runs/20261114T092459Z_B_100_r1_dryrun (counted=false, analyze exit 0)
+2026-11-14T09:51:55Z START run-c-100: bash /c/dev/deadlinedrop/tools/run.sh c 100 1 none --dryrun
+2026-11-14T10:16:06Z END run-c-100: exit 1
+2026-11-14T10:16:07Z STOPPED: run.sh c 100 exited 1 (results/remote/run-c-100.out)

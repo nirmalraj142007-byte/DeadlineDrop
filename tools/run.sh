@@ -118,10 +118,13 @@ fi
 # (5) start k6 on each VM that has students (in parallel: each gcloud ssh takes seconds)
 start_k6() {
   local vm; vm="$(vm_name "$1")"
-  vm_ssh "${vm}" "cd ~/${VM_HOME_DIR}/run && nohup k6 run --console-output vu-log.ndjson --summary-export summary.json \
+  # setsid -f: k6 gets its own session, so the SSH call returns at once. With "nohup k6 ... &" the call
+  # stayed open until k6 exited (measured: 38 s for a 25 s script), and a network blip on the
+  # operator's link during the run then looked like a failed start (phase 19 arm C attempt).
+  vm_ssh "${vm}" "cd ~/${VM_HOME_DIR}/run && setsid -f k6 run --console-output vu-log.ndjson --summary-export summary.json \
     -e ARM=${ARM} -e BASE_URL=${BASE} -e SHARD=\$PWD/shard.json -e T_EPOCH_MS=${T_EPOCH_MS} -e GRACE_S=${GRACE_S} \
     -e ASSIGNMENT_ID=${ASSIGNMENT_ID} -e PASSWORD=\"\$(cat pw)\" -e FILES_DIR=\$HOME/${VM_HOME_DIR}/files \
-    -e COHORT_MINUTES=${COHORT_MIN} rush.js > k6.out 2>&1 < /dev/null &" >/dev/null
+    -e COHORT_MINUTES=${COHORT_MIN} rush.js > k6.out 2>&1 < /dev/null" >/dev/null
 }
 STARTED=()
 pids=()

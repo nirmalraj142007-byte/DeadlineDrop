@@ -1,0 +1,52 @@
+Run folder: /c/dev/deadlinedrop/results/runs/20261114T085729Z_A_100_r1_dryrun
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261114T085729Z_A_100_r1_dryrun/preflight.json
+slow: skew 35.0 ms (best rtt 86 ms), warm median 70.1 ms
+medium: skew 35.5 ms (best rtt 89 ms), warm median 72.9 ms
+fast: skew 36.0 ms (best rtt 90 ms), warm median 71.4 ms
+PREFLIGHT OK for arm a
+Generated schedule with 100 students in C:\dev\deadlinedrop\results\runs\20261114T085729Z_A_100_r1_dryrun\schedule:
+  Classes: {'ON_TIME': 85, 'MARGIN': 5, 'LATE': 10}
+  Cohorts: {'slow': 43, 'medium': 34, 'fast': 23}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  68%shard-fast.json           | 5 kB |   5.8 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:01 |  46%shard-medium.json         | 8 kB |   8.6 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:01 |  37%shard-slow.json           | 10 kB |  10.8 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  98%rush.js                   | 4 kB |   4.1 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  98%rush.js                   | 4 kB |   4.1 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  31%flows.js                  | 12 kB |  12.6 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  98%rush.js                   | 4 kB |   4.1 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  31%flows.js                  | 12 kB |  12.6 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  31%flows.js                  | 12 kB |  12.6 kB/s | ETA: 00:00:00 | 100%
+Assignment 97bcdfce-9b3e-47f8-b9e0-8e9d73712b5f, deadline T=2026-11-14T09:15:21Z, grace 300s
+dd-k6-slow: starting k6 (43 students)
+dd-k6-medium: starting k6 (34 students)
+dd-k6-fast: starting k6 (23 students)
+k6 started on: slow medium fast (-954s before the earliest click)
+Waiting 66s until T + grace + 2 min
+vu-log-slow.ndjson        | 20 kB |  20.5 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 15 kB |  15.4 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-slow.out               | 128 kB |  64.0 kB/s | ETA: 00:00:00 |  91%k6-slow.out               | 139 kB |  69.7 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 16 kB |  16.3 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 12 kB |  12.8 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:02 |  26%k6-medium.out             | 120 kB | 120.5 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 10 kB |  10.9 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 9 kB |   9.7 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:02 |  28%k6-fast.out               | 112 kB | 112.6 kB/s | ETA: 00:00:00 | 100%
+arm A: 100 students (on time 85, margin 5, late 10)
+  onTime_onTime 72  onTime_lateOrMissing 13  late_late 10  late_onTime 0  rate 0.1529
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+C:\Users\Nirmalraj\AppData\Local\Google\Cloud SDK\google-cloud-sdk\lib\third_party\google\api_core\_python_version_support.py:266: FutureWarning: You are using a Python version (3.11.9) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261114T085729Z_A_100_r1_dryrun (counted=false, analyze exit 0)

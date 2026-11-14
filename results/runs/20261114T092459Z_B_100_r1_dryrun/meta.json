@@ -1,0 +1,35 @@
+{
+  "arm": "b",
+  "size": 100,
+  "repeat": 1,
+  "fault": "none",
+  "counted": false,
+  "assignmentId": "ef5ef203-ffc7-4e15-8e2c-5c46fd8679fe",
+  "T": "2026-11-14T09:42:21Z",
+  "cohortMinutes": 10.0,
+  "graceS": 300,
+  "maxInstances": 3,
+  "minInstances": 0,
+  "cpu": "1",
+  "memory": "1Gi",
+  "concurrency": 80,
+  "pool": 5,
+  "maxConnections": 50,
+  "sqlTier": "db-g1-small",
+  "region": "asia-south1",
+  "skewMs": {
+    "dd-k6-slow": 35.0,
+    "dd-k6-medium": 36.0,
+    "dd-k6-fast": 34.0
+  },
+  "k6Version": "k6 v2.3.0 (commit/e088784614, go1.26.8, linux/amd64)",
+  "imageDigest": "asia-south1-docker.pkg.dev/deadlinedrop-nirmal/dd/app@sha256:6cef313074054480c04778583f21e2e629e94eff57f33ec47d20d03d4fd4397c",
+  "gitSha": "ce57473dfa39b37a380894c3018650ac3563746b-dirty",
+  "scheduleMode": "placeholder",
+  "scheduleSeed": 176016261,
+  "vmNames": [
+    "dd-k6-slow",
+    "dd-k6-medium",
+    "dd-k6-fast"
+  ]
+}

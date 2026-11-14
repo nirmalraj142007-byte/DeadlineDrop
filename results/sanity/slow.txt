@@ -1,38 +1,38 @@
-# k6 sanity from dd-k6-slow (cohort slow) against https://dd-arm-c-aheo6nqyga-el.a.run.app, 2026-11-13T14:48:17Z
-# profile: rate 1mbit, delay 80ms; assignment a38fe9df-c4cb-4c5a-9c4e-7485b061301e
+# k6 sanity from dd-k6-slow (cohort slow) against https://dd-arm-c-aheo6nqyga-el.a.run.app, 2026-11-14T08:57:21Z
+# profile: rate 1mbit, delay 80ms; assignment 4a95ba6a-25a2-476b-86cf-a3d743b189a4
 ## shaping
 Shaping ens4 as 'slow': rate 1mbit, delay 80ms, loss 1%
 qdisc netem 1: root refcnt 3 limit 100000 delay 80ms loss 1%
 qdisc fq 10: parent 1:1 limit 10000p flow_limit 100p buckets 1024 orphan_mask 1023 quantum 2948b initial_quantum 14740b maxrate 1Mbit low_rate_threshold 550Kbit refill_delay 40ms timer_slack 10us horizon 10s horizon_drop 
 ## k6
 Sanity arm C: file 20971520 bytes
-  TCP connect RTT samples (ms): 81.0, 81.1, 81.0, 81.1, 81.1, 81.0, 81.2
-  RTT median: 81.1 ms
-  Commit request: 570.3 ms (Server-Timing: app;dur=474, db;dur=38, sign;dur=431)
-  PUT: 176960 ms, throughput 0.948 Mbit/s
+  TCP connect RTT samples (ms): 81.1, 81.1, 80.8, 81.0, 81.0, 80.8, 81.7
+  RTT median: 81.0 ms
+  Commit request: 546.2 ms (Server-Timing: app;dur=450, db;dur=36, sign;dur=409)
+  PUT: 177445 ms, throughput 0.945 Mbit/s
   Finalize status: 200
-SANITY {"rttMs":81.1,"rttSamplesMs":[81,81.1,81,81.1,81.1,81,81.2],"throughputMbps":0.948,"putMs":176960,"commitMs":570.3,"serverTiming":"app;dur=474, db;dur=38, sign;dur=431"}
+SANITY {"rttMs":81,"rttSamplesMs":[81.1,81.1,80.8,81,81,80.8,81.7],"throughputMbps":0.945,"putMs":177445,"commitMs":546.2,"serverTiming":"app;dur=450, db;dur=36, sign;dur=409"}
 
 
   â–ˆ TOTAL RESULTS 
 
     HTTP
-    http_req_duration..............: avg=16.21s min=94.1ms med=96.75ms max=2m56s p(90)=570.33ms p(95)=1m28s
-      { expected_response:true }...: avg=16.21s min=94.1ms med=96.75ms max=2m56s p(90)=570.33ms p(95)=1m28s
+    http_req_duration..............: avg=16.21s min=91.95ms med=94.04ms max=2m56s p(90)=546.15ms p(95)=1m28s
+      { expected_response:true }...: avg=16.21s min=91.95ms med=94.04ms max=2m56s p(90)=546.15ms p(95)=1m28s
     http_req_failed................: 0.00% 0 out of 11
-    http_reqs......................: 11    0.060955/s
+    http_reqs......................: 11    0.060789/s
 
     EXECUTION
-    iteration_duration.............: avg=3m0s   min=3m0s   med=3m0s    max=3m0s  p(90)=3m0s     p(95)=3m0s 
-    iterations.....................: 1     0.005541/s
+    iteration_duration.............: avg=3m0s   min=3m0s    med=3m0s    max=3m0s  p(90)=3m0s     p(95)=3m0s 
+    iterations.....................: 1     0.005526/s
     vus............................: 1     min=1       max=1
     vus_max........................: 1     min=1       max=1
 
     NETWORK
-    data_received..................: 94 kB 522 B/s
-    data_sent......................: 21 MB 117 kB/s
+    data_received..................: 93 kB 515 B/s
+    data_sent......................: 21 MB 116 kB/s
 
 
 
 ## verdict
-PASS throughput 0.948 Mbit/s vs 1.0 (-5.2%, limit ±10%); RTT 81.1 ms vs 80.0 (+1.1 ms, limit ±10 ms)
+PASS throughput 0.945 Mbit/s vs 1.0 (-5.5%, limit +/-10%); RTT 81 ms vs 80.0 (+1.0 ms, limit +/-10 ms)

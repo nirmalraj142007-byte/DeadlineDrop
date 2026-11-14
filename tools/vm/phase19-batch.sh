@@ -44,12 +44,24 @@ for c in "${COHORTS[@]}"; do
 done
 say "ssh to all VMs ok"
 
+# START_AT=sanity|a|b|c|1000|coldstart resumes a stopped batch at that step (default: sanity).
+ORDER=(sanity a b c 1000 coldstart)
+START_AT="${START_AT:-sanity}"
+start_idx=-1
+for i in "${!ORDER[@]}"; do [ "${ORDER[$i]}" = "${START_AT}" ] && start_idx=$i; done
+[ "${start_idx}" -ge 0 ] || stop "START_AT must be one of: ${ORDER[*]}"
+want() { local i; for i in "${!ORDER[@]}"; do [ "${ORDER[$i]}" = "$1" ] && [ "$i" -ge "${start_idx}" ] && return 0; done; return 1; }
+[ "${START_AT}" = sanity ] || say "resuming at ${START_AT}"
+
 # ---- b. sanity
-step sanity bash "${SCRIPT_DIR}/sanity.sh" || stop "sanity outside limits (results/sanity/*.txt)"
-for c in "${COHORTS[@]}"; do say "  ${c}: $(tail -n 1 "${REPO_ROOT}/results/sanity/${c}.txt")"; done
+if want sanity; then
+  step sanity bash "${SCRIPT_DIR}/sanity.sh" || stop "sanity outside limits (results/sanity/*.txt)"
+  for c in "${COHORTS[@]}"; do say "  ${c}: $(tail -n 1 "${REPO_ROOT}/results/sanity/${c}.txt")"; done
+fi
 
 # ---- c. 100-student dry runs
 for arm in a b c; do
+  want "${arm}" || continue
   step "run-${arm}-100" bash "${REPO_ROOT}/tools/run.sh" "${arm}" 100 1 none --dryrun
   rc=$?
   if [ "${arm}" = c ] && [ "${rc}" -eq 3 ]; then
@@ -62,6 +74,7 @@ for arm in a b c; do
 done
 
 # ---- d. 1,000-student arm C dry run with memory sampling
+if want 1000; then
 SAMPLER='nohup bash -c "while :; do echo \"== \$(date -u +%Y-%m-%dT%H:%M:%SZ)\"; free -m; sleep 5; done" > ~/dd/mem.log 2>&1 < /dev/null & echo $! > ~/dd/mem.pid'
 for c in "${COHORTS[@]}"; do vm_ssh "$(vm_name "${c}")" "mkdir -p ~/dd; ${SAMPLER}" >/dev/null 2>&1 || stop "memory sampler on ${c}"; done
 say "memory samplers started"
@@ -99,6 +112,7 @@ rm -f "${MEM_DIR}"/mem-*.log
 tail -n 3 "${MEM_DIR}/vm-memory.txt" | sed 's/^/  /' | tee -a "${LOG}"
 tail -n 6 "${LOG_DIR}/run-c-1000.out" | sed 's/^/  /' | tee -a "${LOG}"
 say "run-c-1000 exit ${RC1000} (a dry run: reported, not a stop condition)"
+fi
 
 # ---- e. cold start, from an unshaped link
 for c in "${COHORTS[@]}"; do vm_ssh "$(vm_name "${c}")" "sudo bash ~/dd/shape.sh clear" >/dev/null 2>&1; done

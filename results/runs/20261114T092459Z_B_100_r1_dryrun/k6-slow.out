@@ -1,0 +1,3180 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: rush.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 43 max VUs, 32m12s max duration (incl. graceful stop):
+              * rush: 1 iterations for each of 43 VUs (maxDuration: 31m42s, gracefulStop: 30s)
+
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+running (00m10.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m00.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m11.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m01.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m12.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m02.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m13.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m03.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m14.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m04.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m15.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m05.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m16.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m06.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m17.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m07.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m18.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m08.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m19.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m09.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m20.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m10.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m21.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m11.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m22.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m12.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m23.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m13.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m24.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m14.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m25.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m15.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m26.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m16.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m27.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m17.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m28.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m18.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m29.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m19.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m30.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m20.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m31.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m21.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m32.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m22.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m33.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m23.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m34.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m24.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m35.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m25.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m36.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m26.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m37.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m27.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m38.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m28.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m39.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m29.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m40.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m30.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m41.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m31.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m42.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m32.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m43.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m33.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m44.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m34.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m45.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m35.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m46.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m36.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m47.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m37.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m48.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m38.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m49.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m39.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m50.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m40.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m51.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m41.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m52.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m42.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m53.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m43.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m54.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m44.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m55.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m45.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m56.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m46.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m57.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m47.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m58.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m48.3s/31m42s  00/43 iters, 1 per VU
+
+running (00m59.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m49.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m00.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m50.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m01.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m51.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m02.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m52.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m03.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m53.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m04.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m54.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m05.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m55.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m06.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m56.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m07.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m57.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m08.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m58.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m09.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  00m59.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m10.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m00.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m11.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m01.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m12.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m02.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m13.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m03.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m14.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m04.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m15.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m05.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m16.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m06.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m17.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m07.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m18.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m08.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m19.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m09.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m20.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m10.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m21.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m11.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m22.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m12.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m23.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m13.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m24.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m14.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m25.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m15.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m26.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m16.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m27.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m17.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m28.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m18.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m29.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m19.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m30.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m20.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m31.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m21.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m32.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m22.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m33.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m23.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m34.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m24.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m35.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m25.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m36.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m26.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m37.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m27.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m38.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m28.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m39.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m29.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m40.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m30.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m41.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m31.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m42.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m32.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m43.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m33.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m44.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m34.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m45.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m35.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m46.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m36.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m47.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m37.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m48.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m38.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m49.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m39.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m50.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m40.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m51.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m41.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m52.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m42.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m53.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m43.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m54.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m44.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m55.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m45.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m56.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m46.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m57.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m47.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m58.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m48.3s/31m42s  00/43 iters, 1 per VU
+
+running (01m59.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m49.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m00.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m50.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m01.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m51.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m02.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m52.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m03.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m53.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m04.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m54.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m05.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m55.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m06.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m56.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m07.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m57.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m08.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m58.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m09.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  01m59.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m10.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m00.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m11.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m01.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m12.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m02.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m13.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m03.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m14.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m04.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m15.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m05.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m16.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m06.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m17.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m07.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m18.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m08.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m19.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m09.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m20.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m10.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m21.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m11.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m22.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m12.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m23.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m13.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m24.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m14.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m25.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m15.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m26.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m16.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m27.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m17.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m28.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m18.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m29.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m19.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m30.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m20.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m31.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m21.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m32.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m22.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m33.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m23.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m34.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m24.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m35.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m25.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m36.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m26.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m37.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m27.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m38.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m28.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m39.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m29.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m40.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m30.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m41.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m31.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m42.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m32.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m43.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m33.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m44.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m34.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m45.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m35.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m46.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m36.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m47.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m37.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m48.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m38.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m49.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m39.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m50.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m40.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m51.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m41.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m52.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m42.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m53.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m43.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m54.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m44.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m55.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m45.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m56.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m46.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m57.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m47.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m58.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m48.3s/31m42s  00/43 iters, 1 per VU
+
+running (02m59.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m49.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m00.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m50.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m01.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m51.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m02.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m52.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m03.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m53.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m04.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m54.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m05.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m55.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m06.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m56.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m07.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m57.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m08.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m58.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m09.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  02m59.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m10.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m00.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m11.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m01.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m12.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m02.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m13.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m03.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m14.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m04.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m15.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m05.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m16.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m06.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m17.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m07.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m18.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m08.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m19.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m09.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m20.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m10.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m21.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m11.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m22.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m12.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m23.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m13.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m24.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m14.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m25.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m15.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m26.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m16.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m27.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m17.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m28.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m18.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m29.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m19.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m30.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m20.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m31.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m21.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m32.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m22.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m33.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m23.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m34.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m24.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m35.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m25.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m36.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m26.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m37.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m27.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m38.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m28.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m39.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m29.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m40.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m30.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m41.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m31.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m42.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m32.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m43.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m33.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m44.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m34.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m45.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m35.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m46.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m36.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m47.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m37.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m48.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m38.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m49.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m39.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m50.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m40.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m51.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m41.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m52.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m42.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m53.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m43.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m54.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m44.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m55.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m45.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m56.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m46.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m57.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m47.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m58.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m48.3s/31m42s  00/43 iters, 1 per VU
+
+running (03m59.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m49.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m00.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m50.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m01.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m51.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m02.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m52.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m03.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m53.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m04.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m54.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m05.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m55.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m06.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m56.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m07.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m57.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m08.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m58.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m09.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  03m59.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m10.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m00.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m11.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m01.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m12.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m02.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m13.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m03.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m14.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m04.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m15.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m05.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m16.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m06.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m17.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m07.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m18.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m08.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m19.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m09.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m20.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m10.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m21.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m11.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m22.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m12.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m23.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m13.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m24.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m14.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m25.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m15.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m26.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m16.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m27.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m17.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m28.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m18.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m29.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m19.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m30.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m20.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m31.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m21.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m32.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m22.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m33.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m23.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m34.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m24.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m35.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m25.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m36.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m26.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m37.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m27.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m38.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m28.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m39.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m29.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m40.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m30.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m41.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m31.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m42.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m32.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m43.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m33.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m44.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m34.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m45.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m35.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m46.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m36.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m47.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m37.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m48.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m38.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m49.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m39.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m50.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m40.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m51.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m41.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m52.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m42.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m53.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m43.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m54.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m44.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m55.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m45.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m56.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m46.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m57.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m47.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m58.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m48.3s/31m42s  00/43 iters, 1 per VU
+
+running (04m59.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m49.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m00.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m50.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m01.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m51.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m02.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m52.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m03.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m53.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m04.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m54.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m05.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m55.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m06.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m56.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m07.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m57.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m08.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m58.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m09.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  04m59.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m10.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m00.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m11.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m01.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m12.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m02.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m13.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m03.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m14.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m04.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m15.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m05.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m16.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m06.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m17.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m07.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m18.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m08.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m19.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m09.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m20.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m10.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m21.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m11.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m22.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m12.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m23.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m13.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m24.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m14.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m25.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m15.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m26.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m16.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m27.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m17.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m28.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m18.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m29.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m19.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m30.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m20.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m31.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m21.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m32.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m22.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m33.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m23.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m34.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m24.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m35.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m25.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m36.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m26.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m37.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m27.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m38.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m28.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m39.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m29.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m40.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m30.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m41.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m31.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m42.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m32.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m43.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m33.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m44.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m34.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m45.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m35.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m46.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m36.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m47.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m37.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m48.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m38.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m49.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m39.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m50.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m40.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m51.9s), 43/43 VUs, 0 complete and 0 interrupted iterations
+rush   [   0% ] 43 VUs  05m41.3s/31m42s  00/43 iters, 1 per VU
+
+running (05m52.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  05m42.3s/31m42s  01/43 iters, 1 per VU
+
+running (05m53.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  05m43.3s/31m42s  01/43 iters, 1 per VU
+
+running (05m54.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  05m44.3s/31m42s  01/43 iters, 1 per VU
+
+running (05m55.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  05m45.3s/31m42s  01/43 iters, 1 per VU
+
+running (05m56.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  05m46.3s/31m42s  01/43 iters, 1 per VU
+
+running (05m57.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  05m47.3s/31m42s  01/43 iters, 1 per VU
+
+running (05m58.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  05m48.3s/31m42s  01/43 iters, 1 per VU
+
+running (05m59.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  05m49.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m00.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  05m50.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m01.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  05m51.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m02.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  05m52.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m03.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  05m53.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m04.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  05m54.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m05.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  05m55.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m06.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  05m56.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m07.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  05m57.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m08.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  05m58.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m09.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  05m59.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m10.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m00.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m11.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m01.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m12.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m02.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m13.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m03.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m14.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m04.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m15.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m05.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m16.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m06.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m17.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m07.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m18.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m08.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m19.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m09.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m20.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m10.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m21.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m11.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m22.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m12.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m23.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m13.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m24.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m14.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m25.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m15.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m26.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m16.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m27.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m17.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m28.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m18.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m29.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m19.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m30.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m20.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m31.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m21.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m32.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m22.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m33.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m23.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m34.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m24.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m35.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m25.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m36.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m26.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m37.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m27.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m38.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m28.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m39.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m29.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m40.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m30.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m41.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m31.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m42.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m32.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m43.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m33.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m44.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m34.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m45.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m35.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m46.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m36.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m47.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m37.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m48.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m38.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m49.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m39.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m50.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m40.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m51.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m41.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m52.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m42.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m53.9s), 42/43 VUs, 1 complete and 0 interrupted iterations
+rush   [   2% ] 43 VUs  06m43.3s/31m42s  01/43 iters, 1 per VU
+
+running (06m54.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  06m44.3s/31m42s  02/43 iters, 1 per VU
+
+running (06m55.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  06m45.3s/31m42s  02/43 iters, 1 per VU
+
+running (06m56.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  06m46.3s/31m42s  02/43 iters, 1 per VU
+
+running (06m57.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  06m47.3s/31m42s  02/43 iters, 1 per VU
+
+running (06m58.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  06m48.3s/31m42s  02/43 iters, 1 per VU
+
+running (06m59.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  06m49.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m00.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  06m50.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m01.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  06m51.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m02.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  06m52.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m03.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  06m53.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m04.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  06m54.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m05.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  06m55.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m06.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  06m56.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m07.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  06m57.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m08.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  06m58.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m09.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  06m59.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m10.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m00.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m11.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m01.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m12.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m02.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m13.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m03.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m14.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m04.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m15.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m05.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m16.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m06.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m17.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m07.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m18.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m08.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m19.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m09.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m20.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m10.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m21.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m11.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m22.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m12.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m23.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m13.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m24.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m14.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m25.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m15.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m26.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m16.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m27.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m17.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m28.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m18.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m29.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m19.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m30.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m20.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m31.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m21.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m32.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m22.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m33.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m23.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m34.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m24.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m35.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m25.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m36.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m26.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m37.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m27.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m38.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m28.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m39.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m29.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m40.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m30.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m41.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m31.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m42.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m32.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m43.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m33.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m44.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m34.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m45.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m35.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m46.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m36.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m47.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m37.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m48.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m38.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m49.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m39.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m50.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m40.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m51.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m41.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m52.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m42.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m53.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m43.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m54.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m44.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m55.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m45.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m56.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m46.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m57.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m47.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m58.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m48.3s/31m42s  02/43 iters, 1 per VU
+
+running (07m59.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m49.3s/31m42s  02/43 iters, 1 per VU
+
+running (08m00.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m50.3s/31m42s  02/43 iters, 1 per VU
+
+running (08m01.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m51.3s/31m42s  02/43 iters, 1 per VU
+
+running (08m02.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m52.3s/31m42s  02/43 iters, 1 per VU
+
+running (08m03.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m53.3s/31m42s  02/43 iters, 1 per VU
+
+running (08m04.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m54.3s/31m42s  02/43 iters, 1 per VU
+
+running (08m05.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m55.3s/31m42s  02/43 iters, 1 per VU
+
+running (08m06.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m56.3s/31m42s  02/43 iters, 1 per VU
+
+running (08m07.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m57.3s/31m42s  02/43 iters, 1 per VU
+
+running (08m08.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m58.3s/31m42s  02/43 iters, 1 per VU
+
+running (08m09.9s), 41/43 VUs, 2 complete and 0 interrupted iterations
+rush   [   5% ] 43 VUs  07m59.3s/31m42s  02/43 iters, 1 per VU
+
+running (08m10.9s), 40/43 VUs, 3 complete and 0 interrupted iterations
+rush   [   7% ] 43 VUs  08m00.3s/31m42s  03/43 iters, 1 per VU
+
+running (08m11.9s), 40/43 VUs, 3 complete and 0 interrupted iterations
+rush   [   7% ] 43 VUs  08m01.3s/31m42s  03/43 iters, 1 per VU
+
+running (08m12.9s), 40/43 VUs, 3 complete and 0 interrupted iterations
+rush   [   7% ] 43 VUs  08m02.3s/31m42s  03/43 iters, 1 per VU
+
+running (08m13.9s), 40/43 VUs, 3 complete and 0 interrupted iterations
+rush   [   7% ] 43 VUs  08m03.3s/31m42s  03/43 iters, 1 per VU
+
+running (08m14.9s), 40/43 VUs, 3 complete and 0 interrupted iterations
+rush   [   7% ] 43 VUs  08m04.3s/31m42s  03/43 iters, 1 per VU
+
+running (08m15.9s), 40/43 VUs, 3 complete and 0 interrupted iterations
+rush   [   7% ] 43 VUs  08m05.3s/31m42s  03/43 iters, 1 per VU
+
+running (08m16.9s), 40/43 VUs, 3 complete and 0 interrupted iterations
+rush   [   7% ] 43 VUs  08m06.3s/31m42s  03/43 iters, 1 per VU
+
+running (08m17.9s), 40/43 VUs, 3 complete and 0 interrupted iterations
+rush   [   7% ] 43 VUs  08m07.3s/31m42s  03/43 iters, 1 per VU
+
+running (08m18.9s), 40/43 VUs, 3 complete and 0 interrupted iterations
+rush   [   7% ] 43 VUs  08m08.3s/31m42s  03/43 iters, 1 per VU
+
+running (08m19.9s), 40/43 VUs, 3 complete and 0 interrupted iterations
+rush   [   7% ] 43 VUs  08m09.3s/31m42s  03/43 iters, 1 per VU
+
+running (08m20.9s), 40/43 VUs, 3 complete and 0 interrupted iterations
+rush   [   7% ] 43 VUs  08m10.3s/31m42s  03/43 iters, 1 per VU
+
+running (08m21.9s), 40/43 VUs, 3 complete and 0 interrupted iterations
+rush   [   7% ] 43 VUs  08m11.3s/31m42s  03/43 iters, 1 per VU
+
+running (08m22.9s), 40/43 VUs, 3 complete and 0 interrupted iterations
+rush   [   7% ] 43 VUs  08m12.3s/31m42s  03/43 iters, 1 per VU
+
+running (08m23.9s), 40/43 VUs, 3 complete and 0 interrupted iterations
+rush   [   7% ] 43 VUs  08m13.3s/31m42s  03/43 iters, 1 per VU
+
+running (08m24.9s), 40/43 VUs, 3 complete and 0 interrupted iterations
+rush   [   7% ] 43 VUs  08m14.3s/31m42s  03/43 iters, 1 per VU
+
+running (08m25.9s), 40/43 VUs, 3 complete and 0 interrupted iterations
+rush   [   7% ] 43 VUs  08m15.3s/31m42s  03/43 iters, 1 per VU
+
+running (08m26.9s), 40/43 VUs, 3 complete and 0 interrupted iterations
+rush   [   7% ] 43 VUs  08m16.3s/31m42s  03/43 iters, 1 per VU
+
+running (08m27.9s), 40/43 VUs, 3 complete and 0 interrupted iterations
+rush   [   7% ] 43 VUs  08m17.3s/31m42s  03/43 iters, 1 per VU
+
+running (08m28.9s), 39/43 VUs, 4 complete and 0 interrupted iterations
+rush   [   9% ] 43 VUs  08m18.3s/31m42s  04/43 iters, 1 per VU
+
+running (08m29.9s), 39/43 VUs, 4 complete and 0 interrupted iterations
+rush   [   9% ] 43 VUs  08m19.3s/31m42s  04/43 iters, 1 per VU
+
+running (08m30.9s), 39/43 VUs, 4 complete and 0 interrupted iterations
+rush   [   9% ] 43 VUs  08m20.3s/31m42s  04/43 iters, 1 per VU
+
+running (08m31.9s), 39/43 VUs, 4 complete and 0 interrupted iterations
+rush   [   9% ] 43 VUs  08m21.3s/31m42s  04/43 iters, 1 per VU
+
+running (08m32.9s), 39/43 VUs, 4 complete and 0 interrupted iterations
+rush   [   9% ] 43 VUs  08m22.3s/31m42s  04/43 iters, 1 per VU
+
+running (08m33.9s), 39/43 VUs, 4 complete and 0 interrupted iterations
+rush   [   9% ] 43 VUs  08m23.3s/31m42s  04/43 iters, 1 per VU
+
+running (08m34.9s), 39/43 VUs, 4 complete and 0 interrupted iterations
+rush   [   9% ] 43 VUs  08m24.3s/31m42s  04/43 iters, 1 per VU
+
+running (08m35.9s), 39/43 VUs, 4 complete and 0 interrupted iterations
+rush   [   9% ] 43 VUs  08m25.3s/31m42s  04/43 iters, 1 per VU
+
+running (08m36.9s), 39/43 VUs, 4 complete and 0 interrupted iterations
+rush   [   9% ] 43 VUs  08m26.3s/31m42s  04/43 iters, 1 per VU
+
+running (08m37.9s), 39/43 VUs, 4 complete and 0 interrupted iterations
+rush   [   9% ] 43 VUs  08m27.3s/31m42s  04/43 iters, 1 per VU
+
+running (08m38.9s), 39/43 VUs, 4 complete and 0 interrupted iterations
+rush   [   9% ] 43 VUs  08m28.3s/31m42s  04/43 iters, 1 per VU
+
+running (08m39.9s), 39/43 VUs, 4 complete and 0 interrupted iterations
+rush   [   9% ] 43 VUs  08m29.3s/31m42s  04/43 iters, 1 per VU
+
+running (08m40.9s), 39/43 VUs, 4 complete and 0 interrupted iterations
+rush   [   9% ] 43 VUs  08m30.3s/31m42s  04/43 iters, 1 per VU
+
+running (08m41.9s), 39/43 VUs, 4 complete and 0 interrupted iterations
+rush   [   9% ] 43 VUs  08m31.3s/31m42s  04/43 iters, 1 per VU
+
+running (08m42.9s), 39/43 VUs, 4 complete and 0 interrupted iterations
+rush   [   9% ] 43 VUs  08m32.3s/31m42s  04/43 iters, 1 per VU
+
+running (08m43.9s), 38/43 VUs, 5 complete and 0 interrupted iterations
+rush   [  12% ] 43 VUs  08m33.3s/31m42s  05/43 iters, 1 per VU
+
+running (08m44.9s), 38/43 VUs, 5 complete and 0 interrupted iterations
+rush   [  12% ] 43 VUs  08m34.3s/31m42s  05/43 iters, 1 per VU
+
+running (08m45.9s), 38/43 VUs, 5 complete and 0 interrupted iterations
+rush   [  12% ] 43 VUs  08m35.3s/31m42s  05/43 iters, 1 per VU
+
+running (08m46.9s), 38/43 VUs, 5 complete and 0 interrupted iterations
+rush   [  12% ] 43 VUs  08m36.3s/31m42s  05/43 iters, 1 per VU
+
+running (08m47.9s), 37/43 VUs, 6 complete and 0 interrupted iterations
+rush   [  14% ] 43 VUs  08m37.3s/31m42s  06/43 iters, 1 per VU
+
+running (08m48.9s), 37/43 VUs, 6 complete and 0 interrupted iterations
+rush   [  14% ] 43 VUs  08m38.3s/31m42s  06/43 iters, 1 per VU
+
+running (08m49.9s), 37/43 VUs, 6 complete and 0 interrupted iterations
+rush   [  14% ] 43 VUs  08m39.3s/31m42s  06/43 iters, 1 per VU
+
+running (08m50.9s), 36/43 VUs, 7 complete and 0 interrupted iterations
+rush   [  16% ] 43 VUs  08m40.3s/31m42s  07/43 iters, 1 per VU
+
+running (08m51.9s), 36/43 VUs, 7 complete and 0 interrupted iterations
+rush   [  16% ] 43 VUs  08m41.3s/31m42s  07/43 iters, 1 per VU
+
+running (08m52.9s), 36/43 VUs, 7 complete and 0 interrupted iterations
+rush   [  16% ] 43 VUs  08m42.3s/31m42s  07/43 iters, 1 per VU
+
+running (08m53.9s), 36/43 VUs, 7 complete and 0 interrupted iterations
+rush   [  16% ] 43 VUs  08m43.3s/31m42s  07/43 iters, 1 per VU
+
+running (08m54.9s), 35/43 VUs, 8 complete and 0 interrupted iterations
+rush   [  19% ] 43 VUs  08m44.3s/31m42s  08/43 iters, 1 per VU
+
+running (08m55.9s), 35/43 VUs, 8 complete and 0 interrupted iterations
+rush   [  19% ] 43 VUs  08m45.3s/31m42s  08/43 iters, 1 per VU
+
+running (08m56.9s), 35/43 VUs, 8 complete and 0 interrupted iterations
+rush   [  19% ] 43 VUs  08m46.3s/31m42s  08/43 iters, 1 per VU
+
+running (08m57.9s), 35/43 VUs, 8 complete and 0 interrupted iterations
+rush   [  19% ] 43 VUs  08m47.3s/31m42s  08/43 iters, 1 per VU
+
+running (08m58.9s), 35/43 VUs, 8 complete and 0 interrupted iterations
+rush   [  19% ] 43 VUs  08m48.3s/31m42s  08/43 iters, 1 per VU
+
+running (08m59.9s), 35/43 VUs, 8 complete and 0 interrupted iterations
+rush   [  19% ] 43 VUs  08m49.3s/31m42s  08/43 iters, 1 per VU
+
+running (09m00.9s), 35/43 VUs, 8 complete and 0 interrupted iterations
+rush   [  19% ] 43 VUs  08m50.3s/31m42s  08/43 iters, 1 per VU
+
+running (09m01.9s), 35/43 VUs, 8 complete and 0 interrupted iterations
+rush   [  19% ] 43 VUs  08m51.3s/31m42s  08/43 iters, 1 per VU
+
+running (09m02.9s), 35/43 VUs, 8 complete and 0 interrupted iterations
+rush   [  19% ] 43 VUs  08m52.3s/31m42s  08/43 iters, 1 per VU
+
+running (09m03.9s), 35/43 VUs, 8 complete and 0 interrupted iterations
+rush   [  19% ] 43 VUs  08m53.3s/31m42s  08/43 iters, 1 per VU
+
+running (09m04.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  08m54.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m05.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  08m55.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m06.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  08m56.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m07.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  08m57.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m08.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  08m58.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m09.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  08m59.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m10.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m00.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m11.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m01.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m12.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m02.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m13.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m03.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m14.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m04.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m15.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m05.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m16.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m06.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m17.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m07.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m18.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m08.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m19.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m09.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m20.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m10.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m21.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m11.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m22.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m12.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m23.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m13.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m24.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m14.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m25.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m15.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m26.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m16.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m27.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m17.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m28.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m18.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m29.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m19.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m30.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m20.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m31.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m21.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m32.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m22.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m33.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m23.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m34.9s), 34/43 VUs, 9 complete and 0 interrupted iterations
+rush   [  21% ] 43 VUs  09m24.3s/31m42s  09/43 iters, 1 per VU
+
+running (09m35.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m25.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m36.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m26.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m37.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m27.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m38.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m28.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m39.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m29.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m40.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m30.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m41.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m31.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m42.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m32.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m43.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m33.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m44.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m34.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m45.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m35.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m46.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m36.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m47.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m37.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m48.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m38.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m49.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m39.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m50.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m40.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m51.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m41.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m52.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m42.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m53.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m43.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m54.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m44.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m55.9s), 33/43 VUs, 10 complete and 0 interrupted iterations
+rush   [  23% ] 43 VUs  09m45.3s/31m42s  10/43 iters, 1 per VU
+
+running (09m56.9s), 32/43 VUs, 11 complete and 0 interrupted iterations
+rush   [  26% ] 43 VUs  09m46.3s/31m42s  11/43 iters, 1 per VU
+
+running (09m57.9s), 32/43 VUs, 11 complete and 0 interrupted iterations
+rush   [  26% ] 43 VUs  09m47.3s/31m42s  11/43 iters, 1 per VU
+
+running (09m58.9s), 32/43 VUs, 11 complete and 0 interrupted iterations
+rush   [  26% ] 43 VUs  09m48.3s/31m42s  11/43 iters, 1 per VU
+
+running (09m59.9s), 32/43 VUs, 11 complete and 0 interrupted iterations
+rush   [  26% ] 43 VUs  09m49.3s/31m42s  11/43 iters, 1 per VU
+
+running (10m00.9s), 32/43 VUs, 11 complete and 0 interrupted iterations
+rush   [  26% ] 43 VUs  09m50.3s/31m42s  11/43 iters, 1 per VU
+
+running (10m01.9s), 32/43 VUs, 11 complete and 0 interrupted iterations
+rush   [  26% ] 43 VUs  09m51.3s/31m42s  11/43 iters, 1 per VU
+
+running (10m02.9s), 31/43 VUs, 12 complete and 0 interrupted iterations
+rush   [  28% ] 43 VUs  09m52.3s/31m42s  12/43 iters, 1 per VU
+
+running (10m03.9s), 31/43 VUs, 12 complete and 0 interrupted iterations
+rush   [  28% ] 43 VUs  09m53.3s/31m42s  12/43 iters, 1 per VU
+
+running (10m04.9s), 31/43 VUs, 12 complete and 0 interrupted iterations
+rush   [  28% ] 43 VUs  09m54.3s/31m42s  12/43 iters, 1 per VU
+
+running (10m05.9s), 31/43 VUs, 12 complete and 0 interrupted iterations
+rush   [  28% ] 43 VUs  09m55.3s/31m42s  12/43 iters, 1 per VU
+
+running (10m06.9s), 31/43 VUs, 12 complete and 0 interrupted iterations
+rush   [  28% ] 43 VUs  09m56.3s/31m42s  12/43 iters, 1 per VU
+
+running (10m07.9s), 31/43 VUs, 12 complete and 0 interrupted iterations
+rush   [  28% ] 43 VUs  09m57.3s/31m42s  12/43 iters, 1 per VU
+
+running (10m08.9s), 31/43 VUs, 12 complete and 0 interrupted iterations
+rush   [  28% ] 43 VUs  09m58.3s/31m42s  12/43 iters, 1 per VU
+
+running (10m09.9s), 31/43 VUs, 12 complete and 0 interrupted iterations
+rush   [  28% ] 43 VUs  09m59.3s/31m42s  12/43 iters, 1 per VU
+
+running (10m10.9s), 31/43 VUs, 12 complete and 0 interrupted iterations
+rush   [  28% ] 43 VUs  10m00.3s/31m42s  12/43 iters, 1 per VU
+
+running (10m11.9s), 31/43 VUs, 12 complete and 0 interrupted iterations
+rush   [  28% ] 43 VUs  10m01.3s/31m42s  12/43 iters, 1 per VU
+
+running (10m12.9s), 31/43 VUs, 12 complete and 0 interrupted iterations
+rush   [  28% ] 43 VUs  10m02.3s/31m42s  12/43 iters, 1 per VU
+
+running (10m13.9s), 31/43 VUs, 12 complete and 0 interrupted iterations
+rush   [  28% ] 43 VUs  10m03.3s/31m42s  12/43 iters, 1 per VU
+
+running (10m14.9s), 31/43 VUs, 12 complete and 0 interrupted iterations
+rush   [  28% ] 43 VUs  10m04.3s/31m42s  12/43 iters, 1 per VU
+
+running (10m15.9s), 31/43 VUs, 12 complete and 0 interrupted iterations
+rush   [  28% ] 43 VUs  10m05.3s/31m42s  12/43 iters, 1 per VU
+
+running (10m16.9s), 31/43 VUs, 12 complete and 0 interrupted iterations
+rush   [  28% ] 43 VUs  10m06.3s/31m42s  12/43 iters, 1 per VU
+
+running (10m17.9s), 31/43 VUs, 12 complete and 0 interrupted iterations
+rush   [  28% ] 43 VUs  10m07.3s/31m42s  12/43 iters, 1 per VU
+
+running (10m18.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m08.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m19.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m09.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m20.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m10.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m21.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m11.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m22.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m12.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m23.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m13.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m24.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m14.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m25.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m15.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m26.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m16.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m27.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m17.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m28.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m18.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m29.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m19.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m30.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m20.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m31.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m21.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m32.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m22.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m33.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m23.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m34.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m24.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m35.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m25.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m36.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m26.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m37.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m27.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m38.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m28.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m39.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m29.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m40.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m30.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m41.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m31.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m42.9s), 30/43 VUs, 13 complete and 0 interrupted iterations
+rush   [  30% ] 43 VUs  10m32.3s/31m42s  13/43 iters, 1 per VU
+
+running (10m43.9s), 29/43 VUs, 14 complete and 0 interrupted iterations
+rush   [  33% ] 43 VUs  10m33.3s/31m42s  14/43 iters, 1 per VU
+
+running (10m44.9s), 29/43 VUs, 14 complete and 0 interrupted iterations
+rush   [  33% ] 43 VUs  10m34.3s/31m42s  14/43 iters, 1 per VU
+
+running (10m45.9s), 29/43 VUs, 14 complete and 0 interrupted iterations
+rush   [  33% ] 43 VUs  10m35.3s/31m42s  14/43 iters, 1 per VU
+
+running (10m46.9s), 29/43 VUs, 14 complete and 0 interrupted iterations
+rush   [  33% ] 43 VUs  10m36.3s/31m42s  14/43 iters, 1 per VU
+
+running (10m47.9s), 28/43 VUs, 15 complete and 0 interrupted iterations
+rush   [  35% ] 43 VUs  10m37.3s/31m42s  15/43 iters, 1 per VU
+
+running (10m48.9s), 28/43 VUs, 15 complete and 0 interrupted iterations
+rush   [  35% ] 43 VUs  10m38.3s/31m42s  15/43 iters, 1 per VU
+
+running (10m49.9s), 27/43 VUs, 16 complete and 0 interrupted iterations
+rush   [  37% ] 43 VUs  10m39.3s/31m42s  16/43 iters, 1 per VU
+
+running (10m50.9s), 27/43 VUs, 16 complete and 0 interrupted iterations
+rush   [  37% ] 43 VUs  10m40.3s/31m42s  16/43 iters, 1 per VU
+
+running (10m51.9s), 27/43 VUs, 16 complete and 0 interrupted iterations
+rush   [  37% ] 43 VUs  10m41.3s/31m42s  16/43 iters, 1 per VU
+
+running (10m52.9s), 27/43 VUs, 16 complete and 0 interrupted iterations
+rush   [  37% ] 43 VUs  10m42.3s/31m42s  16/43 iters, 1 per VU
+
+running (10m53.9s), 26/43 VUs, 17 complete and 0 interrupted iterations
+rush   [  40% ] 43 VUs  10m43.3s/31m42s  17/43 iters, 1 per VU
+
+running (10m54.9s), 26/43 VUs, 17 complete and 0 interrupted iterations
+rush   [  40% ] 43 VUs  10m44.3s/31m42s  17/43 iters, 1 per VU
+
+running (10m55.9s), 26/43 VUs, 17 complete and 0 interrupted iterations
+rush   [  40% ] 43 VUs  10m45.3s/31m42s  17/43 iters, 1 per VU
+
+running (10m56.9s), 26/43 VUs, 17 complete and 0 interrupted iterations
+rush   [  40% ] 43 VUs  10m46.3s/31m42s  17/43 iters, 1 per VU
+
+running (10m57.9s), 26/43 VUs, 17 complete and 0 interrupted iterations
+rush   [  40% ] 43 VUs  10m47.3s/31m42s  17/43 iters, 1 per VU
+
+running (10m58.9s), 26/43 VUs, 17 complete and 0 interrupted iterations
+rush   [  40% ] 43 VUs  10m48.3s/31m42s  17/43 iters, 1 per VU
+
+running (10m59.9s), 26/43 VUs, 17 complete and 0 interrupted iterations
+rush   [  40% ] 43 VUs  10m49.3s/31m42s  17/43 iters, 1 per VU
+
+running (11m00.9s), 26/43 VUs, 17 complete and 0 interrupted iterations
+rush   [  40% ] 43 VUs  10m50.3s/31m42s  17/43 iters, 1 per VU
+
+running (11m01.9s), 26/43 VUs, 17 complete and 0 interrupted iterations
+rush   [  40% ] 43 VUs  10m51.3s/31m42s  17/43 iters, 1 per VU
+
+running (11m02.9s), 26/43 VUs, 17 complete and 0 interrupted iterations
+rush   [  40% ] 43 VUs  10m52.3s/31m42s  17/43 iters, 1 per VU
+
+running (11m03.9s), 26/43 VUs, 17 complete and 0 interrupted iterations
+rush   [  40% ] 43 VUs  10m53.3s/31m42s  17/43 iters, 1 per VU
+
+running (11m04.9s), 26/43 VUs, 17 complete and 0 interrupted iterations
+rush   [  40% ] 43 VUs  10m54.3s/31m42s  17/43 iters, 1 per VU
+
+running (11m05.9s), 26/43 VUs, 17 complete and 0 interrupted iterations
+rush   [  40% ] 43 VUs  10m55.3s/31m42s  17/43 iters, 1 per VU
+
+running (11m06.9s), 26/43 VUs, 17 complete and 0 interrupted iterations
+rush   [  40% ] 43 VUs  10m56.3s/31m42s  17/43 iters, 1 per VU
+
+running (11m07.9s), 26/43 VUs, 17 complete and 0 interrupted iterations
+rush   [  40% ] 43 VUs  10m57.3s/31m42s  17/43 iters, 1 per VU
+
+running (11m08.9s), 26/43 VUs, 17 complete and 0 interrupted iterations
+rush   [  40% ] 43 VUs  10m58.3s/31m42s  17/43 iters, 1 per VU
+
+running (11m09.9s), 26/43 VUs, 17 complete and 0 interrupted iterations
+rush   [  40% ] 43 VUs  10m59.3s/31m42s  17/43 iters, 1 per VU
+
+running (11m10.9s), 26/43 VUs, 17 complete and 0 interrupted iterations
+rush   [  40% ] 43 VUs  11m00.3s/31m42s  17/43 iters, 1 per VU
+
+running (11m11.9s), 25/43 VUs, 18 complete and 0 interrupted iterations
+rush   [  42% ] 43 VUs  11m01.3s/31m42s  18/43 iters, 1 per VU
+
+running (11m12.9s), 25/43 VUs, 18 complete and 0 interrupted iterations
+rush   [  42% ] 43 VUs  11m02.3s/31m42s  18/43 iters, 1 per VU
+
+running (11m13.9s), 25/43 VUs, 18 complete and 0 interrupted iterations
+rush   [  42% ] 43 VUs  11m03.3s/31m42s  18/43 iters, 1 per VU
+
+running (11m14.9s), 25/43 VUs, 18 complete and 0 interrupted iterations
+rush   [  42% ] 43 VUs  11m04.3s/31m42s  18/43 iters, 1 per VU
+
+running (11m15.9s), 25/43 VUs, 18 complete and 0 interrupted iterations
+rush   [  42% ] 43 VUs  11m05.3s/31m42s  18/43 iters, 1 per VU
+
+running (11m16.9s), 25/43 VUs, 18 complete and 0 interrupted iterations
+rush   [  42% ] 43 VUs  11m06.3s/31m42s  18/43 iters, 1 per VU
+
+running (11m17.9s), 25/43 VUs, 18 complete and 0 interrupted iterations
+rush   [  42% ] 43 VUs  11m07.3s/31m42s  18/43 iters, 1 per VU
+
+running (11m18.9s), 24/43 VUs, 19 complete and 0 interrupted iterations
+rush   [  44% ] 43 VUs  11m08.3s/31m42s  19/43 iters, 1 per VU
+
+running (11m19.9s), 24/43 VUs, 19 complete and 0 interrupted iterations
+rush   [  44% ] 43 VUs  11m09.3s/31m42s  19/43 iters, 1 per VU
+
+running (11m20.9s), 22/43 VUs, 21 complete and 0 interrupted iterations
+rush   [  49% ] 43 VUs  11m10.3s/31m42s  21/43 iters, 1 per VU
+
+running (11m21.9s), 22/43 VUs, 21 complete and 0 interrupted iterations
+rush   [  49% ] 43 VUs  11m11.3s/31m42s  21/43 iters, 1 per VU
+
+running (11m22.9s), 22/43 VUs, 21 complete and 0 interrupted iterations
+rush   [  49% ] 43 VUs  11m12.3s/31m42s  21/43 iters, 1 per VU
+
+running (11m23.9s), 22/43 VUs, 21 complete and 0 interrupted iterations
+rush   [  49% ] 43 VUs  11m13.3s/31m42s  21/43 iters, 1 per VU
+
+running (11m24.9s), 22/43 VUs, 21 complete and 0 interrupted iterations
+rush   [  49% ] 43 VUs  11m14.3s/31m42s  21/43 iters, 1 per VU
+
+running (11m25.9s), 22/43 VUs, 21 complete and 0 interrupted iterations
+rush   [  49% ] 43 VUs  11m15.3s/31m42s  21/43 iters, 1 per VU
+
+running (11m26.9s), 22/43 VUs, 21 complete and 0 interrupted iterations
+rush   [  49% ] 43 VUs  11m16.3s/31m42s  21/43 iters, 1 per VU
+
+running (11m27.9s), 22/43 VUs, 21 complete and 0 interrupted iterations
+rush   [  49% ] 43 VUs  11m17.3s/31m42s  21/43 iters, 1 per VU
+
+running (11m28.9s), 22/43 VUs, 21 complete and 0 interrupted iterations
+rush   [  49% ] 43 VUs  11m18.3s/31m42s  21/43 iters, 1 per VU
+
+running (11m29.9s), 22/43 VUs, 21 complete and 0 interrupted iterations
+rush   [  49% ] 43 VUs  11m19.3s/31m42s  21/43 iters, 1 per VU
+
+running (11m30.9s), 21/43 VUs, 22 complete and 0 interrupted iterations
+rush   [  51% ] 43 VUs  11m20.3s/31m42s  22/43 iters, 1 per VU
+
+running (11m31.9s), 21/43 VUs, 22 complete and 0 interrupted iterations
+rush   [  51% ] 43 VUs  11m21.3s/31m42s  22/43 iters, 1 per VU
+
+running (11m32.9s), 21/43 VUs, 22 complete and 0 interrupted iterations
+rush   [  51% ] 43 VUs  11m22.3s/31m42s  22/43 iters, 1 per VU
+
+running (11m33.9s), 21/43 VUs, 22 complete and 0 interrupted iterations
+rush   [  51% ] 43 VUs  11m23.3s/31m42s  22/43 iters, 1 per VU
+
+running (11m34.9s), 20/43 VUs, 23 complete and 0 interrupted iterations
+rush   [  53% ] 43 VUs  11m24.3s/31m42s  23/43 iters, 1 per VU
+
+running (11m35.9s), 20/43 VUs, 23 complete and 0 interrupted iterations
+rush   [  53% ] 43 VUs  11m25.3s/31m42s  23/43 iters, 1 per VU
+
+running (11m36.9s), 20/43 VUs, 23 complete and 0 interrupted iterations
+rush   [  53% ] 43 VUs  11m26.3s/31m42s  23/43 iters, 1 per VU
+
+running (11m37.9s), 20/43 VUs, 23 complete and 0 interrupted iterations
+rush   [  53% ] 43 VUs  11m27.3s/31m42s  23/43 iters, 1 per VU
+
+running (11m38.9s), 20/43 VUs, 23 complete and 0 interrupted iterations
+rush   [  53% ] 43 VUs  11m28.3s/31m42s  23/43 iters, 1 per VU
+
+running (11m39.9s), 20/43 VUs, 23 complete and 0 interrupted iterations
+rush   [  53% ] 43 VUs  11m29.3s/31m42s  23/43 iters, 1 per VU
+
+running (11m40.9s), 20/43 VUs, 23 complete and 0 interrupted iterations
+rush   [  53% ] 43 VUs  11m30.3s/31m42s  23/43 iters, 1 per VU
+
+running (11m41.9s), 20/43 VUs, 23 complete and 0 interrupted iterations
+rush   [  53% ] 43 VUs  11m31.3s/31m42s  23/43 iters, 1 per VU
+
+running (11m42.9s), 20/43 VUs, 23 complete and 0 interrupted iterations
+rush   [  53% ] 43 VUs  11m32.3s/31m42s  23/43 iters, 1 per VU
+
+running (11m43.9s), 20/43 VUs, 23 complete and 0 interrupted iterations
+rush   [  53% ] 43 VUs  11m33.3s/31m42s  23/43 iters, 1 per VU
+
+running (11m44.9s), 20/43 VUs, 23 complete and 0 interrupted iterations
+rush   [  53% ] 43 VUs  11m34.3s/31m42s  23/43 iters, 1 per VU
+
+running (11m45.9s), 20/43 VUs, 23 complete and 0 interrupted iterations
+rush   [  53% ] 43 VUs  11m35.3s/31m42s  23/43 iters, 1 per VU
+
+running (11m46.9s), 19/43 VUs, 24 complete and 0 interrupted iterations
+rush   [  56% ] 43 VUs  11m36.3s/31m42s  24/43 iters, 1 per VU
+
+running (11m47.9s), 19/43 VUs, 24 complete and 0 interrupted iterations
+rush   [  56% ] 43 VUs  11m37.3s/31m42s  24/43 iters, 1 per VU
+
+running (11m48.9s), 19/43 VUs, 24 complete and 0 interrupted iterations
+rush   [  56% ] 43 VUs  11m38.3s/31m42s  24/43 iters, 1 per VU
+
+running (11m49.9s), 19/43 VUs, 24 complete and 0 interrupted iterations
+rush   [  56% ] 43 VUs  11m39.3s/31m42s  24/43 iters, 1 per VU
+
+running (11m50.9s), 19/43 VUs, 24 complete and 0 interrupted iterations
+rush   [  56% ] 43 VUs  11m40.3s/31m42s  24/43 iters, 1 per VU
+
+running (11m51.9s), 19/43 VUs, 24 complete and 0 interrupted iterations
+rush   [  56% ] 43 VUs  11m41.3s/31m42s  24/43 iters, 1 per VU
+
+running (11m52.9s), 19/43 VUs, 24 complete and 0 interrupted iterations
+rush   [  56% ] 43 VUs  11m42.3s/31m42s  24/43 iters, 1 per VU
+
+running (11m53.9s), 19/43 VUs, 24 complete and 0 interrupted iterations
+rush   [  56% ] 43 VUs  11m43.3s/31m42s  24/43 iters, 1 per VU
+
+running (11m54.9s), 18/43 VUs, 25 complete and 0 interrupted iterations
+rush   [  58% ] 43 VUs  11m44.3s/31m42s  25/43 iters, 1 per VU
+
+running (11m55.9s), 18/43 VUs, 25 complete and 0 interrupted iterations
+rush   [  58% ] 43 VUs  11m45.3s/31m42s  25/43 iters, 1 per VU
+
+running (11m56.9s), 17/43 VUs, 26 complete and 0 interrupted iterations
+rush   [  60% ] 43 VUs  11m46.3s/31m42s  26/43 iters, 1 per VU
+
+running (11m57.9s), 16/43 VUs, 27 complete and 0 interrupted iterations
+rush   [  63% ] 43 VUs  11m47.3s/31m42s  27/43 iters, 1 per VU
+
+running (11m58.9s), 16/43 VUs, 27 complete and 0 interrupted iterations
+rush   [  63% ] 43 VUs  11m48.3s/31m42s  27/43 iters, 1 per VU
+
+running (11m59.9s), 15/43 VUs, 28 complete and 0 interrupted iterations
+rush   [  65% ] 43 VUs  11m49.3s/31m42s  28/43 iters, 1 per VU
+
+running (12m00.9s), 15/43 VUs, 28 complete and 0 interrupted iterations
+rush   [  65% ] 43 VUs  11m50.3s/31m42s  28/43 iters, 1 per VU
+
+running (12m01.9s), 15/43 VUs, 28 complete and 0 interrupted iterations
+rush   [  65% ] 43 VUs  11m51.3s/31m42s  28/43 iters, 1 per VU
+
+running (12m02.9s), 15/43 VUs, 28 complete and 0 interrupted iterations
+rush   [  65% ] 43 VUs  11m52.3s/31m42s  28/43 iters, 1 per VU
+
+running (12m03.9s), 15/43 VUs, 28 complete and 0 interrupted iterations
+rush   [  65% ] 43 VUs  11m53.3s/31m42s  28/43 iters, 1 per VU
+
+running (12m04.9s), 15/43 VUs, 28 complete and 0 interrupted iterations
+rush   [  65% ] 43 VUs  11m54.3s/31m42s  28/43 iters, 1 per VU
+
+running (12m05.9s), 15/43 VUs, 28 complete and 0 interrupted iterations
+rush   [  65% ] 43 VUs  11m55.3s/31m42s  28/43 iters, 1 per VU
+
+running (12m06.9s), 14/43 VUs, 29 complete and 0 interrupted iterations
+rush   [  67% ] 43 VUs  11m56.3s/31m42s  29/43 iters, 1 per VU
+
+running (12m07.9s), 13/43 VUs, 30 complete and 0 interrupted iterations
+rush   [  70% ] 43 VUs  11m57.3s/31m42s  30/43 iters, 1 per VU
+
+running (12m08.9s), 12/43 VUs, 31 complete and 0 interrupted iterations
+rush   [  72% ] 43 VUs  11m58.3s/31m42s  31/43 iters, 1 per VU
+
+running (12m09.9s), 12/43 VUs, 31 complete and 0 interrupted iterations
+rush   [  72% ] 43 VUs  11m59.3s/31m42s  31/43 iters, 1 per VU
+
+running (12m10.9s), 12/43 VUs, 31 complete and 0 interrupted iterations
+rush   [  72% ] 43 VUs  12m00.3s/31m42s  31/43 iters, 1 per VU
+
+running (12m11.9s), 12/43 VUs, 31 complete and 0 interrupted iterations
+rush   [  72% ] 43 VUs  12m01.3s/31m42s  31/43 iters, 1 per VU
+
+running (12m12.9s), 12/43 VUs, 31 complete and 0 interrupted iterations
+rush   [  72% ] 43 VUs  12m02.3s/31m42s  31/43 iters, 1 per VU
+
+running (12m13.9s), 11/43 VUs, 32 complete and 0 interrupted iterations
+rush   [  74% ] 43 VUs  12m03.3s/31m42s  32/43 iters, 1 per VU
+
+running (12m14.9s), 11/43 VUs, 32 complete and 0 interrupted iterations
+rush   [  74% ] 43 VUs  12m04.3s/31m42s  32/43 iters, 1 per VU
+
+running (12m15.9s), 11/43 VUs, 32 complete and 0 interrupted iterations
+rush   [  74% ] 43 VUs  12m05.3s/31m42s  32/43 iters, 1 per VU
+
+running (12m16.9s), 11/43 VUs, 32 complete and 0 interrupted iterations
+rush   [  74% ] 43 VUs  12m06.3s/31m42s  32/43 iters, 1 per VU
+
+running (12m17.9s), 11/43 VUs, 32 complete and 0 interrupted iterations
+rush   [  74% ] 43 VUs  12m07.3s/31m42s  32/43 iters, 1 per VU
+
+running (12m18.9s), 11/43 VUs, 32 complete and 0 interrupted iterations
+rush   [  74% ] 43 VUs  12m08.3s/31m42s  32/43 iters, 1 per VU
+
+running (12m19.9s), 11/43 VUs, 32 complete and 0 interrupted iterations
+rush   [  74% ] 43 VUs  12m09.3s/31m42s  32/43 iters, 1 per VU
+
+running (12m20.9s), 11/43 VUs, 32 complete and 0 interrupted iterations
+rush   [  74% ] 43 VUs  12m10.3s/31m42s  32/43 iters, 1 per VU
+
+running (12m21.9s), 11/43 VUs, 32 complete and 0 interrupted iterations
+rush   [  74% ] 43 VUs  12m11.3s/31m42s  32/43 iters, 1 per VU
+
+running (12m22.9s), 10/43 VUs, 33 complete and 0 interrupted iterations
+rush   [  77% ] 43 VUs  12m12.3s/31m42s  33/43 iters, 1 per VU
+
+running (12m23.9s), 09/43 VUs, 34 complete and 0 interrupted iterations
+rush   [  79% ] 43 VUs  12m13.3s/31m42s  34/43 iters, 1 per VU
+
+running (12m24.9s), 09/43 VUs, 34 complete and 0 interrupted iterations
+rush   [  79% ] 43 VUs  12m14.3s/31m42s  34/43 iters, 1 per VU
+
+running (12m25.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m15.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m26.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m16.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m27.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m17.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m28.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m18.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m29.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m19.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m30.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m20.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m31.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m21.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m32.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m22.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m33.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m23.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m34.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m24.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m35.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m25.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m36.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m26.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m37.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m27.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m38.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m28.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m39.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m29.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m40.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m30.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m41.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m31.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m42.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m32.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m43.9s), 08/43 VUs, 35 complete and 0 interrupted iterations
+rush   [  81% ] 43 VUs  12m33.3s/31m42s  35/43 iters, 1 per VU
+
+running (12m44.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m34.3s/31m42s  36/43 iters, 1 per VU
+
+running (12m45.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m35.3s/31m42s  36/43 iters, 1 per VU
+
+running (12m46.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m36.3s/31m42s  36/43 iters, 1 per VU
+
+running (12m47.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m37.3s/31m42s  36/43 iters, 1 per VU
+
+running (12m48.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m38.3s/31m42s  36/43 iters, 1 per VU
+
+running (12m49.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m39.3s/31m42s  36/43 iters, 1 per VU
+
+running (12m50.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m40.3s/31m42s  36/43 iters, 1 per VU
+
+running (12m51.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m41.3s/31m42s  36/43 iters, 1 per VU
+
+running (12m52.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m42.3s/31m42s  36/43 iters, 1 per VU
+
+running (12m53.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m43.3s/31m42s  36/43 iters, 1 per VU
+
+running (12m54.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m44.3s/31m42s  36/43 iters, 1 per VU
+
+running (12m55.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m45.3s/31m42s  36/43 iters, 1 per VU
+
+running (12m56.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m46.3s/31m42s  36/43 iters, 1 per VU
+
+running (12m57.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m47.3s/31m42s  36/43 iters, 1 per VU
+
+running (12m58.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m48.3s/31m42s  36/43 iters, 1 per VU
+
+running (12m59.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m49.3s/31m42s  36/43 iters, 1 per VU
+
+running (13m00.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m50.3s/31m42s  36/43 iters, 1 per VU
+
+running (13m01.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m51.3s/31m42s  36/43 iters, 1 per VU
+
+running (13m02.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m52.3s/31m42s  36/43 iters, 1 per VU
+
+running (13m03.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m53.3s/31m42s  36/43 iters, 1 per VU
+
+running (13m04.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m54.3s/31m42s  36/43 iters, 1 per VU
+
+running (13m05.9s), 07/43 VUs, 36 complete and 0 interrupted iterations
+rush   [  84% ] 43 VUs  12m55.3s/31m42s  36/43 iters, 1 per VU
+
+running (13m06.9s), 06/43 VUs, 37 complete and 0 interrupted iterations
+rush   [  86% ] 43 VUs  12m56.3s/31m42s  37/43 iters, 1 per VU
+
+running (13m07.9s), 06/43 VUs, 37 complete and 0 interrupted iterations
+rush   [  86% ] 43 VUs  12m57.3s/31m42s  37/43 iters, 1 per VU
+
+running (13m08.9s), 06/43 VUs, 37 complete and 0 interrupted iterations
+rush   [  86% ] 43 VUs  12m58.3s/31m42s  37/43 iters, 1 per VU
+
+running (13m09.9s), 06/43 VUs, 37 complete and 0 interrupted iterations
+rush   [  86% ] 43 VUs  12m59.3s/31m42s  37/43 iters, 1 per VU
+
+running (13m10.9s), 06/43 VUs, 37 complete and 0 interrupted iterations
+rush   [  86% ] 43 VUs  13m00.3s/31m42s  37/43 iters, 1 per VU
+
+running (13m11.9s), 06/43 VUs, 37 complete and 0 interrupted iterations
+rush   [  86% ] 43 VUs  13m01.3s/31m42s  37/43 iters, 1 per VU
+
+running (13m12.9s), 06/43 VUs, 37 complete and 0 interrupted iterations
+rush   [  86% ] 43 VUs  13m02.3s/31m42s  37/43 iters, 1 per VU
+
+running (13m13.9s), 06/43 VUs, 37 complete and 0 interrupted iterations
+rush   [  86% ] 43 VUs  13m03.3s/31m42s  37/43 iters, 1 per VU
+
+running (13m14.9s), 06/43 VUs, 37 complete and 0 interrupted iterations
+rush   [  86% ] 43 VUs  13m04.3s/31m42s  37/43 iters, 1 per VU
+
+running (13m15.9s), 06/43 VUs, 37 complete and 0 interrupted iterations
+rush   [  86% ] 43 VUs  13m05.3s/31m42s  37/43 iters, 1 per VU
+
+running (13m16.9s), 06/43 VUs, 37 complete and 0 interrupted iterations
+rush   [  86% ] 43 VUs  13m06.3s/31m42s  37/43 iters, 1 per VU
+
+running (13m17.9s), 06/43 VUs, 37 complete and 0 interrupted iterations
+rush   [  86% ] 43 VUs  13m07.3s/31m42s  37/43 iters, 1 per VU
+
+running (13m18.9s), 06/43 VUs, 37 complete and 0 interrupted iterations
+rush   [  86% ] 43 VUs  13m08.3s/31m42s  37/43 iters, 1 per VU
+
+running (13m19.9s), 06/43 VUs, 37 complete and 0 interrupted iterations
+rush   [  86% ] 43 VUs  13m09.3s/31m42s  37/43 iters, 1 per VU
+
+running (13m20.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m10.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m21.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m11.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m22.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m12.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m23.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m13.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m24.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m14.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m25.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m15.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m26.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m16.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m27.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m17.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m28.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m18.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m29.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m19.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m30.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m20.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m31.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m21.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m32.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m22.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m33.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m23.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m34.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m24.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m35.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m25.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m36.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m26.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m37.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m27.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m38.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m28.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m39.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m29.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m40.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m30.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m41.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m31.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m42.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m32.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m43.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m33.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m44.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m34.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m45.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m35.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m46.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m36.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m47.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m37.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m48.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m38.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m49.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m39.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m50.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m40.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m51.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m41.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m52.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m42.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m53.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m43.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m54.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m44.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m55.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m45.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m56.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m46.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m57.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m47.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m58.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m48.3s/31m42s  38/43 iters, 1 per VU
+
+running (13m59.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m49.3s/31m42s  38/43 iters, 1 per VU
+
+running (14m00.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m50.3s/31m42s  38/43 iters, 1 per VU
+
+running (14m01.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m51.3s/31m42s  38/43 iters, 1 per VU
+
+running (14m02.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m52.3s/31m42s  38/43 iters, 1 per VU
+
+running (14m03.9s), 05/43 VUs, 38 complete and 0 interrupted iterations
+rush   [  88% ] 43 VUs  13m53.3s/31m42s  38/43 iters, 1 per VU
+
+running (14m04.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  13m54.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m05.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  13m55.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m06.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  13m56.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m07.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  13m57.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m08.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  13m58.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m09.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  13m59.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m10.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m00.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m11.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m01.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m12.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m02.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m13.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m03.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m14.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m04.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m15.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m05.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m16.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m06.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m17.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m07.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m18.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m08.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m19.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m09.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m20.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m10.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m21.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m11.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m22.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m12.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m23.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m13.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m24.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m14.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m25.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m15.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m26.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m16.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m27.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m17.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m28.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m18.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m29.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m19.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m30.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m20.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m31.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m21.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m32.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m22.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m33.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m23.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m34.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m24.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m35.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m25.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m36.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m26.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m37.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m27.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m38.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m28.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m39.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m29.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m40.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m30.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m41.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m31.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m42.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m32.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m43.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m33.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m44.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m34.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m45.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m35.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m46.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m36.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m47.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m37.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m48.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m38.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m49.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m39.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m50.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m40.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m51.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m41.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m52.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m42.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m53.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m43.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m54.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m44.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m55.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m45.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m56.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m46.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m57.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m47.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m58.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m48.3s/31m42s  39/43 iters, 1 per VU
+
+running (14m59.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m49.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m00.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m50.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m01.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m51.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m02.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m52.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m03.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m53.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m04.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m54.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m05.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m55.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m06.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m56.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m07.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m57.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m08.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m58.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m09.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  14m59.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m10.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m00.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m11.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m01.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m12.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m02.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m13.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m03.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m14.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m04.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m15.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m05.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m16.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m06.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m17.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m07.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m18.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m08.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m19.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m09.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m20.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m10.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m21.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m11.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m22.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m12.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m23.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m13.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m24.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m14.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m25.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m15.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m26.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m16.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m27.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m17.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m28.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m18.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m29.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m19.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m30.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m20.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m31.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m21.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m32.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m22.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m33.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m23.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m34.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m24.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m35.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m25.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m36.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m26.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m37.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m27.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m38.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m28.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m39.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m29.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m40.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m30.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m41.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m31.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m42.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m32.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m43.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m33.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m44.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m34.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m45.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m35.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m46.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m36.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m47.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m37.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m48.9s), 04/43 VUs, 39 complete and 0 interrupted iterations
+rush   [  91% ] 43 VUs  15m38.3s/31m42s  39/43 iters, 1 per VU
+
+running (15m49.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m39.3s/31m42s  40/43 iters, 1 per VU
+
+running (15m50.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m40.3s/31m42s  40/43 iters, 1 per VU
+
+running (15m51.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m41.3s/31m42s  40/43 iters, 1 per VU
+
+running (15m52.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m42.3s/31m42s  40/43 iters, 1 per VU
+
+running (15m53.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m43.3s/31m42s  40/43 iters, 1 per VU
+
+running (15m54.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m44.3s/31m42s  40/43 iters, 1 per VU
+
+running (15m55.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m45.3s/31m42s  40/43 iters, 1 per VU
+
+running (15m56.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m46.3s/31m42s  40/43 iters, 1 per VU
+
+running (15m57.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m47.3s/31m42s  40/43 iters, 1 per VU
+
+running (15m58.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m48.3s/31m42s  40/43 iters, 1 per VU
+
+running (15m59.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m49.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m00.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m50.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m01.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m51.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m02.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m52.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m03.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m53.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m04.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m54.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m05.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m55.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m06.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m56.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m07.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m57.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m08.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m58.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m09.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  15m59.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m10.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m00.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m11.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m01.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m12.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m02.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m13.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m03.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m14.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m04.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m15.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m05.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m16.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m06.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m17.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m07.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m18.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m08.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m19.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m09.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m20.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m10.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m21.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m11.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m22.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m12.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m23.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m13.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m24.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m14.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m25.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m15.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m26.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m16.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m27.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m17.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m28.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m18.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m29.9s), 03/43 VUs, 40 complete and 0 interrupted iterations
+rush   [  93% ] 43 VUs  16m19.3s/31m42s  40/43 iters, 1 per VU
+
+running (16m30.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m20.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m31.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m21.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m32.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m22.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m33.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m23.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m34.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m24.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m35.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m25.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m36.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m26.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m37.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m27.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m38.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m28.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m39.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m29.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m40.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m30.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m41.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m31.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m42.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m32.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m43.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m33.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m44.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m34.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m45.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m35.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m46.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m36.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m47.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m37.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m48.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m38.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m49.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m39.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m50.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m40.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m51.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m41.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m52.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m42.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m53.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m43.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m54.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m44.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m55.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m45.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m56.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m46.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m57.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m47.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m58.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m48.3s/31m42s  41/43 iters, 1 per VU
+
+running (16m59.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m49.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m00.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m50.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m01.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m51.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m02.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m52.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m03.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m53.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m04.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m54.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m05.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m55.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m06.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m56.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m07.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m57.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m08.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m58.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m09.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  16m59.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m10.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  17m00.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m11.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  17m01.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m12.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  17m02.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m13.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  17m03.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m14.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  17m04.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m15.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  17m05.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m16.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  17m06.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m17.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  17m07.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m18.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  17m08.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m19.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  17m09.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m20.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  17m10.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m21.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  17m11.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m22.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  17m12.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m23.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  17m13.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m24.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  17m14.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m25.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  17m15.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m26.9s), 02/43 VUs, 41 complete and 0 interrupted iterations
+rush   [  95% ] 43 VUs  17m16.3s/31m42s  41/43 iters, 1 per VU
+
+running (17m27.9s), 01/43 VUs, 42 complete and 0 interrupted iterations
+rush   [  98% ] 43 VUs  17m17.3s/31m42s  42/43 iters, 1 per VU
+
+running (17m28.9s), 01/43 VUs, 42 complete and 0 interrupted iterations
+rush   [  98% ] 43 VUs  17m18.3s/31m42s  42/43 iters, 1 per VU
+
+running (17m29.9s), 01/43 VUs, 42 complete and 0 interrupted iterations
+rush   [  98% ] 43 VUs  17m19.3s/31m42s  42/43 iters, 1 per VU
+
+running (17m30.9s), 01/43 VUs, 42 complete and 0 interrupted iterations
+rush   [  98% ] 43 VUs  17m20.3s/31m42s  42/43 iters, 1 per VU
+
+running (17m31.9s), 01/43 VUs, 42 complete and 0 interrupted iterations
+rush   [  98% ] 43 VUs  17m21.3s/31m42s  42/43 iters, 1 per VU
+
+running (17m32.9s), 01/43 VUs, 42 complete and 0 interrupted iterations
+rush   [  98% ] 43 VUs  17m22.3s/31m42s  42/43 iters, 1 per VU
+
+running (17m33.9s), 01/43 VUs, 42 complete and 0 interrupted iterations
+rush   [  98% ] 43 VUs  17m23.3s/31m42s  42/43 iters, 1 per VU
+
+running (17m34.5s), 00/43 VUs, 43 complete and 0 interrupted iterations
+rush ✓ [ 100% ] 43 VUs  17m23.9s/31m42s  43/43 iters, 1 per VU
