@@ -10,3 +10,5 @@ backup/
 probe.pdf
 probe_response.json
 probe_logs.json
+__pycache__/
+.pytest_cache/

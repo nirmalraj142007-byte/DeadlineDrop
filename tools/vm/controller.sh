@@ -2,7 +2,7 @@
 # Turn dd-k6-slow into a controller that runs long batches unattended, so the operator's laptop can sleep.
 #   bash tools/vm/controller.sh setup      service account (no keys), OS Login, attach SA, install tools, clone repo
 #   bash tools/vm/controller.sh grant      the IAM bindings listed in ROLES below (needs the owner's approval)
-#   bash tools/vm/controller.sh start      git pull, then tools/vm/phase19-batch.sh in tmux session "p19"
+#   bash tools/vm/controller.sh start      git pull, then tools/vm/phase19-batch.sh as systemd unit "dd-p19"
 #   bash tools/vm/controller.sh status     tail of results/remote/progress.log on the controller
 #   bash tools/vm/controller.sh fetch      copy the controller's results/ into this checkout
 #   bash tools/vm/controller.sh teardown   remove every binding from "grant" and delete the service account
@@ -19,7 +19,7 @@ CTL_SA="${CTL_SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
 REPO_URL="https://github.com/nirmalraj142007-byte/DeadlineDrop.git"
 REMOTE_DIR="DeadlineDrop"
 PROXY_VERSION="v2.14.1"
-SESSION="p19"
+UNIT="dd-p19"
 
 # Project-level roles (no narrower resource exists for these).
 PROJECT_ROLES=(
@@ -96,11 +96,15 @@ case "${1:-}" in
     ;;
   grant)    each_binding add ;;
   start)
+    # A system unit, not tmux: on this image sshd logins get no logind session (pam_systemd "Failed to
+    # create session"), so anything started over SSH lives in sshd's cgroup; a tmux batch died that way.
     vm_ssh "${CTL_VM}" "cd ~/${REMOTE_DIR} && git pull -q --ff-only && git log --oneline -1 && \
-      python3 -m pytest -q tools/tests 2>&1 | tail -1 && \
-      tmux new-session -d -s ${SESSION} 'bash tools/vm/phase19-batch.sh' && echo tmux session ${SESSION} started"
+      python3 -m pytest -q -p no:cacheprovider tools/tests 2>&1 | tail -1 && \
+      sudo systemd-run --collect --unit=${UNIT} --uid=\$(id -u) --gid=\$(id -g) \
+        --setenv=HOME=\$HOME --setenv=PATH=\$PATH --working-directory=\$PWD \
+        bash tools/vm/phase19-batch.sh && echo unit ${UNIT} started"
     ;;
-  status)   vm_ssh "${CTL_VM}" "tail -n ${2:-25} ~/${REMOTE_DIR}/results/remote/progress.log; tmux has-session -t ${SESSION} 2>/dev/null && echo '(batch running)' || echo '(batch not running)'" ;;
+  status)   vm_ssh "${CTL_VM}" "tail -n ${2:-25} ~/${REMOTE_DIR}/results/remote/progress.log; echo \"(batch unit ${UNIT}: \$(systemctl is-active ${UNIT}))\"" ;;
   fetch)
     vm_ssh "${CTL_VM}" "cd ~/${REMOTE_DIR} && tar czf ~/results.tgz results"
     vm_scp "${CTL_VM}:results.tgz" "${REPO_ROOT}/results-remote.tgz"
