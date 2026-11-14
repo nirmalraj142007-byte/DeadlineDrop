@@ -11,7 +11,17 @@ export CLOUDSDK_ACTIVE_CONFIG_NAME="${CLOUDSDK_ACTIVE_CONFIG_NAME:-deadlinedrop}
 source "${REPO_ROOT}/deploy/env.sh"
 
 COHORTS=(slow medium fast)
-VM_MACHINE_TYPE="e2-standard-2"
+# Machine type per cohort (docs/decisions.md D10). Slow and medium VUs hold their file buffers longest,
+# so the phase-19 1,000-student dry run peaked at 86.9% (slow) and 75.4% (medium) of 8 GB against a
+# 70% limit; they get e2-highmem-2 (2 vCPU, 16 GB). Fast peaked at 53.7% and keeps e2-standard-2
+# (2 vCPU, 8 GB). Total 6 vCPU, under the 8-vCPU free-trial cap (MAX_FLEET_VCPU).
+vm_machine_type() {
+  case "$1" in
+    slow|medium) echo "e2-highmem-2" ;;
+    fast) echo "e2-standard-2" ;;
+    *) echo "Error: no machine type for cohort '$1'" >&2; return 1 ;;
+  esac
+}
 VM_IMAGE_FAMILY="debian-12"
 VM_IMAGE_PROJECT="debian-cloud"
 MAX_FLEET_VCPU=8

@@ -56,3 +56,10 @@ Outcome of the D4 gate. Nirmal fills in exactly one line and deletes the other:
   3. **First-bottleneck candidate: URL signing.** Arm C commit Server-Timing medians: app 128 ms, sign 99, db 24 (100 students); app 104, sign 77, db 24 (1,000). Signing (IAM signBlob) is the largest phase of the commit.
   4. k6 VM memory peaked at 86.9% (slow), 75.4% (medium), 53.7% (fast) during the 1,000-student run (`results/dryrun-1000/vm-memory.txt`): the slow VM has little headroom for larger runs.
   5. Arm C cold start (GET /api/time after 120 s at zero instances, laptop curl): median 14,842.6 ms over 5 cold samples (`results/coldstart.json`). Harness faults fixed along the way (seed password piped to plink, 60 s k6 timeouts, shaped-link preflight skew, nohup holding SSH, laptop standby) are in the phase-19 ownership-log entry; failed attempts are kept in `results/aborted/`.
+- **k6 VM sizes per cohort (phase 19 fix, 2026-11-14).** The 1,000-student dry run peaked at 86.9% memory on
+  dd-k6-slow and 75.4% on dd-k6-medium (8 GB e2-standard-2; `results/dryrun-1000/vm-memory.txt`), above the
+  70% limit; dd-k6-fast peaked at 53.7%. Slow and medium VUs hold their file buffers longest because their
+  uploads take longest, so `tools/vm/common.sh` now gives slow and medium e2-highmem-2 (2 vCPU, 16 GB) and keeps
+  fast on e2-standard-2 (2 vCPU, 8 GB). Total stays 6 vCPU under the 8-vCPU cap; `create-fleet.sh` sums
+  guestCpus per cohort's type before creating anything and refuses an existing VM of the wrong type. Not yet
+  verified: the first step of phase 32 (`docs/phase32-plan.md`) repeats the 1,000-student memory dry run.

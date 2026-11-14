@@ -11,10 +11,18 @@ source "${SCRIPT_DIR}/common.sh"
 ACTION="${1:-status}"
 READY_TIMEOUT_S=600
 
+# Sum of guestCpus over the cohorts' machine types (they differ per cohort; see vm_machine_type).
+# Prints "<cohort>:<type>:<vcpu>" lines to stderr and the total to stdout.
 fleet_vcpus() {
-  local per_vm
-  per_vm="$(gv compute machine-types describe "${VM_MACHINE_TYPE}" --zone="${ZONE}" --project="${PROJECT_ID}" --format='value(guestCpus)')"
-  echo $(( per_vm * ${#COHORTS[@]} ))
+  local c type cpus total=0
+  for c in "${COHORTS[@]}"; do
+    type="$(vm_machine_type "${c}")" || exit 1
+    cpus="$(gv compute machine-types describe "${type}" --zone="${ZONE}" --project="${PROJECT_ID}" --format='value(guestCpus)')"
+    case "${cpus}" in ''|*[!0-9]*) echo "Error: could not read guestCpus of ${type}" >&2; exit 1 ;; esac
+    echo "  $(vm_name "${c}"): ${type}, ${cpus} vCPU" >&2
+    total=$(( total + cpus ))
+  done
+  echo "${total}"
 }
 
 assert_vcpu_cap() {
@@ -46,14 +54,19 @@ case "${ACTION}" in
     assert_vcpu_cap
     for c in "${COHORTS[@]}"; do
       vm="$(vm_name "${c}")"
-      if gcloud compute instances describe "${vm}" --zone="${ZONE}" --project="${PROJECT_ID}" >/dev/null 2>&1; then
-        echo "${vm}: already exists, skipping create"
+      want_type="$(vm_machine_type "${c}")"
+      if have_type="$(gv compute instances describe "${vm}" --zone="${ZONE}" --project="${PROJECT_ID}" --format='value(machineType.basename())' 2>/dev/null)"; then
+        if [ "${have_type}" != "${want_type}" ]; then
+          echo "Error: ${vm} exists as ${have_type}, expected ${want_type}. Delete the fleet first (create-fleet.sh delete)." >&2
+          exit 1
+        fi
+        echo "${vm}: already exists (${have_type}), skipping create"
         continue
       fi
       # No service account and no scopes: the load generators never call a Google API.
       gcloud compute instances create "${vm}" \
         --zone="${ZONE}" --project="${PROJECT_ID}" \
-        --machine-type="${VM_MACHINE_TYPE}" \
+        --machine-type="${want_type}" \
         --image-family="${VM_IMAGE_FAMILY}" --image-project="${VM_IMAGE_PROJECT}" \
         --no-service-account --no-scopes \
         --labels=app=deadlinedrop,role=k6,cohort="${c}" \
