@@ -41,15 +41,31 @@ to_native_path() {
 # gcloud prints CRLF on Windows; strip it from captured values.
 gv() { gcloud "$@" | tr -d '\r'; }
 
+# Every SSH/SCP call has a time limit: on the operator's link one pscp hung 25 minutes before a
+# "Connection reset by peer" (phase 19). VM_CALL_TIMEOUT_S covers the longest call (sanity's 20 MB
+# upload at 1 Mbit/s, about 3 minutes).
+VM_CALL_TIMEOUT_S="${VM_CALL_TIMEOUT_S:-600}"
+
 vm_ssh() {
   local vm="$1"; shift
-  gcloud compute ssh "${vm}" --zone="${ZONE}" --project="${PROJECT_ID}" --quiet \
+  timeout "${VM_CALL_TIMEOUT_S}" gcloud compute ssh "${vm}" --zone="${ZONE}" --project="${PROJECT_ID}" --quiet \
     --strict-host-key-checking=no --command="$*"
 }
 
 vm_scp() {
-  gcloud compute scp --zone="${ZONE}" --project="${PROJECT_ID}" --quiet \
+  timeout "${VM_CALL_TIMEOUT_S}" gcloud compute scp --zone="${ZONE}" --project="${PROJECT_ID}" --quiet \
     --strict-host-key-checking=no "$@"
+}
+
+# retry <command...>: up to 3 attempts, 10 s apart. Only for calls that are safe to repeat.
+retry() {
+  local n rc
+  for n in 1 2 3; do
+    "$@" && return 0
+    rc=$?
+    [ "${n}" -lt 3 ] && { echo "retry ${n}/3 after exit ${rc}: $1 $2" >&2; sleep 10; }
+  done
+  return "${rc}"
 }
 
 # Copy a secret to a file on a VM (mode 600). Never pipe it into vm_ssh: on Windows gcloud runs

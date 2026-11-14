@@ -51,8 +51,8 @@ OUT="${RUN_DIR}/preflight.json" bash "${REPO_ROOT}/tools/preflight.sh" "${ARM}"
 # before the assignment exists: copying ~58 MB per VM would not fit in the start margin below.
 prepare_files() {
   local vm; vm="$(vm_name "$1")"
-  vm_scp "${REPO_ROOT}/tools/k6/files/make-files.sh" "${vm}:${VM_HOME_DIR}/make-files.sh" >/dev/null
-  vm_ssh "${vm}" "MAX_MB=${MAX_MB} OUT_DIR=\$HOME/${VM_HOME_DIR}/files bash ~/${VM_HOME_DIR}/make-files.sh" >/dev/null
+  retry vm_scp "${REPO_ROOT}/tools/k6/files/make-files.sh" "${vm}:${VM_HOME_DIR}/make-files.sh" >/dev/null
+  retry vm_ssh "${vm}" "MAX_MB=${MAX_MB} OUT_DIR=\$HOME/${VM_HOME_DIR}/files bash ~/${VM_HOME_DIR}/make-files.sh" >/dev/null
 }
 pids=()
 for c in "${COHORTS[@]}"; do prepare_files "${c}" & pids+=($!); done
@@ -77,11 +77,11 @@ SEED=$(( 16#$(printf 'dd-schedule:%s:%s' "${SIZE}" "${REPEAT}" | sha256sum | cut
 # (3) copy shard and k6 scripts to each VM (in parallel)
 copy_to_vm() {
   local c="$1" vm; vm="$(vm_name "$1")"
-  vm_ssh "${vm}" "rm -rf ~/${VM_HOME_DIR}/run && mkdir -p ~/${VM_HOME_DIR}/run/lib"
-  vm_scp "${RUN_DIR}/schedule/shard-${c}.json" "${vm}:${VM_HOME_DIR}/run/shard.json"
-  vm_scp "${REPO_ROOT}/tools/k6/rush.js" "${vm}:${VM_HOME_DIR}/run/rush.js"
-  vm_scp "${REPO_ROOT}/tools/k6/lib/flows.js" "${vm}:${VM_HOME_DIR}/run/lib/flows.js"
-  vm_put_secret "${vm}" "${VM_HOME_DIR}/run/pw" "${SEED_PASSWORD}"
+  retry vm_ssh "${vm}" "pkill -x k6; rm -rf ~/${VM_HOME_DIR}/run && mkdir -p ~/${VM_HOME_DIR}/run/lib"
+  retry vm_scp "${RUN_DIR}/schedule/shard-${c}.json" "${vm}:${VM_HOME_DIR}/run/shard.json"
+  retry vm_scp "${REPO_ROOT}/tools/k6/rush.js" "${vm}:${VM_HOME_DIR}/run/rush.js"
+  retry vm_scp "${REPO_ROOT}/tools/k6/lib/flows.js" "${vm}:${VM_HOME_DIR}/run/lib/flows.js"
+  retry vm_put_secret "${vm}" "${VM_HOME_DIR}/run/pw" "${SEED_PASSWORD}"
 }
 pids=()
 for c in "${COHORTS[@]}"; do copy_to_vm "${c}" & pids+=($!); done
@@ -121,10 +121,11 @@ start_k6() {
   # setsid -f: k6 gets its own session, so the SSH call returns at once. With "nohup k6 ... &" the call
   # stayed open until k6 exited (measured: 38 s for a 25 s script), and a network blip on the
   # operator's link during the run then looked like a failed start (phase 19 arm C attempt).
-  vm_ssh "${vm}" "cd ~/${VM_HOME_DIR}/run && setsid -f k6 run --console-output vu-log.ndjson --summary-export summary.json \
+  # "pgrep || ..." makes the call safe to retry: a retry never starts a second k6.
+  retry vm_ssh "${vm}" "cd ~/${VM_HOME_DIR}/run && (pgrep -x k6 >/dev/null || setsid -f k6 run --console-output vu-log.ndjson --summary-export summary.json \
     -e ARM=${ARM} -e BASE_URL=${BASE} -e SHARD=\$PWD/shard.json -e T_EPOCH_MS=${T_EPOCH_MS} -e GRACE_S=${GRACE_S} \
     -e ASSIGNMENT_ID=${ASSIGNMENT_ID} -e PASSWORD=\"\$(cat pw)\" -e FILES_DIR=\$HOME/${VM_HOME_DIR}/files \
-    -e COHORT_MINUTES=${COHORT_MIN} rush.js > k6.out 2>&1 < /dev/null" >/dev/null
+    -e COHORT_MINUTES=${COHORT_MIN} rush.js > k6.out 2>&1 < /dev/null) && pgrep -x k6 >/dev/null" >/dev/null
 }
 STARTED=()
 pids=()
@@ -157,9 +158,9 @@ curl -s -f --max-time 120 -H "Authorization: Bearer ${TEACHER_TOKEN}" \
   "${BASE}/api/assignments/${ASSIGNMENT_ID}/export" > "${RUN_DIR}/export.json"
 for c in "${STARTED[@]}"; do
   vm="$(vm_name "${c}")"
-  vm_scp "${vm}:${VM_HOME_DIR}/run/vu-log.ndjson" "${RUN_DIR}/vu-log-${c}.ndjson"
-  vm_scp "${vm}:${VM_HOME_DIR}/run/summary.json" "${RUN_DIR}/summary-${c}.json"
-  vm_scp "${vm}:${VM_HOME_DIR}/run/k6.out" "${RUN_DIR}/k6-${c}.out"
+  retry vm_scp "${vm}:${VM_HOME_DIR}/run/vu-log.ndjson" "${RUN_DIR}/vu-log-${c}.ndjson"
+  retry vm_scp "${vm}:${VM_HOME_DIR}/run/summary.json" "${RUN_DIR}/summary-${c}.json"
+  retry vm_scp "${vm}:${VM_HOME_DIR}/run/k6.out" "${RUN_DIR}/k6-${c}.out"
 done
 
 # (9) meta.json
@@ -168,7 +169,7 @@ gv run services describe "dd-arm-${ARM}" --region="${REGION}" --project="${PROJE
 REVISION="$("${PY}" -c "import json,sys; print(json.load(open(sys.argv[1], encoding='utf-8'))['status']['latestReadyRevisionName'])" "$(to_native_path "${SERVICE_JSON}")" | tr -d '\r')"
 IMAGE_DIGEST="$(gv run revisions describe "${REVISION}" --region="${REGION}" --project="${PROJECT_ID}" --format='value(status.imageDigest)')"
 SQL_TIER_NOW="$(gv sql instances describe "${SQL_INSTANCE}" --project="${PROJECT_ID}" --format='value(settings.tier)')"
-K6_VERSION="$(vm_ssh "$(vm_name "${COHORTS[0]}")" "k6 version" | tr -d '\r' | head -n 1)"
+K6_VERSION="$(retry vm_ssh "$(vm_name "${COHORTS[0]}")" "k6 version" | tr -d '\r' | head -n 1)"
 GIT_SHA="$(git -C "${REPO_ROOT}" rev-parse HEAD)"
 [ -n "$(git -C "${REPO_ROOT}" status --porcelain)" ] && GIT_SHA="${GIT_SHA}-dirty"
 COUNTED=true; [ "${DRYRUN}" = true ] && COUNTED=false

@@ -24,3 +24,9 @@
 2026-11-14T09:51:55Z START run-c-100: bash /c/dev/deadlinedrop/tools/run.sh c 100 1 none --dryrun
 2026-11-14T10:16:06Z END run-c-100: exit 1
 2026-11-14T10:16:07Z STOPPED: run.sh c 100 exited 1 (results/remote/run-c-100.out)
+2026-11-14T11:06:38Z batch started on DESKTOP-T7TBPCV, commit 2de3cfc
+2026-11-14T11:07:27Z ssh to all VMs ok
+2026-11-14T11:07:27Z resuming at c
+2026-11-14T11:07:27Z START run-c-100: bash /c/dev/deadlinedrop/tools/run.sh c 100 1 none --dryrun
+2026-11-14T11:34:17Z END run-c-100: exit 1
+2026-11-14T11:34:18Z STOPPED: run.sh c 100 exited 1 (results/remote/run-c-100.out)

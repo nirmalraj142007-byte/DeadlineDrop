@@ -1,4 +1,4 @@
-Run folder: /c/dev/deadlinedrop/results/runs/20261114T095156Z_C_100_r1_dryrun
+Run folder: /c/dev/deadlinedrop/results/runs/20261114T110728Z_C_100_r1_dryrun
 == (a) parity ==
 parity clean
 == (b) connection budget ==
@@ -11,37 +11,21 @@ sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
 dd-k6-slow: probed unshaped, 'slow' shaping restored
 dd-k6-medium: probed unshaped, 'medium' shaping restored
 dd-k6-fast: probed unshaped, 'fast' shaping restored
-wrote /c/dev/deadlinedrop/results/runs/20261114T095156Z_C_100_r1_dryrun/preflight.json
-slow: skew 31.0 ms (best rtt 78 ms), warm median 64.3 ms
-medium: skew 35.5 ms (best rtt 91 ms), warm median 75.9 ms
-fast: skew 35.5 ms (best rtt 91 ms), warm median 73.5 ms
+wrote /c/dev/deadlinedrop/results/runs/20261114T110728Z_C_100_r1_dryrun/preflight.json
+slow: skew 35.0 ms (best rtt 86 ms), warm median 69.7 ms
+medium: skew 38.5 ms (best rtt 93 ms), warm median 77.1 ms
+fast: skew 35.5 ms (best rtt 87 ms), warm median 72.8 ms
 PREFLIGHT OK for arm c
-Generated schedule with 100 students in C:\dev\deadlinedrop\results\runs\20261114T095156Z_C_100_r1_dryrun\schedule:
+Generated schedule with 100 students in C:\dev\deadlinedrop\results\runs\20261114T110728Z_C_100_r1_dryrun\schedule:
   Classes: {'ON_TIME': 85, 'MARGIN': 5, 'LATE': 10}
   Cohorts: {'slow': 43, 'medium': 34, 'fast': 23}
 shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  68%shard-fast.json           | 5 kB |   5.8 kB/s | ETA: 00:00:00 | 100%
 shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:01 |  46%shard-medium.json         | 8 kB |   8.6 kB/s | ETA: 00:00:00 | 100%
-rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  98%rush.js                   | 4 kB |   4.1 kB/s | ETA: 00:00:00 | 100%
 shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:01 |  37%shard-slow.json           | 10 kB |  10.8 kB/s | ETA: 00:00:00 | 100%
 rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  98%rush.js                   | 4 kB |   4.1 kB/s | ETA: 00:00:00 | 100%
+FATAL ERROR: Network error: Connection reset by peer
+ERROR: (gcloud.compute.scp) [C:\Users\Nirmalraj\AppData\Local\Google\Cloud SDK\google-cloud-sdk\bin\sdk\pscp.exe] exited with return code [1].
 flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  31%flows.js                  | 12 kB |  12.6 kB/s | ETA: 00:00:00 | 100%
 rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  98%rush.js                   | 4 kB |   4.1 kB/s | ETA: 00:00:00 | 100%
 flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  31%flows.js                  | 12 kB |  12.6 kB/s | ETA: 00:00:00 | 100%
-flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  31%flows.js                  | 12 kB |  12.6 kB/s | ETA: 00:00:00 | 100%
-Assignment 0d0d9151-c7b7-4899-97b6-cfa11b53487c, deadline T=2026-11-14T10:08:55Z, grace 300s
-dd-k6-slow: starting k6 (43 students)
-dd-k6-medium: starting k6 (34 students)
-dd-k6-fast: starting k6 (23 students)
-FATAL ERROR: Network error: Software caused connection abort
-
-Recommendation: To check for possible causes of SSH connectivity issues and get
-recommendations, rerun the ssh command with the --troubleshoot option.
-
-gcloud compute ssh dd-k6-slow --project=deadlinedrop-nirmal --zone=asia-south1-a --troubleshoot
-
-Or, to investigate an IAP tunneling issue:
-
-gcloud compute ssh dd-k6-slow --project=deadlinedrop-nirmal --zone=asia-south1-a --troubleshoot --tunnel-through-iap
-
-ERROR: (gcloud.compute.ssh) [C:\Users\Nirmalraj\AppData\Local\Google\Cloud SDK\google-cloud-sdk\bin\sdk\plink.exe] exited with return code [1].
-starting k6 on a VM failed
+copy to a VM failed
