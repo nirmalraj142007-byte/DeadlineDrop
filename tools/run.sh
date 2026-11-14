@@ -66,7 +66,28 @@ login() { # login <email>  -> access token
     -d "{\"email\":\"$1\",\"password\":\"${SEED_PASSWORD}\"}" | grep -o '"accessToken":"[^"]*"' | cut -d'"' -f4
 }
 
-# (2) fresh assignment: T = now + COHORT_MIN + 2 min
+# (2) schedule: seed depends only on (size, repeat), so all three arms replay the same schedule.
+# Schedule and copies come BEFORE T is fixed: through a shaped controller link the gcloud ssh/scp calls
+# alone can exceed the start margin, and none of them depends on T.
+SEED=$(( 16#$(printf 'dd-schedule:%s:%s' "${SIZE}" "${REPEAT}" | sha256sum | cut -c1-7) ))
+"${PY}" "$(to_native_path "${REPO_ROOT}/tools/gen_schedule.py")" \
+  --mode "${SCHEDULE_MODE}" --n "${SIZE}" --cohort-minutes "${COHORT_MIN}" --grace-s "${GRACE_S}" \
+  --max-mb "${MAX_MB}" --seed "${SEED}" --out "$(to_native_path "${RUN_DIR}/schedule")"
+
+# (3) copy shard and k6 scripts to each VM (in parallel)
+copy_to_vm() {
+  local c="$1" vm; vm="$(vm_name "$1")"
+  vm_ssh "${vm}" "rm -rf ~/${VM_HOME_DIR}/run && mkdir -p ~/${VM_HOME_DIR}/run/lib"
+  vm_scp "${RUN_DIR}/schedule/shard-${c}.json" "${vm}:${VM_HOME_DIR}/run/shard.json"
+  vm_scp "${REPO_ROOT}/tools/k6/rush.js" "${vm}:${VM_HOME_DIR}/run/rush.js"
+  vm_scp "${REPO_ROOT}/tools/k6/lib/flows.js" "${vm}:${VM_HOME_DIR}/run/lib/flows.js"
+  vm_put_secret "${vm}" "${VM_HOME_DIR}/run/pw" "${SEED_PASSWORD}"
+}
+pids=()
+for c in "${COHORTS[@]}"; do copy_to_vm "${c}" & pids+=($!); done
+for p in "${pids[@]}"; do wait "${p}" || { echo "copy to a VM failed" >&2; exit 1; }; done
+
+# (4) fresh assignment: T = now + COHORT_MIN + 2 min
 NOW_S="$(date +%s)"
 T_S=$(( NOW_S + COHORT_MIN * 60 + 120 ))
 T_EPOCH_MS=$(( T_S * 1000 ))
@@ -88,44 +109,31 @@ ASSIGNMENT_ID="$(curl -s -f --max-time 20 -X POST "${BASE}/api/courses/${COURSE_
 echo "${ASSIGNMENT_ID}" > "${RUN_DIR}/assignment-id.txt"
 echo "Assignment ${ASSIGNMENT_ID}, deadline T=${DEADLINE_ISO}, grace ${GRACE_S}s"
 
-# (3) schedule: seed depends only on (size, repeat), so all three arms replay the same schedule
-SEED=$(( 16#$(printf 'dd-schedule:%s:%s' "${SIZE}" "${REPEAT}" | sha256sum | cut -c1-7) ))
-"${PY}" "$(to_native_path "${REPO_ROOT}/tools/gen_schedule.py")" \
-  --mode "${SCHEDULE_MODE}" --n "${SIZE}" --cohort-minutes "${COHORT_MIN}" --grace-s "${GRACE_S}" \
-  --max-mb "${MAX_MB}" --seed "${SEED}" --out "$(to_native_path "${RUN_DIR}/schedule")"
-
-# (4) copy shard and k6 scripts to each VM (in parallel)
-copy_to_vm() {
-  local c="$1" vm; vm="$(vm_name "$1")"
-  vm_ssh "${vm}" "rm -rf ~/${VM_HOME_DIR}/run && mkdir -p ~/${VM_HOME_DIR}/run/lib"
-  vm_scp "${RUN_DIR}/schedule/shard-${c}.json" "${vm}:${VM_HOME_DIR}/run/shard.json"
-  vm_scp "${REPO_ROOT}/tools/k6/rush.js" "${vm}:${VM_HOME_DIR}/run/rush.js"
-  vm_scp "${REPO_ROOT}/tools/k6/lib/flows.js" "${vm}:${VM_HOME_DIR}/run/lib/flows.js"
-  vm_put_secret "${vm}" "${VM_HOME_DIR}/run/pw" "${SEED_PASSWORD}"
-}
-pids=()
-for c in "${COHORTS[@]}"; do copy_to_vm "${c}" & pids+=($!); done
-for p in "${pids[@]}"; do wait "${p}" || { echo "copy to a VM failed" >&2; exit 1; }; done
-
 EARLIEST_CLICK_S=$(( T_S - COHORT_MIN * 60 ))
 if [ "$(date +%s)" -gt $(( EARLIEST_CLICK_S - START_MARGIN_S )) ]; then
-  echo "Error: copying took too long; k6 cannot start ${START_MARGIN_S}s before the earliest click. Re-run." >&2
+  echo "Error: assignment creation took too long; k6 cannot start ${START_MARGIN_S}s before the earliest click. Re-run." >&2
   exit 1
 fi
 
-# (5) start k6 on each VM that has students
-STARTED=()
-for c in "${COHORTS[@]}"; do
-  vm="$(vm_name "${c}")"
-  count="$("${PY}" -c "import json,sys; print(len(json.load(open(sys.argv[1], encoding='utf-8'))))" "$(to_native_path "${RUN_DIR}/schedule/shard-${c}.json")" | tr -d '\r')"
-  if [ "${count}" -eq 0 ]; then echo "${vm}: empty shard, not starting k6"; continue; fi
+# (5) start k6 on each VM that has students (in parallel: each gcloud ssh takes seconds)
+start_k6() {
+  local vm; vm="$(vm_name "$1")"
   vm_ssh "${vm}" "cd ~/${VM_HOME_DIR}/run && nohup k6 run --console-output vu-log.ndjson --summary-export summary.json \
     -e ARM=${ARM} -e BASE_URL=${BASE} -e SHARD=\$PWD/shard.json -e T_EPOCH_MS=${T_EPOCH_MS} -e GRACE_S=${GRACE_S} \
     -e ASSIGNMENT_ID=${ASSIGNMENT_ID} -e PASSWORD=\"\$(cat pw)\" -e FILES_DIR=\$HOME/${VM_HOME_DIR}/files \
     -e COHORT_MINUTES=${COHORT_MIN} rush.js > k6.out 2>&1 < /dev/null &" >/dev/null
+}
+STARTED=()
+pids=()
+for c in "${COHORTS[@]}"; do
+  count="$("${PY}" -c "import json,sys; print(len(json.load(open(sys.argv[1], encoding='utf-8'))))" "$(to_native_path "${RUN_DIR}/schedule/shard-${c}.json")" | tr -d '\r')"
+  if [ "${count}" -eq 0 ]; then echo "$(vm_name "${c}"): empty shard, not starting k6"; continue; fi
+  start_k6 "${c}" & pids+=($!)
   STARTED+=("${c}")
-  echo "${vm}: k6 started (${count} students)"
+  echo "$(vm_name "${c}"): starting k6 (${count} students)"
 done
+for p in "${pids[@]}"; do wait "${p}" || { echo "starting k6 on a VM failed" >&2; exit 1; }; done
+echo "k6 started on: ${STARTED[*]} ($(( EARLIEST_CLICK_S - $(date +%s) ))s before the earliest click)"
 
 # (6) fault: the script owns its timing relative to T
 if [ "${FAULT}" != "none" ]; then

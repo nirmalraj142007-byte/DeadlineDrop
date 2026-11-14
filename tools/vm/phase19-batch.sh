@@ -10,6 +10,10 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=tools/vm/common.sh
 source "${SCRIPT_DIR}/common.sh"
+# deploy/env.sh (sourced by common.sh) turns on errexit; this batch checks every exit code itself
+# and must log END/STOPPED, so switch it back off. Without this the first failing run.sh killed the
+# batch silently (twice in phase 19).
+set +e
 
 LOG_DIR="${REPO_ROOT}/results/remote"
 LOG="${LOG_DIR}/progress.log"
