@@ -42,3 +42,11 @@ Deployed Cloud Run service URLs for initial ablation arms in `asia-south1`:
 Outcome of the D4 gate. Nirmal fills in exactly one line and deletes the other:
 - Confirmed by <name>, date <dd Nov>, approx N <n>, file types <..>
 - No confirmation: mock deadline scheduled for <day 13 or 14> with 30+ people
+
+## D10: First cloud runs (phase 19, 2026-11-14)
+- **Medium cohort loss 0.5% -> 0.2% (PLACEHOLDER; phase 32 replaces every cohort value from pilot percentiles).**
+  The first sanity check measured medium at 3.363 Mbit/s against 4 Mbit/s (-15.9%, limit ±10%) with RTT
+  61.3 ms (results/sanity/medium.txt in commit bb4298e). With 0.5% random loss at about 61 ms RTT the TCP
+  loss bound (Mathis, MSS 1460) is about 3.29 Mbit/s, so the profile asked for a rate TCP cannot reach.
+  At 0.2% the bound is about 5.2 Mbit/s, so the 4 Mbit/s cap is what limits the link again. Slow
+  (1%, 80 ms, bound 1.76 Mbit/s > 1 Mbit/s) and fast (0%) were within limits and are unchanged.
