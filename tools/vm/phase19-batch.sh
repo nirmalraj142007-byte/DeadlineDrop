@@ -31,6 +31,13 @@ step() {
 
 say "batch started on $(hostname), commit $(git -C "${REPO_ROOT}" rev-parse --short HEAD)"
 
+# One SSH connection per VM, one at a time, before anything runs in parallel: the first
+# gcloud compute ssh creates ~/.ssh/google_compute_engine, and parallel first calls race on it.
+for c in "${COHORTS[@]}"; do
+  vm_ssh "$(vm_name "${c}")" "true" >/dev/null 2>&1 || stop "ssh to $(vm_name "${c}") failed"
+done
+say "ssh to all VMs ok"
+
 # ---- b. sanity
 step sanity bash "${SCRIPT_DIR}/sanity.sh" || stop "sanity outside limits (results/sanity/*.txt)"
 for c in "${COHORTS[@]}"; do say "  ${c}: $(tail -n 1 "${REPO_ROOT}/results/sanity/${c}.txt")"; done
