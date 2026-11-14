@@ -43,3 +43,20 @@
   Run complete: /c/dev/deadlinedrop/results/runs/20261114T113850Z_C_100_r1_dryrun (counted=false, analyze exit 0)
 2026-11-14T12:58:40Z memory samplers started
 2026-11-14T12:58:41Z START run-c-1000: bash /c/dev/deadlinedrop/tools/run.sh c 1000 1 none --dryrun
+2026-11-14T13:37:02Z batch started on DESKTOP-T7TBPCV, commit ee3bcbf
+2026-11-14T13:37:35Z ssh to all VMs ok
+2026-11-14T13:37:35Z resuming at 1000
+2026-11-14T13:38:09Z memory samplers started
+2026-11-14T13:38:09Z START run-c-1000: bash /c/dev/deadlinedrop/tools/run.sh c 1000 1 none --dryrun
+2026-11-14T14:07:06Z END run-c-1000: exit 0
+  PEAK dd-k6-slow 86.9% (total - available) at 2026-11-14T13:59:45Z
+  PEAK dd-k6-medium 75.4% (total - available) at 2026-11-14T13:57:36Z
+  PEAK dd-k6-fast 53.7% (total - available) at 2026-11-14T14:01:10Z
+    lost 0  duplicates 0  pending 3  connectionErrors 0
+    Server-Timing medians (ms): {'n': 1000, 'app': 104.0, 'db': 24.0, 'sign': 77.0, 'other': 2.0, 'largestPhase': 'sign'}
+  C:\Users\Nirmalraj\AppData\Local\Google\Cloud SDK\google-cloud-sdk\lib\third_party\google\api_core\_python_version_support.py:266: FutureWarning: You are using a Python version (3.11.9) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+    warnings.warn(message, FutureWarning)
+  .........................................
+  Run complete: /c/dev/deadlinedrop/results/runs/20261114T133810Z_C_1000_r1_dryrun (counted=false, analyze exit 0)
+2026-11-14T14:08:10Z run-c-1000 exit 0 (a dry run: reported, not a stop condition)
+2026-11-14T14:08:10Z DONE (STOP_AFTER=1000)

@@ -1,4 +1,4 @@
-Run folder: /c/dev/deadlinedrop/results/runs/20261114T125841Z_C_1000_r1_dryrun
+Run folder: /c/dev/deadlinedrop/results/runs/20261114T133810Z_C_1000_r1_dryrun
 == (a) parity ==
 parity clean
 == (b) connection budget ==
@@ -11,26 +11,44 @@ sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
 dd-k6-slow: probed unshaped, 'slow' shaping restored
 dd-k6-medium: probed unshaped, 'medium' shaping restored
 dd-k6-fast: probed unshaped, 'fast' shaping restored
-wrote /c/dev/deadlinedrop/results/runs/20261114T125841Z_C_1000_r1_dryrun/preflight.json
-slow: skew 36.0 ms (best rtt 90 ms), warm median 71.0 ms
-medium: skew 35.0 ms (best rtt 88 ms), warm median 71.3 ms
-fast: skew 36.5 ms (best rtt 89 ms), warm median 74.5 ms
+wrote /c/dev/deadlinedrop/results/runs/20261114T133810Z_C_1000_r1_dryrun/preflight.json
+slow: skew 34.0 ms (best rtt 86 ms), warm median 69.9 ms
+medium: skew 36.5 ms (best rtt 89 ms), warm median 74.7 ms
+fast: skew 34.0 ms (best rtt 84 ms), warm median 68.4 ms
 PREFLIGHT OK for arm c
-Generated schedule with 1000 students in C:\dev\deadlinedrop\results\runs\20261114T125841Z_C_1000_r1_dryrun\schedule:
+Generated schedule with 1000 students in C:\dev\deadlinedrop\results\runs\20261114T133810Z_C_1000_r1_dryrun\schedule:
   Classes: {'ON_TIME': 868, 'MARGIN': 32, 'LATE': 100}
   Cohorts: {'slow': 329, 'medium': 370, 'fast': 301}
 shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:18 |   5%shard-fast.json           | 76 kB |  76.0 kB/s | ETA: 00:00:00 | 100%
-shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:22 |   4%shard-medium.json         | 93 kB |  93.8 kB/s | ETA: 00:00:00 | 100%
 shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:19 |   4%shard-slow.json           | 82 kB |  82.8 kB/s | ETA: 00:00:00 | 100%
-rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  98%rush.js                   | 4 kB |   4.1 kB/s | ETA: 00:00:00 | 100%
-rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  98%rush.js                   | 4 kB |   4.1 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  89%rush.js                   | 4 kB |   4.5 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:22 |   4%shard-medium.json         | 93 kB |  93.8 kB/s | ETA: 00:00:00 | 100%
 flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  31%flows.js                  | 12 kB |  12.6 kB/s | ETA: 00:00:00 | 100%
-rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  98%rush.js                   | 4 kB |   4.1 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  89%rush.js                   | 4 kB |   4.5 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  89%rush.js                   | 4 kB |   4.5 kB/s | ETA: 00:00:00 | 100%
 flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  31%flows.js                  | 12 kB |  12.6 kB/s | ETA: 00:00:00 | 100%
 flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  31%flows.js                  | 12 kB |  12.6 kB/s | ETA: 00:00:00 | 100%
-Assignment 7e84aabc-2dd5-435f-a31f-1020a36f8cc8, deadline T=2026-11-14T13:15:50Z, grace 300s
+Largest shard 370 students: k6 starts 305s before the earliest click
+Assignment cc03dcc9-0d2c-4492-8a7a-4e5d29b7f317, deadline T=2026-11-14T13:57:46Z, grace 300s
 dd-k6-slow: starting k6 (329 students)
 dd-k6-medium: starting k6 (370 students)
 dd-k6-fast: starting k6 (301 students)
-k6 started on: slow medium fast (103s before the earliest click)
-Waiting 1123s until T + grace + 2 min
+k6 started on: slow medium fast (288s before the earliest click)
+Waiting 1308s until T + grace + 2 min
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:04 |  19%vu-log-slow.ndjson        | 160 kB |  80.0 kB/s | ETA: 00:00:00 |  95%vu-log-slow.ndjson        | 167 kB |  83.9 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 32 kB |  32.0 kB/s | ETA: 00:00:02 |  33%summary-slow.json         | 96 kB |  96.9 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-slow.out               | 159 kB | 159.9 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:04 |  16%vu-log-medium.ndjson      | 189 kB | 189.2 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 32 kB |  32.0 kB/s | ETA: 00:00:02 |  29%summary-medium.json       | 108 kB | 108.6 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-medium.out             | 157 kB | 157.9 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%vu-log-fast.ndjson        | 128 kB | 128.0 kB/s | ETA: 00:00:00 |  83%vu-log-fast.ndjson        | 153 kB | 153.1 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  35%summary-fast.json         | 88 kB |  89.0 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-fast.out               | 156 kB | 156.1 kB/s | ETA: 00:00:00 | 100%
+arm C: 1000 students (on time 868, margin 32, late 100)
+  onTime_onTime 868  onTime_lateOrMissing 0  late_late 100  late_onTime 0  rate 0.0000
+  lost 0  duplicates 0  pending 3  connectionErrors 0
+  Server-Timing medians (ms): {'n': 1000, 'app': 104.0, 'db': 24.0, 'sign': 77.0, 'other': 2.0, 'largestPhase': 'sign'}
+C:\Users\Nirmalraj\AppData\Local\Google\Cloud SDK\google-cloud-sdk\lib\third_party\google\api_core\_python_version_support.py:266: FutureWarning: You are using a Python version (3.11.9) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+.........................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261114T133810Z_C_1000_r1_dryrun (counted=false, analyze exit 0)
