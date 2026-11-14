@@ -44,7 +44,13 @@ const tEpoch = parseInt(__ENV.T_EPOCH_MS || '0', 10);
 const timeUntilDeadlineS = tEpoch > Date.now() ? Math.ceil((tEpoch - Date.now()) / 1000) : 0;
 const maxDurationSeconds = timeUntilDeadlineS + Math.ceil(cohortMinutes * 60 + graceSeconds + 300);
 
+// setup() logs in every student of this shard one after another (at most 20 per second). Over a
+// shaped link with server-side BCrypt each login takes ~0.2-0.3 s, so k6's default 60 s setupTimeout
+// killed every VM of the first 1,000-student run (~333 logins each). Budget 0.5 s per login + 60 s.
+export const SETUP_BUDGET_S_PER_LOGIN = 0.5;
+
 export const options = {
+  setupTimeout: `${Math.ceil(schedule.length * SETUP_BUDGET_S_PER_LOGIN) + 60}s`,
   scenarios: {
     rush: {
       executor: 'per-vu-iterations',

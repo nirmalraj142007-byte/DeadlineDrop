@@ -88,8 +88,16 @@ for c in "${COHORTS[@]}"; do copy_to_vm "${c}" & pids+=($!); done
 for p in "${pids[@]}"; do wait "${p}" || { echo "copy to a VM failed" >&2; exit 1; }; done
 
 # (4) fresh assignment: T = now + COHORT_MIN + 2 min
+# k6 logs in its whole shard in setup() before any student clicks, so the lead before the earliest
+# click grows with the largest shard: 0.5 s per login (rush.js SETUP_BUDGET_S_PER_LOGIN) on top of 2 min.
+MAX_SHARD="$("${PY}" -c "
+import json, sys
+print(max(len(json.load(open(p, encoding='utf-8'))) for p in sys.argv[1:]))" \
+  $(for c in "${COHORTS[@]}"; do to_native_path "${RUN_DIR}/schedule/shard-${c}.json"; done) | tr -d '\r')"
+LEAD_S=$(( 120 + (MAX_SHARD + 1) / 2 ))
 NOW_S="$(date +%s)"
-T_S=$(( NOW_S + COHORT_MIN * 60 + 120 ))
+T_S=$(( NOW_S + COHORT_MIN * 60 + LEAD_S ))
+echo "Largest shard ${MAX_SHARD} students: k6 starts ${LEAD_S}s before the earliest click"
 T_EPOCH_MS=$(( T_S * 1000 ))
 DEADLINE_ISO="$("${PY}" -c "import datetime,sys; print(datetime.datetime.fromtimestamp(int(sys.argv[1]), datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'))" "${T_S}" | tr -d '\r')"
 

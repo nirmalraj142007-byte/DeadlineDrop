@@ -1,0 +1,10 @@
+{
+  "arm": "c",
+  "size": 1000,
+  "repeat": 1,
+  "fault": "none",
+  "counted": false,
+  "invalid": true,
+  "assignmentId": "7e84aabc-2dd5-435f-a31f-1020a36f8cc8",
+  "invalidReason": "k6 setup() timed out after 60 s on all three VMs while logging in ~333 students each (k6-<cohort>.out), so no student ran; the operator laptop also restarted during the run, so no export, vu-log, meta or analysis was collected. Infrastructure failure; re-run as a new folder."
+}

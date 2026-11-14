@@ -1,0 +1,205 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: rush.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 329 max VUs, 32m14s max duration (incl. graceful stop):
+              * rush: 1 iterations for each of 329 VUs (maxDuration: 31m44s, gracefulStop: 30s)
+
+
+Init   [  49% ] 160/329 VUs initialized
+rush   [   0% ]
+
+Init   [  92% ] 304/329 VUs initialized
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+
+Run    [ 100% ] setup()
+rush   [   0% ]
+time="2026-11-14T13:05:10Z" level=error msg="setup() execution timed out after 60 seconds" hint="You can increase the time limit via the setupTimeout option"

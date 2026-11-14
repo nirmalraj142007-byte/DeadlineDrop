@@ -1,0 +1,24 @@
+{
+  "mode": "PLACEHOLDER",
+  "label": "PLACEHOLDER",
+  "seed": 37744766,
+  "n": 1000,
+  "cohortMinutes": 10.0,
+  "lateFrac": 0.1,
+  "graceSeconds": 300.0,
+  "counts": {
+    "ON_TIME": 868,
+    "MARGIN": 32,
+    "LATE": 100
+  },
+  "classes": {
+    "ON_TIME": 868,
+    "MARGIN": 32,
+    "LATE": 100
+  },
+  "cohorts": {
+    "slow": 329,
+    "medium": 370,
+    "fast": 301
+  }
+}

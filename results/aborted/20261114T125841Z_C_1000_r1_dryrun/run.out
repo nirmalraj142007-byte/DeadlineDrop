@@ -1,0 +1,36 @@
+Run folder: /c/dev/deadlinedrop/results/runs/20261114T125841Z_C_1000_r1_dryrun
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261114T125841Z_C_1000_r1_dryrun/preflight.json
+slow: skew 36.0 ms (best rtt 90 ms), warm median 71.0 ms
+medium: skew 35.0 ms (best rtt 88 ms), warm median 71.3 ms
+fast: skew 36.5 ms (best rtt 89 ms), warm median 74.5 ms
+PREFLIGHT OK for arm c
+Generated schedule with 1000 students in C:\dev\deadlinedrop\results\runs\20261114T125841Z_C_1000_r1_dryrun\schedule:
+  Classes: {'ON_TIME': 868, 'MARGIN': 32, 'LATE': 100}
+  Cohorts: {'slow': 329, 'medium': 370, 'fast': 301}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:18 |   5%shard-fast.json           | 76 kB |  76.0 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:22 |   4%shard-medium.json         | 93 kB |  93.8 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:19 |   4%shard-slow.json           | 82 kB |  82.8 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  98%rush.js                   | 4 kB |   4.1 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  98%rush.js                   | 4 kB |   4.1 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  31%flows.js                  | 12 kB |  12.6 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  98%rush.js                   | 4 kB |   4.1 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  31%flows.js                  | 12 kB |  12.6 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  31%flows.js                  | 12 kB |  12.6 kB/s | ETA: 00:00:00 | 100%
+Assignment 7e84aabc-2dd5-435f-a31f-1020a36f8cc8, deadline T=2026-11-14T13:15:50Z, grace 300s
+dd-k6-slow: starting k6 (329 students)
+dd-k6-medium: starting k6 (370 students)
+dd-k6-fast: starting k6 (301 students)
+k6 started on: slow medium fast (103s before the earliest click)
+Waiting 1123s until T + grace + 2 min

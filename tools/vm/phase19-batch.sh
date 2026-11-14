@@ -114,6 +114,9 @@ tail -n 6 "${LOG_DIR}/run-c-1000.out" | sed 's/^/  /' | tee -a "${LOG}"
 say "run-c-1000 exit ${RC1000} (a dry run: reported, not a stop condition)"
 fi
 
+# STOP_AFTER=1000 ends here, e.g. to delete the fleet before cold start (coldstart.sh needs no VMs).
+if [ "${STOP_AFTER:-}" = 1000 ]; then say "DONE (STOP_AFTER=1000)"; exit 0; fi
+
 # ---- e. cold start, from an unshaped link
 for c in "${COHORTS[@]}"; do vm_ssh "$(vm_name "${c}")" "sudo bash ~/dd/shape.sh clear" >/dev/null 2>&1; done
 say "shaping cleared on all VMs"
