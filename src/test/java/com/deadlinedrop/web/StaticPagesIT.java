@@ -58,6 +58,26 @@ class StaticPagesIT {
     }
 
     @Test
+    void getStudentAssignmentsPage_returns200() {
+        ResponseEntity<String> response = rest.getForEntity("/student/assignments.html", String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody()).contains("My Assignments");
+        assertThat(response.getBody()).contains("assignments-container");
+    }
+
+    @Test
+    void getStudentSubmitPage_returns200() {
+        ResponseEntity<String> response = rest.getForEntity("/student/submit.html", String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody()).contains("Submit Assignment");
+        assertThat(response.getBody()).contains("file-input");
+    }
+
+    @Test
     void noStaticFileContainsInlineScriptsOrStyleAttributes() throws Exception {
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = resolver.getResources("classpath*:/static/**");

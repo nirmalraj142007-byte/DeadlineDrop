@@ -600,3 +600,40 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 - **Trade-off:** In ES modules with top-level await (such as clock synchronization in `api.js`), module evaluation completes asynchronously after the browser parser may have already fired `DOMContentLoaded`. Event listeners in `login.js` and `shell.js` therefore check `document.readyState === 'loading'` and immediately execute `init()` if already interactive or complete, preventing missed initialization callbacks without requiring a framework lifecycle manager.
 
 - **File to read first:** `src/main/resources/static/js/api.js`
+
+---
+
+## 2026-11-15 — Phase 23: the two student screens
+
+- **What changed:**
+  - Implemented `src/main/resources/static/student/assignments.html` and `src/main/resources/static/js/assignments.js`:
+    - Queries `GET /api/me/assignments` and renders an accessible table displaying course code, title, deadline formatted in IST, live synchronized countdown driven by `serverNow()`, semantic status chips (`Not submitted`, `Time locked`, `On time ✓`, `Late`), and submission link (`submit.html?assignment=<id>`).
+    - Handles all five UI states via `renderState`: `loading` skeleton rows, `empty` state ("No assignments yet"), `error` banner with Retry action, `partial` state displaying parsed assignments alongside an inline warning banner, and `success`.
+  - Implemented `src/main/resources/static/student/submit.html` and `src/main/resources/static/js/submit.js` (keeping `submit.js` under 300 lines at 277 lines):
+    - Determines active arm from `GET /api/config`; displays `armLabel` in muted text (`#arm-label`) for Arms A and B, omitting it for Arm C.
+    - Renders assignment limits (max file size, allowed MIME types) and live countdown timer.
+    - On file selection: validates immediately client-side against `maxBytes` and `allowedTypes`, rejecting invalid selections with clear banner alerts before initiating network calls.
+    - Generates an `Idempotency-Key` UUID via `crypto.randomUUID()` and caches it in `sessionStorage` under `dd.idempotency.<assignmentId>.<name>.<size>.<lastModified>` so reloads and retries reuse the identical key.
+    - Modularized arm execution flows into `src/main/resources/static/js/flows/arm-c.js`, `arm-b.js`, and `arm-a.js`.
+  - Implemented Arm C hash commitment flow (`arm-c.js`):
+    - Reads file chunks via `FileReader` reporting progress ("Fingerprinting your file… n%").
+    - Computes SHA-256 with Web Crypto (`crypto.subtle.digest('SHA-256')`), recording `hashMs`.
+    - Updates UI status truthfully: "Locking your submission time… (not yet recorded)".
+    - POSTs commit request with exponential backoff retry using the cached `Idempotency-Key` until `graceEndsAt`.
+    - On 200/201 response, displays "Time locked ✓ <IST time>".
+    - If `uploadUrl` is null or returns 403 from storage, requests a fresh signed URL via `POST /api/submissions/{id}/upload-url`.
+    - Uploads file bytes to storage using `XMLHttpRequest` PUT with `uploadHeaders`, tracking transfer rate in Mbps and updating status: "Time locked ✓ <time> · Upload <pct>% (<mbps> Mbps) · keep this tab open until the upload finishes; grace ends <time>".
+    - On network error or 5xx status, retries PUT with exponential backoff.
+    - Finalizes submission via `POST /api/submissions/{id}/finalize` with retry (retrying `BYTES_NOT_FOUND` up to 5 times).
+    - Renders success panel with submission ID and receipt link.
+  - Implemented Arm B flow (`arm-b.js`): initializes direct upload via `POST /api/assignments/{id}/direct-uploads`, executes XHR PUT to storage, finalizes via `POST .../direct-uploads/{uploadId}/finalize`, and displays inline timing result "Submitted at <IST> · ON TIME/LATE".
+  - Implemented Arm A flow (`arm-a.js`): executes multipart XHR POST to `/api/assignments/{id}/naive-submissions` with progress tracking, displaying inline timing result "Submitted at <IST> · ON TIME/LATE".
+  - Persists telemetry payload `{assignmentId, clickOffsetMs = clickMs - deadline, hashMs, uploadMbps, sizeBytes}` in `sessionStorage` under key `dd.telemetry.<assignmentId>` for Phase 24 receipt ingestion.
+  - Added utility CSS classes in `src/main/resources/static/css/app.css` (`.text-muted`, `.arm-label`, `.assignment-meta`, `.progress-status-text`) adhering to design tokens with zero inline styles.
+  - Extended `src/test/java/com/deadlinedrop/web/StaticPagesIT.java` with test coverage for student assignments and submit pages, passing the static classpath resource scanner rule.
+
+- **Why:** Students need an accessible, transparent, and resilient interface that guarantees on-time submissions are never marked late due to network congestion or connection drops, maintaining truthfulness at every state transition between client hashing, server commit timestamping, direct storage upload, and finalization.
+
+- **Trade-off:** Client-side SHA-256 fingerprinting runs on the browser main thread via native Web Crypto `crypto.subtle.digest`, reading chunked buffers with `FileReader`. While Web Crypto performs hardware-accelerated SHA-256 natively without UI stutter for assignment sizes up to 25 MB, offloading hashing to a dedicated Web Worker would provide full multi-threaded isolation for larger files at the cost of additional worker script lifecycle management and message-passing complexity.
+
+- **File to read first:** `src/main/resources/static/js/submit.js`

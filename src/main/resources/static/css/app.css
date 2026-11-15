@@ -397,6 +397,59 @@ textarea:focus {
   border: 0 !important;
 }
 
+.text-muted {
+  color: var(--muted);
+  font-size: var(--fs-200);
+}
+
+.arm-label {
+  font-size: var(--fs-100);
+  color: var(--muted);
+  margin-top: var(--space-1);
+  margin-bottom: var(--space-3);
+}
+
+.assignment-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  padding: var(--space-3);
+  background-color: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.assignment-meta-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.assignment-meta-label {
+  font-size: var(--fs-100);
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.assignment-meta-value {
+  font-size: var(--fs-300);
+  color: var(--text);
+  font-weight: 500;
+}
+
+.progress-wrapper {
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.progress-status-text {
+  font-size: var(--fs-200);
+  font-weight: 500;
+  margin-bottom: var(--space-2);
+}
+
 :focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
