@@ -45,19 +45,61 @@ function doXhrPut(url, headers, file, onProgress) {
       }
     };
 
+    let settled = false;
+    const cleanup = () => {
+      if (typeof window !== 'undefined' && offlineListener) {
+        window.removeEventListener('offline', offlineListener);
+      }
+    };
+
+    const offlineListener = () => {
+      if (!settled) {
+        try {
+          xhr.abort();
+        } catch (e) {}
+      }
+    };
+    if (typeof window !== 'undefined') {
+      window.addEventListener('offline', offlineListener);
+    }
+
     xhr.onload = () => {
+      if (settled) return;
+      settled = true;
+      cleanup();
       resolve({ status: xhr.status, responseText: xhr.responseText });
     };
 
     xhr.onerror = () => {
+      if (settled) return;
+      settled = true;
+      cleanup();
       resolve({ status: 0, error: 'Network error during storage upload' });
     };
 
+    xhr.onabort = () => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      resolve({ status: 0, error: 'Connection lost (offline)' });
+    };
+
     xhr.ontimeout = () => {
+      if (settled) return;
+      settled = true;
+      cleanup();
       resolve({ status: 0, error: 'Storage upload timed out' });
     };
 
-    xhr.send(file);
+    try {
+      xhr.send(file);
+    } catch (e) {
+      if (!settled) {
+        settled = true;
+        cleanup();
+        resolve({ status: 0, error: e.message });
+      }
+    }
   });
 }
 
@@ -194,8 +236,18 @@ export async function runArmCFlow({ assignment, file, idempotencyKey, ui }) {
       throw new Error('Upload grace window expired during retry backoff');
     }
 
-    ui.updateStatus(`Connection interrupted (${isNetwork ? 'offline' : 'HTTP ' + status}), retrying upload in ${Math.round(jitterMs / 1000)}s…`);
+    const waitSec = Math.max(1, Math.round(jitterMs / 1000));
+    const errDetail = isNetwork ? 'offline' : `HTTP ${status}`;
+    ui.updateStatus(`Connection lost (${errDetail}), retrying upload in ${waitSec}s…`);
     await new Promise(r => setTimeout(r, jitterMs));
+
+    while (typeof navigator !== 'undefined' && !navigator.onLine) {
+      ui.updateStatus('Connection lost (offline), waiting for network to reconnect…');
+      await new Promise(r => setTimeout(r, 1000));
+      if (Date.now() >= graceEndsAtMs) {
+        throw new Error('Upload grace window expired while offline');
+      }
+    }
   }
 
   const uploadElapsedSec = (performance.now() - uploadStartTime) / 1000;

@@ -625,6 +625,7 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
     - Uploads file bytes to storage using `XMLHttpRequest` PUT with `uploadHeaders`, tracking transfer rate in Mbps and updating status: "Time locked ✓ <time> · Upload <pct>% (<mbps> Mbps) · keep this tab open until the upload finishes; grace ends <time>".
     - On network error or 5xx status, retries PUT with exponential backoff.
     - Finalizes submission via `POST /api/submissions/{id}/finalize` with retry (retrying `BYTES_NOT_FOUND` up to 5 times).
+    - Hardened network drop resilience: attaches window `offline` listener to abort in-flight XHR PUT requests, updating UI status to `"Connection lost (offline), waiting for network to reconnect…"` before resuming upload when connectivity returns.
     - Renders success panel with submission ID and receipt link.
   - Implemented Arm B flow (`arm-b.js`): initializes direct upload via `POST /api/assignments/{id}/direct-uploads`, executes XHR PUT to storage, finalizes via `POST .../direct-uploads/{uploadId}/finalize`, and displays inline timing result "Submitted at <IST> · ON TIME/LATE".
   - Implemented Arm A flow (`arm-a.js`): executes multipart XHR POST to `/api/assignments/{id}/naive-submissions` with progress tracking, displaying inline timing result "Submitted at <IST> · ON TIME/LATE".
