@@ -231,7 +231,7 @@ echo "GitHub repository variables to set:"
 echo "GCP_WIF_PROVIDER=${WIF_PROVIDER_RESOURCE}"
 echo "GCP_DEPLOY_SA=${DEPLOY_SA}"
 echo "GCP_PROJECT_ID=${PROJECT_ID}"
-echo "DEPLOY_ARMS=a c"
+echo "DEPLOY_ARMS=a b c (set only if missing)"
 echo "========================================="
 
 if command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
@@ -239,6 +239,9 @@ if command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
   gh variable set GCP_WIF_PROVIDER --body "${WIF_PROVIDER_RESOURCE}" --repo "${REPO}" || true
   gh variable set GCP_DEPLOY_SA --body "${DEPLOY_SA}" --repo "${REPO}" || true
   gh variable set GCP_PROJECT_ID --body "${PROJECT_ID}" --repo "${REPO}" || true
-  gh variable set DEPLOY_ARMS --body "a c" --repo "${REPO}" || true
+  # Never overwrite: DEPLOY_ARMS may have been changed on purpose.
+  if ! gh variable get DEPLOY_ARMS --repo "${REPO}" >/dev/null 2>&1; then
+    gh variable set DEPLOY_ARMS --body "a b c" --repo "${REPO}" || true
+  fi
   echo "GitHub Actions variables updated."
 fi

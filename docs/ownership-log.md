@@ -568,3 +568,12 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Trade-off:** the anonymous id is a keyed hash of the student id, so anyone holding the salt can re-identify students by hashing the roster; the salt lives only in Secret Manager and the local `.env`, and rotating it would break the dedupe on `(anon_id, assignment_id)`. A random per-student token would avoid that but needs a table mapping it back to the student.
 
 **File to read first:** `src/main/java/com/deadlinedrop/service/UploadUrlService.java`
+
+## 2026-11-15 — Phase 21 fix: DEPLOY_ARMS and arm B redeploy
+
+- **Changed:** `deploy/bootstrap.sh` now sets the GitHub variable `DEPLOY_ARMS` to "a b c" only when it does not exist yet; before, it overwrote it with "a c", so arm B was skipped by the Deploy workflow and kept an old build. Set the variable to "a b c" now and redeployed arm B.
+- **Lesson:** `deploy-arm.sh b` with no image argument deploys `:latest`, and `tools/parity.sh` flags that as a difference from the SHA-pinned arms A and C. Arm B was redeployed with the same SHA image (`5d20b75`), then parity printed nothing.
+
+**Trade-off:** the bootstrap no longer repairs a wrong `DEPLOY_ARMS`; someone who sets it on purpose is never overridden, at the price of fixing a bad value by hand.
+
+**File to read first:** `deploy/bootstrap.sh`
