@@ -1,0 +1,427 @@
+@import url('tokens.css');
+
+/* ==========================================================================
+   Base Reset & Typography
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: var(--fs-300);
+  line-height: 1.5;
+  color: var(--text);
+  background-color: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text);
+  line-height: 1.25;
+  margin-top: 0;
+  margin-bottom: var(--space-4);
+  font-weight: 600;
+}
+
+h1 { font-size: var(--fs-600); }
+h2 { font-size: var(--fs-500); }
+h3 { font-size: var(--fs-400); }
+h4 { font-size: var(--fs-300); }
+
+p {
+  margin-top: 0;
+  margin-bottom: var(--space-3);
+}
+
+a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+a:hover {
+  opacity: 0.85;
+}
+
+/* ==========================================================================
+   Layout (header, main, footer)
+   ========================================================================== */
+
+header {
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: var(--space-3) var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header .brand {
+  font-size: var(--fs-400);
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+}
+
+header nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--max-content-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding: var(--space-6) var(--space-6);
+}
+
+footer {
+  border-top: 1px solid var(--border);
+  background-color: var(--surface);
+  padding: var(--space-4) var(--space-6);
+  text-align: center;
+  color: var(--muted);
+  font-size: var(--fs-200);
+}
+
+/* ==========================================================================
+   Form Controls
+   ========================================================================== */
+
+.form-group {
+  margin-bottom: var(--space-4);
+}
+
+label {
+  display: block;
+  font-size: var(--fs-200);
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: var(--space-1);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="file"],
+select,
+textarea {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--fs-300);
+  font-family: inherit;
+  color: var(--text);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color 0.15s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="file"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--focus);
+  outline: none;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--fs-200);
+  font-weight: 500;
+  font-family: inherit;
+  line-height: 1.25;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background-color: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: var(--muted);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--primary-contrast);
+  border-color: var(--primary);
+}
+
+.btn-primary:hover:not(:disabled) {
+  opacity: 0.9;
+  border-color: var(--primary);
+}
+
+/* ==========================================================================
+   Cards
+   ========================================================================== */
+
+.card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  margin-bottom: var(--space-4);
+}
+
+/* ==========================================================================
+   Chips (always carry words, never colour alone)
+   ========================================================================== */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--fs-100);
+  font-weight: 600;
+  line-height: 1;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background-color: var(--surface);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.chip-ontime {
+  color: var(--success);
+  border-color: var(--success);
+}
+
+.chip-late {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.chip-locked {
+  color: var(--muted);
+  border-color: var(--border);
+}
+
+.chip-pending {
+  color: var(--warning);
+  border-color: var(--warning);
+}
+
+.chip-muted {
+  color: var(--muted);
+  border-color: var(--border);
+}
+
+/* ==========================================================================
+   Banners
+   ========================================================================== */
+
+.banner {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-4);
+  font-size: var(--fs-200);
+  border: 1px solid var(--border);
+  background-color: var(--surface);
+  color: var(--text);
+}
+
+.banner-info {
+  border-color: var(--info);
+  color: var(--info);
+}
+
+.banner-warn {
+  border-color: var(--warning);
+  color: var(--warning);
+}
+
+.banner-error {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* ==========================================================================
+   Progress Indicators
+   ========================================================================== */
+
+.progress {
+  width: 100%;
+  height: var(--space-2);
+  background-color: var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--primary);
+  border-radius: var(--radius-sm);
+  transition: width 0.2s ease;
+}
+
+.progress.indeterminate,
+.progress-indeterminate {
+  position: relative;
+  overflow: hidden;
+}
+
+.progress.indeterminate .progress-bar,
+.progress-indeterminate .progress-bar {
+  width: 40%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  animation: progress-slide 1.5s infinite ease-in-out;
+}
+
+@keyframes progress-slide {
+  0% { left: -40%; }
+  100% { left: 100%; }
+}
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th,
+.table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.table th {
+  font-size: var(--fs-200);
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.table td {
+  font-size: var(--fs-300);
+  color: var(--text);
+}
+
+/* ==========================================================================
+   Timeline
+   ========================================================================== */
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding-left: var(--space-6);
+  border-left: 2px solid var(--border);
+  position: relative;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: var(--space-4);
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--space-6) * -1 - var(--space-1));
+  top: var(--space-1);
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: var(--radius-full);
+  background-color: var(--primary);
+  border: 2px solid var(--surface);
+}
+
+/* ==========================================================================
+   Skeleton Loading
+   ========================================================================== */
+
+.skeleton {
+  background-color: var(--border);
+  border-radius: var(--radius-sm);
+  min-height: var(--space-4);
+  animation: skeleton-pulse 1.8s infinite ease-in-out;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ==========================================================================
+   Accessibility Utilities & Focus Rings
+   ========================================================================== */
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Prefers-reduced-motion: disables animations and transitions */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .skeleton {
+    animation: none;
+    opacity: 0.7;
+  }
+
+  .progress.indeterminate .progress-bar,
+  .progress-indeterminate .progress-bar {
+    animation: none;
+    width: 100%;
+    opacity: 0.5;
+  }
+}

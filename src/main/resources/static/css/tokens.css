@@ -1,0 +1,88 @@
+:root {
+  /* Colour palette (light mode default) */
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #cbd5e1;
+  --primary: #1d4ed8;
+  --primary-contrast: #ffffff;
+  --success: #15803d;
+  --warning: #b45309;
+  --danger: #b91c1c;
+  --info: #0369a1;
+  --focus: #2563eb;
+
+  /* Aliases with --color- prefix for consistency */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-contrast: var(--primary-contrast);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+  --color-focus: var(--focus);
+
+  /* Type scale (rem-based) */
+  --fs-100: 0.75rem;   /* 12px */
+  --fs-200: 0.875rem;  /* 14px */
+  --fs-300: 1rem;      /* 16px */
+  --fs-400: 1.25rem;   /* 20px */
+  --fs-500: 1.5rem;    /* 24px */
+  --fs-600: 2rem;      /* 32px */
+
+  /* Spacing scale on a 4px grid (rem-based) */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-7: 1.75rem;  /* 28px */
+  --space-8: 2rem;     /* 32px */
+
+  /* Border radius */
+  --radius: 0.375rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-full: 9999px;
+
+  /* Max content width */
+  --max-content-width: 72rem;
+  --max-width: var(--max-content-width);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b0f19;
+    --surface: #131b2e;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --border: #1e293b;
+    --primary: #3b82f6;
+    --primary-contrast: #ffffff;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --info: #38bdf8;
+    --focus: #60a5fa;
+
+    --color-bg: var(--bg);
+    --color-surface: var(--surface);
+    --color-text: var(--text);
+    --color-muted: var(--muted);
+    --color-border: var(--border);
+    --color-primary: var(--primary);
+    --color-primary-contrast: var(--primary-contrast);
+    --color-success: var(--success);
+    --color-warning: var(--warning);
+    --color-danger: var(--danger);
+    --color-info: var(--info);
+    --color-focus: var(--focus);
+  }
+}

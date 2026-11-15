@@ -577,3 +577,26 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 **Trade-off:** the bootstrap no longer repairs a wrong `DEPLOY_ARMS`; someone who sets it on purpose is never overridden, at the price of fixing a bad value by hand.
 
 **File to read first:** `deploy/bootstrap.sh`
+
+---
+
+## 2026-11-15 — Phase 22: shared frontend layer (tokens, components, client, and shell pages)
+
+- **What changed:**
+  - Implemented design tokens in `src/main/resources/static/css/tokens.css` establishing custom CSS properties on `:root` for color palette (bg, surface, text, muted, border, primary, primary-contrast, success, warning, danger, info, focus), rem-based typography scale (`--fs-100` to `--fs-600`), 4px-grid spacing scale (`--space-1` to `--space-8`), border radii, and max content width, with a `prefers-color-scheme: dark` media query override.
+  - Implemented application stylesheet in `src/main/resources/static/css/app.css` using only design tokens for base typography, page layout (`header`, `main`, `footer`), buttons (`.btn`, `.btn-primary`), cards (`.card`), semantic status chips (`.chip-ontime`, `.chip-late`, `.chip-locked`, `.chip-pending`, `.chip-muted` carrying words, never color alone), banners (`info`, `warn`, `error`), progress bar with indeterminate animation, table styles, timeline, skeleton pulse loader, `.visually-hidden` utility, `:focus-visible` focus rings, and `prefers-reduced-motion` overrides.
+  - Created ES module API client `src/main/resources/static/js/api.js`:
+    - `apiFetch(path, options)` automatically attaches the bearer token from `sessionStorage` (documented: dies with tab lifecycle; XSS mitigated via CSP in Phase 29), handles `Idempotency-Key`, serializes JSON payloads, and parses `application/problem+json` into `ApiError` (`status`, `code`, `detail`, `requestId`). If status is 401 on protected resources, it clears the token and redirects to `/?expired=1`; for 401 `INVALID_CREDENTIALS` during login, it propagates `ApiError` directly to allow user feedback.
+    - `retry(fn, options)` executes operations with full-jitter exponential backoff (base 500 ms, cap 8 s) retrying only on network errors, 429, and 5xx (identical to `tools/k6/lib/flows.js` on purpose).
+    - `syncClock()` runs three samples to `/api/time` retaining the offset from the lowest-RTT sample; `serverNow()` returns `Date.now() + offset`. Eagerly initiates clock sync on module evaluation.
+  - Created UI utilities in `src/main/resources/static/js/ui.js` providing `renderState(el, options)` with accessible markup (`aria-live="polite"` for loading/partial, `role="alert"` for errors), `banner(kind, text)`, `chip(kind, text)`, `formatIst(instant)` via `Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata' })`, and `countdown(el, deadlineEpochMs)` driven by `serverNow()`.
+  - Built `src/main/resources/static/index.html` and `src/main/resources/static/js/login.js` providing accessible email and password inputs, handling `?expired=1` session expiration warning banner, rendering "Wrong email or password" error banner on `INVALID_CREDENTIALS`, storing the access token in `sessionStorage`, and redirecting by role (`STUDENT` -> `/student/assignments.html`, `TEACHER`/`ADMIN` -> `/teacher/courses.html`).
+  - Added shell destination pages `src/main/resources/static/student/assignments.html` and `src/main/resources/static/teacher/courses.html` with navigation header, user chip, sign-out handler in `src/main/resources/static/js/shell.js`, and "coming in the next phase" placeholder text.
+  - Configured `src/main/java/com/deadlinedrop/security/SecurityConfig.java` to permit unauthenticated GET requests to `/`, `/index.html`, `/css/**`, `/js/**`, `/student/**`, `/teacher/**`, `/admin/**.html`, and `/favicon.ico`.
+  - Created integration test `src/test/java/com/deadlinedrop/web/StaticPagesIT.java` asserting GET `/` returns HTTP 200 with the login form, GET `/css/tokens.css` returns HTTP 200 with `text/css`, and scanning all static resources on classpath to verify zero inline `<script>` tags without `src` and zero `style=` attributes.
+
+- **Why:** The portal requires a lightweight, accessible, zero-dependency static frontend architecture enforcing strict Separation of Concerns (no inline styles or scripts, CSP-ready, tokenized design) and synchronized time tracking so students can reliably commit assignments against authoritative server time before uploading bytes to signed URLs.
+
+- **Trade-off:** In ES modules with top-level await (such as clock synchronization in `api.js`), module evaluation completes asynchronously after the browser parser may have already fired `DOMContentLoaded`. Event listeners in `login.js` and `shell.js` therefore check `document.readyState === 'loading'` and immediately execute `init()` if already interactive or complete, preventing missed initialization callbacks without requiring a framework lifecycle manager.
+
+- **File to read first:** `src/main/resources/static/js/api.js`
