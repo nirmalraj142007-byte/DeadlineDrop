@@ -1,0 +1,1428 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "OpenAPI definition",
+        "version": "v0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080",
+            "description": "Generated server url"
+        }
+    ],
+    "paths": {
+        "/internal/reconcile": {
+            "post": {
+                "tags": [
+                    "internal-controller"
+                ],
+                "summary": "Settle COMMITTED submissions whose bytes arrived or whose grace ended (Cloud Scheduler only)",
+                "operationId": "reconcile",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReconcileResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/internal/jobs/drain": {
+            "post": {
+                "tags": [
+                    "internal-controller"
+                ],
+                "summary": "Drain the transactional job queue (Cloud Scheduler only)",
+                "operationId": "drain",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DrainResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/telemetry": {
+            "post": {
+                "tags": [
+                    "telemetry-controller"
+                ],
+                "summary": "Record anonymised upload telemetry for one assignment (needs consent)",
+                "operationId": "telemetry",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TelemetryRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "202": {
+                        "description": "Accepted"
+                    }
+                }
+            }
+        },
+        "/api/survey": {
+            "post": {
+                "tags": [
+                    "telemetry-controller"
+                ],
+                "summary": "Record an anonymised pilot survey answer for one assignment",
+                "operationId": "survey",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SurveyRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "202": {
+                        "description": "Accepted"
+                    }
+                }
+            }
+        },
+        "/api/submissions/{id}/upload-url": {
+            "post": {
+                "tags": [
+                    "finalize-controller"
+                ],
+                "summary": "Get a fresh upload URL for a still-COMMITTED submission with the same hash",
+                "operationId": "reissueUploadUrl",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ReissueRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UploadUrlResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/submissions/{id}/finalize": {
+            "post": {
+                "tags": [
+                    "finalize-controller"
+                ],
+                "summary": "Confirm the committed bytes arrived in storage; never moves the stamp",
+                "operationId": "finalizeSubmission",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SubmissionStatusResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/courses": {
+            "get": {
+                "tags": [
+                    "course-controller"
+                ],
+                "summary": "List the signed-in user's courses",
+                "operationId": "listCourses",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CourseDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "course-controller"
+                ],
+                "summary": "Create a course (teacher)",
+                "operationId": "createCourse",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateCourseRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CourseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/courses/{id}/enrollments": {
+            "post": {
+                "tags": [
+                    "course-controller"
+                ],
+                "summary": "Enroll students in a course by email (teacher)",
+                "operationId": "enrollStudents",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EnrollRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EnrollResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/courses/{courseId}/assignments": {
+            "post": {
+                "tags": [
+                    "assignment-controller"
+                ],
+                "summary": "Create an assignment in a course (teacher)",
+                "operationId": "createAssignment",
+                "parameters": [
+                    {
+                        "name": "courseId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateAssignmentRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AssignmentDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "auth-controller"
+                ],
+                "summary": "Sign in with email and password; returns a bearer token",
+                "operationId": "login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/assignments/{assignmentId}/commits": {
+            "post": {
+                "tags": [
+                    "commit-controller"
+                ],
+                "summary": "Commit the file's SHA-256 and size; the server stamps the arrival and returns a signed upload URL",
+                "operationId": "commit",
+                "parameters": [
+                    {
+                        "name": "assignmentId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "Idempotency-Key",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CommitRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CommitResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/assignments/{id}": {
+            "get": {
+                "tags": [
+                    "assignment-controller"
+                ],
+                "summary": "Get one assignment with its deadline and grace window",
+                "operationId": "getAssignment",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AssignmentDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "assignment-controller"
+                ],
+                "summary": "Change an assignment's deadline, grace window or limits (teacher)",
+                "operationId": "updateAssignment",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateAssignmentRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AssignmentDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/time": {
+            "get": {
+                "tags": [
+                    "time-controller"
+                ],
+                "summary": "Server time in epoch milliseconds",
+                "operationId": "getTime",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TimeResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/submissions/{id}": {
+            "get": {
+                "tags": [
+                    "submission-query-controller"
+                ],
+                "summary": "Get a submission receipt with its timeline",
+                "operationId": "getSubmission",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReceiptDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/submissions/{id}/download": {
+            "get": {
+                "tags": [
+                    "download-controller"
+                ],
+                "summary": "Get a short-lived download URL for one submission (teacher)",
+                "operationId": "getDownloadUrl",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DownloadUrlResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/me": {
+            "get": {
+                "tags": [
+                    "auth-controller"
+                ],
+                "summary": "Show the signed-in user",
+                "operationId": "me",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MeResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/me/assignments": {
+            "get": {
+                "tags": [
+                    "assignment-controller"
+                ],
+                "summary": "List the signed-in student's assignments",
+                "operationId": "getMyAssignments",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/StudentAssignmentDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/config": {
+            "get": {
+                "tags": [
+                    "config-controller"
+                ],
+                "summary": "Deployment settings: arm, label, upload size cap, consent version, server time",
+                "operationId": "config",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConfigResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/assignments/{id}/export": {
+            "get": {
+                "tags": [
+                    "export-controller"
+                ],
+                "summary": "Export an assignment's submissions with their timestamps (teacher or admin)",
+                "operationId": "export",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "format",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "json"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/assignments/{id}/download-all": {
+            "get": {
+                "tags": [
+                    "download-controller"
+                ],
+                "summary": "Stream every verified submission of an assignment as a zip (teacher)",
+                "operationId": "downloadAll",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StreamingResponseBody"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/assignments/{id}/dashboard": {
+            "get": {
+                "tags": [
+                    "dashboard-controller"
+                ],
+                "summary": "Teacher dashboard: counts and rows for one assignment",
+                "operationId": "getDashboard",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DashboardDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ReconcileResult": {
+                "type": "object",
+                "properties": {
+                    "settled": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "expired": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "waiting": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "errors": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "DrainResult": {
+                "type": "object",
+                "properties": {
+                    "processed": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "retried": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "failed": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "ms": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "TelemetryRequest": {
+                "type": "object",
+                "properties": {
+                    "assignmentId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "consentVersion": {
+                        "type": "string"
+                    },
+                    "uploadMbps": {
+                        "type": "number",
+                        "format": "double",
+                        "minimum": 0
+                    },
+                    "sizeBytes": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "clickOffsetMs": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "hashMs": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "networkType": {
+                        "type": "string",
+                        "pattern": "^(HOSTEL_WIFI|MOBILE_DATA|HOME_BROADBAND|CAMPUS_LAN|OTHER|UNKNOWN)$"
+                    }
+                },
+                "required": [
+                    "assignmentId"
+                ]
+            },
+            "SurveyRequest": {
+                "type": "object",
+                "properties": {
+                    "assignmentId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "markedLateBefore": {
+                        "type": "string",
+                        "pattern": "^(YES|NO|UNSURE)$"
+                    },
+                    "usualNetwork": {
+                        "type": "string",
+                        "pattern": "^(HOSTEL_WIFI|MOBILE_DATA|HOME_BROADBAND|CAMPUS_LAN|OTHER)$"
+                    }
+                },
+                "required": [
+                    "assignmentId"
+                ]
+            },
+            "ReissueRequest": {
+                "type": "object",
+                "properties": {
+                    "sha256": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "^[0-9a-f]{64}$"
+                    }
+                },
+                "required": [
+                    "sha256"
+                ]
+            },
+            "UploadUrlResponse": {
+                "type": "object",
+                "properties": {
+                    "uploadUrl": {
+                        "type": "string"
+                    },
+                    "uploadHeaders": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "urlExpiresAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "SubmissionStatusResponse": {
+                "type": "object",
+                "properties": {
+                    "submissionId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "timing": {
+                        "type": "string"
+                    },
+                    "uploadedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "CreateCourseRequest": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "maxLength": 20,
+                        "minLength": 0
+                    },
+                    "title": {
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 0
+                    }
+                },
+                "required": [
+                    "code",
+                    "title"
+                ]
+            },
+            "CourseDto": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "students": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "EnrollRequest": {
+                "type": "object",
+                "properties": {
+                    "emails": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "email"
+                        },
+                        "maxItems": 2000,
+                        "minItems": 0
+                    }
+                },
+                "required": [
+                    "emails"
+                ]
+            },
+            "EnrollResult": {
+                "type": "object",
+                "properties": {
+                    "enrolled": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "alreadyEnrolled": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "unknownEmails": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "CreateAssignmentRequest": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 0
+                    },
+                    "deadlineAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "graceSeconds": {
+                        "type": "integer",
+                        "format": "int32",
+                        "maximum": 3600,
+                        "minimum": 0
+                    },
+                    "maxBytes": {
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 26214400,
+                        "minimum": 1
+                    },
+                    "allowedTypes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "pattern": "^[\\w.+-]+/[\\w.+-]+$"
+                        },
+                        "minItems": 1
+                    }
+                },
+                "required": [
+                    "allowedTypes",
+                    "deadlineAt",
+                    "title"
+                ]
+            },
+            "AssignmentDto": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "courseId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "deadlineAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "graceSeconds": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "graceEndsAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "maxBytes": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "allowedTypes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "version": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "LoginRequest": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "minLength": 1
+                    },
+                    "password": {
+                        "type": "string",
+                        "maxLength": 128,
+                        "minLength": 0
+                    }
+                },
+                "required": [
+                    "email",
+                    "password"
+                ]
+            },
+            "TokenResponse": {
+                "type": "object",
+                "properties": {
+                    "accessToken": {
+                        "type": "string"
+                    },
+                    "expiresAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "role": {
+                        "type": "string"
+                    },
+                    "displayName": {
+                        "type": "string"
+                    }
+                }
+            },
+            "CommitRequest": {
+                "type": "object",
+                "properties": {
+                    "sha256": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "sizeBytes": {
+                        "type": "integer",
+                        "format": "int64",
+                        "exclusiveMinimum": 0
+                    },
+                    "contentType": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 0
+                    }
+                },
+                "required": [
+                    "contentType",
+                    "sha256"
+                ]
+            },
+            "CommitResponse": {
+                "type": "object",
+                "properties": {
+                    "submissionId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "committedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "timing": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "uploadUrl": {
+                        "type": "string"
+                    },
+                    "uploadHeaders": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "urlExpiresAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "UpdateAssignmentRequest": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 0
+                    },
+                    "deadlineAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "graceSeconds": {
+                        "type": "integer",
+                        "format": "int32",
+                        "maximum": 3600,
+                        "minimum": 0
+                    },
+                    "maxBytes": {
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 26214400,
+                        "minimum": 1
+                    },
+                    "allowedTypes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "pattern": "^[\\w.+-]+/[\\w.+-]+$"
+                        },
+                        "minItems": 1
+                    },
+                    "version": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "required": [
+                    "allowedTypes",
+                    "deadlineAt",
+                    "title",
+                    "version"
+                ]
+            },
+            "TimeResponse": {
+                "type": "object",
+                "properties": {
+                    "epochMs": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "EventDto": {
+                "type": "object",
+                "properties": {
+                    "from": {
+                        "type": "string"
+                    },
+                    "to": {
+                        "type": "string"
+                    },
+                    "actor": {
+                        "type": "string"
+                    },
+                    "at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "ReceiptDto": {
+                "type": "object",
+                "properties": {
+                    "submissionId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "assignmentId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "assignmentTitle": {
+                        "type": "string"
+                    },
+                    "committedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "sha256": {
+                        "type": "string"
+                    },
+                    "sizeBytes": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "contentType": {
+                        "type": "string"
+                    },
+                    "timing": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "uploadedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "verifiedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "graceEndsAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "events": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EventDto"
+                        }
+                    }
+                }
+            },
+            "DownloadUrlResponse": {
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "type": "string"
+                    },
+                    "expiresAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "MeResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "displayName": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string"
+                    }
+                }
+            },
+            "MySubmission": {
+                "type": "object",
+                "properties": {
+                    "submissionId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "timing": {
+                        "type": "string"
+                    },
+                    "stampedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "StudentAssignmentDto": {
+                "type": "object",
+                "properties": {
+                    "assignment": {
+                        "$ref": "#/components/schemas/AssignmentDto"
+                    },
+                    "courseCode": {
+                        "type": "string"
+                    },
+                    "mySubmission": {
+                        "$ref": "#/components/schemas/MySubmission"
+                    }
+                }
+            },
+            "ConfigResponse": {
+                "type": "object",
+                "properties": {
+                    "arm": {
+                        "type": "string"
+                    },
+                    "armLabel": {
+                        "type": "string"
+                    },
+                    "maxBytesCap": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "consentVersion": {
+                        "type": "string"
+                    },
+                    "serverEpochMs": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "StreamingResponseBody": {},
+            "DashboardDto": {
+                "type": "object",
+                "properties": {
+                    "assignmentId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "deadlineAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "graceEndsAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "countsByStatus": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    "countsByTiming": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    "failedJobs": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "rows": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/DashboardRow"
+                        }
+                    }
+                }
+            },
+            "DashboardRow": {
+                "type": "object",
+                "properties": {
+                    "studentId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "displayName": {
+                        "type": "string"
+                    },
+                    "submissionId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "timing": {
+                        "type": "string"
+                    },
+                    "committedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "uploadedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "verifiedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            }
+        }
+    }
+}

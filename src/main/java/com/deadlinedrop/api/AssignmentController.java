@@ -1,5 +1,6 @@
 package com.deadlinedrop.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import com.deadlinedrop.api.dto.DomainDtos.AssignmentDto;
 import com.deadlinedrop.api.dto.DomainDtos.CreateAssignmentRequest;
 import com.deadlinedrop.api.dto.DomainDtos.StudentAssignmentDto;
@@ -33,6 +34,7 @@ public class AssignmentController {
         this.assignmentService = Objects.requireNonNull(assignmentService, "assignmentService must not be null");
     }
 
+    @Operation(summary = "Create an assignment in a course (teacher)")
     @PostMapping("/api/courses/{courseId}/assignments")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<AssignmentDto> createAssignment(
@@ -44,6 +46,7 @@ public class AssignmentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
+    @Operation(summary = "Get one assignment with its deadline and grace window")
     @GetMapping("/api/assignments/{id}")
     @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT')")
     public ResponseEntity<AssignmentDto> getAssignment(
@@ -55,6 +58,7 @@ public class AssignmentController {
         return ResponseEntity.ok(dto);
     }
 
+    @Operation(summary = "Change an assignment's deadline, grace window or limits (teacher)")
     @PatchMapping("/api/assignments/{id}")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<AssignmentDto> updateAssignment(
@@ -66,6 +70,7 @@ public class AssignmentController {
         return ResponseEntity.ok(dto);
     }
 
+    @Operation(summary = "List the signed-in student's assignments")
     @GetMapping("/api/me/assignments")
     @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<List<StudentAssignmentDto>> getMyAssignments(Authentication authentication) {

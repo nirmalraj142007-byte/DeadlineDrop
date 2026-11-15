@@ -559,3 +559,12 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 - **Trade-off:** Validation for `downloadAll` is evaluated synchronously before streaming commits HTTP response headers to ensure 403 or 409 ProblemDetail errors are properly returned to the client rather than corrupting a partially written zip response; as a result, validation and initial zip streaming execute sequentially rather than in a single unbounded transaction.
 
 - **File to read first:** `src/main/java/com/deadlinedrop/service/DashboardService.java`
+
+## 2026-11-15 — Phase 21: last backend pieces (URL re-issue, telemetry, config, OpenAPI)
+
+- **Built:** `UploadUrlService` and `POST /api/submissions/{id}/upload-url` (COMMITTED only; 410 `GRACE_OVER` after grace; a different hash is 403 `HASH_MISMATCH_AFTER_DEADLINE` after the deadline and 409 "commit again to change the file" before it; otherwise a fresh 15-minute signed PUT; signing failure is 503 `SIGNING_UNAVAILABLE`). `TelemetryService`/`TelemetryController` for `POST /api/telemetry` (400 `CONSENT_REQUIRED` without consent) and `POST /api/survey`, both stored under `HMAC-SHA256(TELEMETRY_SALT, studentId)` with `ON CONFLICT DO NOTHING`; `TelemetryProperties` stops the app at startup if the salt is missing or under 16 characters. `GET /api/config` (arm from active profiles). springdoc-openapi-starter-webmvc-ui 3.2.0, on in local and cloud only, `@Operation` on every controller method, `docs/openapi.json` exported. `TELEMETRY_SALT` added to `.env.example`, compose, `bootstrap.sh` (secret `dd-telemetry-salt`) and both `--set-secrets` in `deploy-arm.sh`. Tests: `UrlReissueIT`, `TelemetryIT`, `ConfigIT`, `ConfigControllerTest`.
+- **Why:** the UI needs a way out of an expired upload URL that cannot be used to swap the file after the deadline, a consent-gated pilot data path that cannot be joined back to a student, and one public call that tells it which arm it is talking to.
+
+**Trade-off:** the anonymous id is a keyed hash of the student id, so anyone holding the salt can re-identify students by hashing the roster; the salt lives only in Secret Manager and the local `.env`, and rotating it would break the dedupe on `(anon_id, assignment_id)`. A random per-student token would avoid that but needs a table mapping it back to the student.
+
+**File to read first:** `src/main/java/com/deadlinedrop/service/UploadUrlService.java`

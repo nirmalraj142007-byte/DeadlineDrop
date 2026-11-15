@@ -1,5 +1,6 @@
 package com.deadlinedrop.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import com.deadlinedrop.api.dto.ReadDtos.ReceiptDto;
 import com.deadlinedrop.service.SubmissionQueryService;
 import org.springframework.context.annotation.Profile;
@@ -23,6 +24,7 @@ public class SubmissionQueryController {
         this.submissionQueryService = Objects.requireNonNull(submissionQueryService, "submissionQueryService must not be null");
     }
 
+    @Operation(summary = "Get a submission receipt with its timeline")
     @GetMapping("/api/submissions/{id}")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<ReceiptDto> getSubmission(

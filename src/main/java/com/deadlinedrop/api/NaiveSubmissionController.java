@@ -1,5 +1,6 @@
 package com.deadlinedrop.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import com.deadlinedrop.api.dto.BaselineDtos.BaselineSubmissionResponse;
 import com.deadlinedrop.domain.Assignment;
 import com.deadlinedrop.domain.Timing;
@@ -61,6 +62,7 @@ public class NaiveSubmissionController {
         this.clock = Objects.requireNonNull(clock, "clock must not be null");
     }
 
+    @Operation(summary = "Arm A: upload the file through the app as multipart; stamped when it finishes")
     @PostMapping(value = "/api/assignments/{assignmentId}/naive-submissions", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<BaselineSubmissionResponse> submit(

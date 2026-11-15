@@ -1,5 +1,6 @@
 package com.deadlinedrop.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import com.deadlinedrop.api.dto.DomainDtos.TimeResponse;
 import com.deadlinedrop.security.PublicEndpoint;
 import org.springframework.http.CacheControl;
@@ -21,6 +22,7 @@ public class TimeController {
         this.clock = Objects.requireNonNull(clock, "clock must not be null");
     }
 
+    @Operation(summary = "Server time in epoch milliseconds")
     @PublicEndpoint
     @GetMapping
     public ResponseEntity<TimeResponse> getTime() {

@@ -1,5 +1,6 @@
 package com.deadlinedrop.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import com.deadlinedrop.jobs.DrainService;
 import com.deadlinedrop.jobs.DrainService.DrainResult;
 import com.deadlinedrop.jobs.ReconcilerSweep;
@@ -34,12 +35,14 @@ public class InternalController {
         this.clock = Objects.requireNonNull(clock, "clock must not be null");
     }
 
+    @Operation(summary = "Drain the transactional job queue (Cloud Scheduler only)")
     @PostMapping("/internal/jobs/drain")
     @PreAuthorize("hasRole('INTERNAL')")
     public DrainResult drain() {
         return drainService.drain(DRAIN_BUDGET);
     }
 
+    @Operation(summary = "Settle COMMITTED submissions whose bytes arrived or whose grace ended (Cloud Scheduler only)")
     @PostMapping("/internal/reconcile")
     @PreAuthorize("hasRole('INTERNAL')")
     public ReconcileResult reconcile() {

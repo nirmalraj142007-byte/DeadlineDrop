@@ -1,5 +1,6 @@
 package com.deadlinedrop.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import com.deadlinedrop.api.dto.DomainDtos.CourseDto;
 import com.deadlinedrop.api.dto.DomainDtos.CreateCourseRequest;
 import com.deadlinedrop.api.dto.DomainDtos.EnrollRequest;
@@ -34,6 +35,7 @@ public class CourseController {
         this.courseService = Objects.requireNonNull(courseService, "courseService must not be null");
     }
 
+    @Operation(summary = "Create a course (teacher)")
     @PostMapping
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<CourseDto> createCourse(
@@ -44,6 +46,7 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
+    @Operation(summary = "List the signed-in user's courses")
     @GetMapping
     @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT')")
     public ResponseEntity<List<CourseDto>> listCourses(Authentication authentication) {
@@ -55,6 +58,7 @@ public class CourseController {
         return ResponseEntity.ok(courses);
     }
 
+    @Operation(summary = "Enroll students in a course by email (teacher)")
     @PostMapping("/{id}/enrollments")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<EnrollResult> enrollStudents(

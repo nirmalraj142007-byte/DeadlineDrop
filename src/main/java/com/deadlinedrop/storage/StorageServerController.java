@@ -1,5 +1,6 @@
 package com.deadlinedrop.storage;
 
+import io.swagger.v3.oas.annotations.Operation;
 import com.deadlinedrop.api.ApiException;
 import com.deadlinedrop.api.ErrorCodes;
 import com.deadlinedrop.security.PublicEndpoint;
@@ -54,6 +55,7 @@ public class StorageServerController {
         Files.createDirectories(properties.getRoot());
     }
 
+    @Operation(summary = "Local storage server: store an object through a signed URL")
     @PutMapping("/storage/**")
     @PublicEndpoint
     public ResponseEntity<Void> putObject(
@@ -135,6 +137,7 @@ public class StorageServerController {
         }
     }
 
+    @Operation(summary = "Local storage server: read an object through a signed URL")
     @GetMapping("/storage/**")
     @PublicEndpoint
     public ResponseEntity<InputStreamResource> getObject(

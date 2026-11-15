@@ -4,6 +4,12 @@ spring:
     username: dd
     password: ${DB_PASSWORD}
 
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
 dd:
   storage:
     bucket: ${BUCKET}

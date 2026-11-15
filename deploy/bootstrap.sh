@@ -64,6 +64,9 @@ create_secret_if_absent "dd-db-password" "$RANDOM_DB_PASS"
 RANDOM_JWT_SECRET=$(openssl rand -base64 48 | tr -d '\r\n')
 create_secret_if_absent "dd-jwt-secret" "$RANDOM_JWT_SECRET"
 
+RANDOM_TELEMETRY_SALT=$(openssl rand -base64 32 | tr -d '\r\n')
+create_secret_if_absent "dd-telemetry-salt" "$RANDOM_TELEMETRY_SALT"
+
 RANDOM_SEED_PASS=$(openssl rand -base64 32 | tr -d '\r\n')
 create_secret_if_absent "dd-seed-password" "$RANDOM_SEED_PASS"
 

@@ -37,7 +37,7 @@ if [ "${1:-}" = "seed" ]; then
     --project="${PROJECT_ID}" \
     --service-account="${RUN_SA}" \
     --set-cloudsql-instances="${PROJECT_ID}:${REGION}:${SQL_INSTANCE}" \
-    --set-secrets="DB_PASSWORD=dd-db-password:latest,SEED_PASSWORD=dd-seed-password:latest,JWT_SECRET=dd-jwt-secret:latest" \
+    --set-secrets="DB_PASSWORD=dd-db-password:latest,SEED_PASSWORD=dd-seed-password:latest,JWT_SECRET=dd-jwt-secret:latest,TELEMETRY_SALT=dd-telemetry-salt:latest" \
     --set-env-vars="^@^SPRING_PROFILES_ACTIVE=cloud,seed@DB_NAME=${DB_NAME}@BUCKET=${BUCKET}@CLOUD_SQL_INSTANCE=${PROJECT_ID}:${REGION}:${SQL_INSTANCE}@SEED_STUDENTS=${N}@DB_POOL_MAX=${DB_POOL_MAX}" \
     --max-retries=0 \
     --task-timeout=300
@@ -95,7 +95,7 @@ gcloud run deploy "${SERVICE_NAME}" \
   --project="${PROJECT_ID}" \
   --service-account="${RUN_SA}" \
   --add-cloudsql-instances="${PROJECT_ID}:${REGION}:${SQL_INSTANCE}" \
-  --set-secrets="JWT_SECRET=dd-jwt-secret:latest,DB_PASSWORD=dd-db-password:latest" \
+  --set-secrets="JWT_SECRET=dd-jwt-secret:latest,DB_PASSWORD=dd-db-password:latest,TELEMETRY_SALT=dd-telemetry-salt:latest" \
   --set-env-vars="^|^SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}|DB_NAME=${DB_NAME}|BUCKET=${BUCKET}|CLOUD_SQL_INSTANCE=${PROJECT_ID}:${REGION}:${SQL_INSTANCE}|DB_POOL_MAX=${DB_POOL_MAX}${OIDC_ENV}" \
   --cpu="${CPU}" \
   --memory="${MEMORY}" \

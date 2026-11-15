@@ -1,5 +1,6 @@
 package com.deadlinedrop.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import com.deadlinedrop.api.dto.ReadDtos.DownloadUrlResponse;
 import com.deadlinedrop.security.CurrentUser;
 import com.deadlinedrop.service.DownloadService;
@@ -27,6 +28,7 @@ public class DownloadController {
         this.downloadService = Objects.requireNonNull(downloadService, "downloadService must not be null");
     }
 
+    @Operation(summary = "Get a short-lived download URL for one submission (teacher)")
     @GetMapping("/api/submissions/{id}/download")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<DownloadUrlResponse> getDownloadUrl(
@@ -36,6 +38,7 @@ public class DownloadController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Stream every verified submission of an assignment as a zip (teacher)")
     @GetMapping("/api/assignments/{id}/download-all")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<StreamingResponseBody> downloadAll(

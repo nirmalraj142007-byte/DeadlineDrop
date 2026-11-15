@@ -30,6 +30,7 @@ public final class ErrorCodes {
     public static final String RECEIPT_INVALID = "RECEIPT_INVALID";
     public static final String RECEIPT_STALE = "RECEIPT_STALE";
     public static final String CONSENT_REQUIRED = "CONSENT_REQUIRED";
+    public static final String SIGNING_UNAVAILABLE = "SIGNING_UNAVAILABLE";
     public static final String DATABASE_UNAVAILABLE = "DATABASE_UNAVAILABLE";
     public static final String INTERNAL = "INTERNAL";
 

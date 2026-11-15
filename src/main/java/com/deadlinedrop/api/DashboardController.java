@@ -1,5 +1,6 @@
 package com.deadlinedrop.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import com.deadlinedrop.api.dto.ReadDtos.DashboardDto;
 import com.deadlinedrop.security.CurrentUser;
 import com.deadlinedrop.service.DashboardService;
@@ -28,6 +29,7 @@ public class DashboardController {
         this.dashboardService = Objects.requireNonNull(dashboardService, "dashboardService must not be null");
     }
 
+    @Operation(summary = "Teacher dashboard: counts and rows for one assignment")
     @GetMapping("/api/assignments/{id}/dashboard")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<DashboardDto> getDashboard(

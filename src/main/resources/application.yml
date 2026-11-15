@@ -29,6 +29,9 @@ dd:
     oidc:
       audience: ${INTERNAL_AUDIENCE:}
       scheduler-email: ${SCHEDULER_SA_EMAIL:}
+  telemetry:
+    # Secret salt for the anonymous id (HMAC-SHA256 of the student id). Required: the app stops without it.
+    salt: ${TELEMETRY_SALT:}
   chaos:
     # Off by default: with the flag off /admin/chaos/** does not exist (404).
     enabled: ${CHAOS_ENABLED:false}
@@ -36,6 +39,13 @@ dd:
     root: ${DD_STORAGE_ROOT:/data/objects}
     public-base-url: ${DD_STORAGE_PUBLIC_BASE_URL:http://localhost:9000}
     hmac-secret: ${DD_STORAGE_HMAC_SECRET}
+
+# The OpenAPI document and Swagger UI are off unless a profile turns them on (local and cloud do).
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
 
 logging:
   structured:

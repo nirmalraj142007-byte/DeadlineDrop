@@ -1,5 +1,6 @@
 package com.deadlinedrop.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import com.deadlinedrop.api.dto.AuthDtos.LoginRequest;
 import com.deadlinedrop.api.dto.AuthDtos.MeResponse;
 import com.deadlinedrop.api.dto.AuthDtos.TokenResponse;
@@ -29,12 +30,14 @@ public class AuthController {
         this.authService = Objects.requireNonNull(authService, "authService must not be null");
     }
 
+    @Operation(summary = "Sign in with email and password; returns a bearer token")
     @PostMapping("/api/auth/login")
     @PublicEndpoint
     public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
 
+    @Operation(summary = "Show the signed-in user")
     @GetMapping("/api/me")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<MeResponse> me(@AuthenticationPrincipal Jwt jwt) {

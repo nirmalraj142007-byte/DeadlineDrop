@@ -6,6 +6,8 @@ logging:
 JWT_SECRET: dGVzdC1zZWNyZXQta2V5LXdpdGgtYXQtbGVhc3QtMzItYnl0ZXMtbG9uZw==
 
 dd:
+  telemetry:
+    salt: "test-telemetry-salt-at-least-16-chars"
   internal:
     token: "test-internal-token-at-least-32-characters"
   storage:

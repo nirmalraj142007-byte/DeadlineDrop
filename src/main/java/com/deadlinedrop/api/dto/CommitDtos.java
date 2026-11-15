@@ -41,4 +41,11 @@ public final class CommitDtos {
             String timing,
             Instant uploadedAt) {
     }
+
+    /** Asks for a fresh upload URL for the file that was committed; the hash must match the commit. */
+    public record ReissueRequest(@NotBlank @Pattern(regexp = "^[0-9a-f]{64}$") String sha256) {
+    }
+
+    public record UploadUrlResponse(String uploadUrl, Map<String, String> uploadHeaders, Instant urlExpiresAt) {
+    }
 }

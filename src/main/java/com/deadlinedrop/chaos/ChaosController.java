@@ -1,5 +1,6 @@
 package com.deadlinedrop.chaos;
 
+import io.swagger.v3.oas.annotations.Operation;
 import com.deadlinedrop.api.dto.ChaosDtos.HaltResponse;
 import com.deadlinedrop.api.dto.ChaosDtos.StatusResponse;
 import org.slf4j.Logger;
@@ -37,6 +38,7 @@ public class ChaosController {
         this.instanceName = instanceName();
     }
 
+    @Operation(summary = "Chaos test: stop this instance immediately (admin, flag-gated)")
     @PostMapping("/admin/chaos/halt")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HaltResponse> halt() {
@@ -46,6 +48,7 @@ public class ChaosController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(new HaltResponse(instanceName));
     }
 
+    @Operation(summary = "Chaos test: report whether chaos is enabled (admin, flag-gated)")
     @GetMapping("/admin/chaos/status")
     @PreAuthorize("hasRole('ADMIN')")
     public StatusResponse status() {

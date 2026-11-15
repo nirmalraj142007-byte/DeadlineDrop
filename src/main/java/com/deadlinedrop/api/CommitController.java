@@ -1,5 +1,6 @@
 package com.deadlinedrop.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import com.deadlinedrop.api.dto.CommitDtos.CommitRequest;
 import com.deadlinedrop.api.dto.CommitDtos.CommitResponse;
 import com.deadlinedrop.security.CurrentUser;
@@ -47,6 +48,7 @@ public class CommitController {
         this.clock = Objects.requireNonNull(clock, "clock must not be null");
     }
 
+    @Operation(summary = "Commit the file's SHA-256 and size; the server stamps the arrival and returns a signed upload URL")
     @PostMapping("/api/assignments/{assignmentId}/commits")
     @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<CommitResponse> commit(

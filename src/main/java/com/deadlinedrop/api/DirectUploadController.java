@@ -1,5 +1,6 @@
 package com.deadlinedrop.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import com.deadlinedrop.api.dto.BaselineDtos.BaselineSubmissionResponse;
 import com.deadlinedrop.api.dto.BaselineDtos.DirectUploadRequest;
 import com.deadlinedrop.api.dto.BaselineDtos.DirectUploadResponse;
@@ -62,6 +63,7 @@ public class DirectUploadController {
         this.clock = Objects.requireNonNull(clock, "clock must not be null");
     }
 
+    @Operation(summary = "Arm B: get a signed upload URL without committing first")
     @PostMapping("/api/assignments/{assignmentId}/direct-uploads")
     @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<DirectUploadResponse> createUpload(
@@ -89,6 +91,7 @@ public class DirectUploadController {
                 .body(new DirectUploadResponse(uploadId, signed.url(), signed.headers(), signed.expiresAt()));
     }
 
+    @Operation(summary = "Arm B: finalize a direct upload; the stamp is taken now")
     @PostMapping("/api/assignments/{assignmentId}/direct-uploads/{uploadId}/finalize")
     @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<BaselineSubmissionResponse> finalizeUpload(

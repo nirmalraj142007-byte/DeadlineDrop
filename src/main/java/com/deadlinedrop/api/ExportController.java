@@ -1,5 +1,6 @@
 package com.deadlinedrop.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import com.deadlinedrop.api.dto.DomainDtos.ExportRow;
 import com.deadlinedrop.security.CurrentUser;
 import com.deadlinedrop.service.ExportService;
@@ -31,6 +32,7 @@ public class ExportController {
         this.exportService = Objects.requireNonNull(exportService, "exportService must not be null");
     }
 
+    @Operation(summary = "Export an assignment's submissions with their timestamps (teacher or admin)")
     @GetMapping
     @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN')")
     public ResponseEntity<?> export(
