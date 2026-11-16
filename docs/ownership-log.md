@@ -638,3 +638,12 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 - **Trade-off:** Client-side SHA-256 fingerprinting runs on the browser main thread via native Web Crypto `crypto.subtle.digest`, reading chunked buffers with `FileReader`. While Web Crypto performs hardware-accelerated SHA-256 natively without UI stutter for assignment sizes up to 25 MB, offloading hashing to a dedicated Web Worker would provide full multi-threaded isolation for larger files at the cost of additional worker script lifecycle management and message-passing complexity.
 
 - **File to read first:** `src/main/resources/static/js/submit.js`
+
+---
+
+## 2026-11-16 — Phase 23 re-run: acceptance verification
+
+- **What changed:** Phase 23 code already existed (commits 89e0211, b589f69). This session re-ran every acceptance check: `./mvnw verify` green (151 tests); `docker compose --profile arms up -d --build`; student0001 submitted a 10,000,000-byte PDF on :8080 (arm C, VERIFIED/ON_TIME row in `submissions`), :8083 (arm B, `baseline_submissions` stamp_source FINALIZE) and :8082 (arm A, stamp_source UPLOAD_COMPLETE), one new row each. Fixed one untruthful message in `flows/arm-c.js`: a failed PUT with the browser still online said "offline"; it now says "storage unreachable".
+- **Why:** The status text must describe what actually happened, not a guess.
+- **Trade-off:** The built-in browser has no DevTools network throttling, so the "Hostel 1 Mbps + Offline 10 s" check was approximated by stopping the storage container for ~10 s during the PUT. This exercises the same retry-with-same-Idempotency-Key path (exactly one row for the student) but not the browser `offline` event or 1 Mbps pacing; that part (abort via the `offline` listener) is still unverified by hand.
+- **File to read first:** `src/main/resources/static/js/flows/arm-c.js`

@@ -237,7 +237,9 @@ export async function runArmCFlow({ assignment, file, idempotencyKey, ui }) {
     }
 
     const waitSec = Math.max(1, Math.round(jitterMs / 1000));
-    const errDetail = isNetwork ? 'offline' : `HTTP ${status}`;
+    const errDetail = isNetwork
+      ? (navigator.onLine ? 'storage unreachable' : 'offline')
+      : `HTTP ${status}`;
     ui.updateStatus(`Connection lost (${errDetail}), retrying upload in ${waitSec}s…`);
     await new Promise(r => setTimeout(r, jitterMs));
 
