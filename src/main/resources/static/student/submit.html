@@ -57,6 +57,25 @@
           <p id="file-info" class="text-muted"></p>
         </div>
 
+        <div class="form-group consent-group">
+          <label class="consent-label" for="consent-checkbox">
+            <input type="checkbox" id="consent-checkbox">
+            Help measure fairness (optional)
+          </label>
+          <p class="text-muted">
+            <a href="/consent-v1.html" target="_blank" rel="noopener">What is collected (consent text v1)</a>.
+            Submitting works exactly the same without it.
+          </p>
+          <label for="network-type">Network you are using</label>
+          <select id="network-type">
+            <option value="HOSTEL_WIFI">Hostel Wi-Fi</option>
+            <option value="MOBILE_DATA">Mobile data</option>
+            <option value="HOME_BROADBAND">Home broadband</option>
+            <option value="CAMPUS_LAN">Campus LAN</option>
+            <option value="OTHER">Other</option>
+          </select>
+        </div>
+
         <div id="progress-container" class="progress-wrapper visually-hidden">
           <p id="progress-status" class="progress-status-text" aria-live="polite" role="status"></p>
           <div class="progress">

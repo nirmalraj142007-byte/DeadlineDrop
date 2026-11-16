@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeadlineDrop — Measurement consent (v1)</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <header>
+    <a href="/" class="brand">DeadlineDrop</a>
+  </header>
+
+  <main>
+    <article class="card prose">
+      <h1>Help measure fairness — consent text, version v1</h1>
+      <p>
+        DeadlineDrop locks the time of your submission before your file travels, using a hash commitment,
+        so a slow connection cannot make an on-time submission late. We are measuring whether that is true
+        in practice. You may help by sharing a few numbers. It is entirely optional.
+      </p>
+
+      <h2>What is collected</h2>
+      <ul>
+        <li>How fast your file uploaded (megabits per second).</li>
+        <li>The size of the file you submitted.</li>
+        <li>When you clicked Submit, relative to the deadline.</li>
+        <li>How long your browser took to fingerprint the file (its SHA-256).</li>
+        <li>The network type you choose in the list (Hostel Wi-Fi, Mobile data, Home broadband, Campus LAN or Other).</li>
+      </ul>
+      <p>Your file contents, name and your own identity are not part of this measurement.</p>
+
+      <h2>How it is stored and used</h2>
+      <ul>
+        <li>The numbers are stored under an anonymous id, not your name or email.</li>
+        <li>They are used only to evaluate this project.</li>
+        <li>They are never shown to the teacher per student.</li>
+        <li>They are deleted or aggregated by 26 Nov 2026.</li>
+      </ul>
+
+      <h2>If you do not consent</h2>
+      <p>
+        Submitting works exactly the same without consent. Nothing is sent, and your submission, its time lock
+        and its receipt are not affected in any way.
+      </p>
+
+      <p><a href="/student/assignments.html" class="btn">Back to assignments</a></p>
+    </article>
+  </main>
+
+  <footer>
+    <p>DeadlineDrop — Hash commitment assignment portal</p>
+  </footer>
+</body>
+</html>

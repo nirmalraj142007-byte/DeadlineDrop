@@ -119,7 +119,7 @@ public class SecurityConfig {
                 )
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.GET, "/", "/index.html", "/css/**", "/js/**", "/student/**", "/teacher/**", "/admin/**.html", "/favicon.ico").permitAll()
+                .requestMatchers(HttpMethod.GET, "/", "/index.html", "/consent-v1.html", "/css/**", "/js/**", "/student/**", "/teacher/**", "/admin/**.html", "/favicon.ico").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/time").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/config").permitAll()

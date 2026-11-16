@@ -7,6 +7,7 @@
 
 import { apiFetch } from './api.js';
 import { renderState, formatIst, countdown, chip } from './ui.js';
+import { readConsent, sendTelemetryOnce } from './consent.js';
 import { runArmCFlow } from './flows/arm-c.js';
 import { runArmBFlow } from './flows/arm-b.js';
 import { runArmAFlow } from './flows/arm-a.js';
@@ -172,6 +173,7 @@ export async function initSubmit() {
       resultPanel.classList.add('visually-hidden');
 
       const idempotencyKey = getIdempotencyKey(assignment.id, file);
+      const consent = readConsent();
 
       const uiCallbacks = {
         showProgress: () => {
@@ -249,6 +251,8 @@ export async function initSubmit() {
           await runArmBFlow({ assignment, file, ui: uiCallbacks });
         } else {
           await runArmCFlow({ assignment, file, idempotencyKey, ui: uiCallbacks });
+          // Optional, consented measurement: fire-and-forget, never delays the receipt.
+          sendTelemetryOnce(assignment.id, consent);
         }
       } catch (err) {
         progressContainer.classList.add('visually-hidden');

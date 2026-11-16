@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeadlineDrop — Submission receipt</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <header>
+    <a href="/" class="brand">DeadlineDrop</a>
+    <nav>
+      <a href="/student/assignments.html" class="btn">Assignments</a>
+      <span id="user-display" class="chip chip-muted">Student</span>
+      <button type="button" id="sign-out-btn" class="btn">Sign out</button>
+    </nav>
+  </header>
+
+  <main>
+    <div id="state-container"></div>
+    <div id="receipt-root"></div>
+    <div id="survey-root"></div>
+  </main>
+
+  <footer>
+    <p>DeadlineDrop — Hash commitment assignment portal</p>
+  </footer>
+
+  <script type="module" src="/js/shell.js"></script>
+  <script type="module" src="/js/receipt.js"></script>
+</body>
+</html>

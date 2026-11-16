@@ -647,3 +647,12 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 - **Why:** The status text must describe what actually happened, not a guess.
 - **Trade-off:** The built-in browser has no DevTools network throttling, so the "Hostel 1 Mbps + Offline 10 s" check was approximated by stopping the storage container for ~10 s during the PUT. This exercises the same retry-with-same-Idempotency-Key path (exactly one row for the student) but not the browser `offline` event or 1 Mbps pacing; that part (abort via the `offline` listener) is still unverified by hand.
 - **File to read first:** `src/main/resources/static/js/flows/arm-c.js`
+
+---
+
+## 2026-11-16 — Phase 24: consent, receipt, survey
+
+- **What changed:** Added `static/consent-v1.html` (plain-language consent v1, public in `SecurityConfig`), `js/consent.js` and a consent checkbox plus network-type select on `submit.html`. `submit.js` snapshots the controls at click time and, after a successful arm C finalize, sends one `/api/telemetry` (consentVersion v1) fire-and-forget, guarded by `dd.telemetry.sent.<assignmentId>`. Added `student/receipt.html` + `js/receipt.js`: three-step IST timeline (Time locked (server clock), File arrived, Verified), ON TIME / LATE chip in words, SHA-256 in monospace with copy button, size and type, "Grace ends at" while waiting, 5 s polling that stops at VERIFIED / EXPIRED / REJECTED_HASH_MISMATCH, events under "How this was recorded", and a once-per-assignment survey posting to `/api/survey`. `StaticPagesIT` covers the new pages. Acceptance run: consent ticked gave exactly one `/api/telemetry` 202 (row in `telemetry_events`, v1, HOSTEL_WIFI); unticked gave none; grace-0 commit with no upload became EXPIRED; same-size different bytes PUT with curl became REJECTED_HASH_MISMATCH.
+- **Why:** The receipt is where the time lock becomes visible to the student, and measurement must never affect the submission.
+- **Trade-off:** For EXPIRED and REJECTED receipts the timing chip still says ON TIME (the time lock was on time) so I added a second "NOT ACCEPTED" chip rather than hiding the timing. Also `submit.js` still shows a "View Receipt" button instead of auto-redirecting, because navigating away could cancel the telemetry request.
+- **File to read first:** `src/main/resources/static/js/receipt.js`

@@ -78,6 +78,17 @@ class StaticPagesIT {
     }
 
     @Test
+    void getReceiptAndConsentPages_return200() {
+        ResponseEntity<String> receipt = rest.getForEntity("/student/receipt.html", String.class);
+        assertThat(receipt.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(receipt.getBody()).contains("receipt-root");
+
+        ResponseEntity<String> consent = rest.getForEntity("/consent-v1.html", String.class);
+        assertThat(consent.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(consent.getBody()).contains("26 Nov 2026").contains("exactly the same without consent");
+    }
+
+    @Test
     void noStaticFileContainsInlineScriptsOrStyleAttributes() throws Exception {
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = resolver.getResources("classpath*:/static/**");

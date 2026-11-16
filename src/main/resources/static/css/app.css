@@ -478,3 +478,66 @@ textarea:focus {
     opacity: 0.5;
   }
 }
+
+/* ==========================================================================
+   Consent, receipt and survey
+   ========================================================================== */
+
+.prose {
+  max-width: 44rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.consent-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+}
+
+.consent-label input[type="checkbox"],
+.radio-label input[type="radio"] {
+  width: auto;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+fieldset.form-group {
+  border: 0;
+  padding: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.verdict-big .chip {
+  font-size: var(--fs-500);
+  padding: var(--space-2) var(--space-4);
+}
+
+.timeline-pending::before {
+  background-color: var(--surface);
+  border-color: var(--border);
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: var(--fs-200);
+  overflow-wrap: anywhere;
+}
+
+.hash-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.how-recorded {
+  margin-top: var(--space-4);
+}
