@@ -675,3 +675,13 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 - **Why:** The design depends on the signed URL binding size, type and path; that had to be shown against Google, not only the local storage server.
 - **Trade-off:** The smoke run commits with an all-zero hash and never finalizes, so those submissions expire in the cloud database for student0001 on Lab 1; and the 422 SIZE_MISMATCH finalize path was not exercised against GCS because GCS refused the bytes first (it is covered locally by `SignedUrlSecurityIT`).
 - **File to read first:** `tools/smoke-bucket.sh`
+
+---
+
+## 2026-11-17 — Phase 27: teacher live dashboard and submission review
+
+- **What changed:** Added `teacher/dashboard.html` + `js/dashboard.js` (title, deadline and grace end in IST, countdown by `serverNow()`, seven tiles, red "Failed checks: n" badge, student table with amber "time locked, bytes arriving" rows, per-row Download, "Download all" disabled with the tooltip "Available after grace ends at <time>" until grace ends). It polls every 5 s with `If-None-Match`; a 304 keeps the view and a failed poll keeps the last data and shows an amber "Last updated n s ago" badge. Added `teacher/submission.html` + `js/submission.js` (receipt read-only plus a from/to/actor/time event table) and moved the timeline markup out of `receipt.js` into `js/timeline.js`. `api.js` gained a `meta` option (status and ETag, 304 returns null) and `responseType: 'blob'`; `app.css` gained tile styles and a `[hidden]` rule. `courses.html` already linked dashboards from `courses.js`. `StaticPagesIT` covers the new pages.
+- **Acceptance run:** `./mvnw verify` green (161 ITs). With `make k6-local ARM=c N=50` the tiles went 0/0/0 not submitted 1000, then "time locked" and "bytes arrived" rose as the 11:48 IST rush hit, Verified reached 8 then 47, 50 at the end, Late 5, Not submitted 950. Idle polls returned 304. `docker compose stop app` for 20 s showed "Last updated 29 s ago" with all 1000 rows kept; the badge cleared after restart. Download (200), download-all (200, 87 MB zip) and the submission page checked in the browser.
+- **Why:** The teacher view is one of the three demo screens, and it must never go blank during the rush.
+- **Trade-off:** Each 200 re-renders all rows (1000 in the demo course) by rebuilding the table body; simple and flicker-free enough here, but it would need row diffing or paging for much larger courses. The k6 script creates its own assignment per run, so I watched that one rather than the seeded "Lab 1". The browser Network panel was not available, so 304s were read through the browser tool's request log.
+- **File to read first:** `src/main/resources/static/js/dashboard.js`

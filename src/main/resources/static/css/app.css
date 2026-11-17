@@ -580,3 +580,74 @@ fieldset.form-group {
   flex-wrap: wrap;
   gap: var(--space-2);
 }
+
+/* ==========================================================================
+   Teacher dashboard and submission review
+   ========================================================================== */
+
+.dash-badges,
+.dash-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.tile {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.tile-count {
+  display: block;
+  font-size: var(--fs-600);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.tile-label {
+  font-size: var(--fs-200);
+  color: var(--muted);
+}
+
+.tile-amber {
+  border-color: var(--warning);
+}
+
+.tile-amber .tile-label {
+  color: var(--warning);
+}
+
+.tile-red {
+  border-color: var(--danger);
+}
+
+.tile-green {
+  border-color: var(--success);
+}
+
+.row-amber {
+  background-color: color-mix(in srgb, var(--warning) 12%, var(--surface));
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.table .actions-cell {
+  white-space: nowrap;
+}
+
+[hidden] {
+  display: none !important;
+}

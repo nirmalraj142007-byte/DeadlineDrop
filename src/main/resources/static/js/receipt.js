@@ -8,6 +8,7 @@
 
 import { apiFetch } from './api.js';
 import { renderState, formatIst, chip, banner } from './ui.js';
+import { renderTimeline } from './timeline.js';
 
 const POLL_MS = 5000;
 const TERMINAL = new Set(['VERIFIED', 'EXPIRED', 'REJECTED_HASH_MISMATCH']);
@@ -38,13 +39,6 @@ function el(tag, className, text) {
   if (className) node.className = className;
   if (text !== undefined) node.textContent = text;
   return node;
-}
-
-function timelineStep(label, instant, waitingText) {
-  const li = el('li', instant ? 'timeline-item' : 'timeline-item timeline-pending');
-  li.appendChild(el('strong', '', label));
-  li.appendChild(el('div', instant ? '' : 'text-muted', instant ? formatIst(instant) : waitingText));
-  return li;
 }
 
 function renderCopyRow(sha256) {
@@ -89,11 +83,7 @@ function renderReceipt(r) {
     card.appendChild(banner('info', `Grace ends at ${formatIst(r.graceEndsAt)}`));
   }
 
-  const steps = el('ol', 'timeline');
-  steps.appendChild(timelineStep('Time locked (server clock)', r.committedAt, 'Waiting'));
-  steps.appendChild(timelineStep('File arrived', r.uploadedAt, 'Waiting for your file'));
-  steps.appendChild(timelineStep('Verified', r.verifiedAt, 'Waiting for verification'));
-  card.appendChild(steps);
+  card.appendChild(renderTimeline(r));
 
   card.appendChild(el('h3', '', 'SHA-256 (your hash commitment)'));
   card.appendChild(renderCopyRow(r.sha256));

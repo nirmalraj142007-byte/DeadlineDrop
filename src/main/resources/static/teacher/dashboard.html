@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeadlineDrop — Live dashboard</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <header>
+    <a href="/teacher/courses.html" class="brand">DeadlineDrop</a>
+    <nav>
+      <a href="/teacher/courses.html" class="btn">Courses</a>
+      <span id="user-display" class="chip chip-muted">Teacher</span>
+      <button type="button" id="sign-out-btn" class="btn">Sign out</button>
+    </nav>
+  </header>
+
+  <main>
+    <div id="state-container"></div>
+    <div id="dashboard-root" hidden>
+      <section class="card" aria-labelledby="dash-title">
+        <h1 id="dash-title"></h1>
+        <p id="dash-deadline"></p>
+        <p id="dash-grace"></p>
+        <p id="dash-countdown" class="verdict-big" role="timer"></p>
+        <div class="dash-badges">
+          <span id="failed-badge" class="chip chip-late" hidden></span>
+          <span id="stale-badge" class="chip chip-pending" role="status" hidden></span>
+        </div>
+        <div class="dash-actions">
+          <button type="button" id="download-all" class="btn btn-primary" disabled>Download all</button>
+          <span id="download-status" class="text-muted" role="status"></span>
+        </div>
+      </section>
+
+      <section aria-labelledby="tiles-heading">
+        <h2 id="tiles-heading">Right now</h2>
+        <div id="tiles" class="tiles"></div>
+      </section>
+
+      <section aria-labelledby="rows-heading">
+        <h2 id="rows-heading">Students</h2>
+        <div class="table-scroll">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Student</th>
+                <th scope="col">Status</th>
+                <th scope="col">Time locked</th>
+                <th scope="col">File arrived</th>
+                <th scope="col">Verified</th>
+                <th scope="col">File</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p>DeadlineDrop — Hash commitment assignment portal</p>
+  </footer>
+
+  <script type="module" src="/js/shell.js"></script>
+  <script type="module" src="/js/dashboard.js"></script>
+</body>
+</html>

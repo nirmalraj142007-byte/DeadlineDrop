@@ -89,6 +89,20 @@ class StaticPagesIT {
     }
 
     @Test
+    void getTeacherDashboardAndSubmissionPages_return200() {
+        ResponseEntity<String> dashboard = rest.getForEntity("/teacher/dashboard.html", String.class);
+        assertThat(dashboard.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(dashboard.getBody()).contains("dashboard-root", "Download all", "/js/dashboard.js");
+
+        ResponseEntity<String> submission = rest.getForEntity("/teacher/submission.html", String.class);
+        assertThat(submission.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(submission.getBody()).contains("submission-root", "/js/submission.js");
+
+        ResponseEntity<String> timeline = rest.getForEntity("/js/timeline.js", String.class);
+        assertThat(timeline.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
     void getReceiptAndConsentPages_return200() {
         ResponseEntity<String> receipt = rest.getForEntity("/student/receipt.html", String.class);
         assertThat(receipt.getStatusCode()).isEqualTo(HttpStatus.OK);

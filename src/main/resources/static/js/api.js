@@ -20,10 +20,11 @@ export class ApiError extends Error {
  * Perform an authenticated API request.
  *
  * @param {string} path - Target URL path
- * @param {object} options - Request configuration (method, body, headers, idempotencyKey)
+ * @param {object} options - Request configuration (method, body, headers, idempotencyKey,
+ *   meta: object filled with status and etag, responseType: 'blob' to return a Blob)
  * @returns {Promise<any>} Parsed response data
  */
-export async function apiFetch(path, { method = 'GET', body, headers = {}, idempotencyKey } = {}) {
+export async function apiFetch(path, { method = 'GET', body, headers = {}, idempotencyKey, meta, responseType } = {}) {
   // We store the bearer token in sessionStorage because it dies automatically when the tab is closed,
   // preventing persistence across browser sessions. The residual XSS risk is handled by the CSP in phase 29.
   const reqHeaders = { ...headers };
@@ -52,6 +53,15 @@ export async function apiFetch(path, { method = 'GET', body, headers = {}, idemp
     headers: reqHeaders,
     body: reqBody
   });
+
+  if (meta) {
+    // Lets callers read the ETag and see a 304 without apiFetch turning it into an error.
+    meta.status = res.status;
+    meta.etag = res.headers.get('etag');
+  }
+  if (res.status === 304 && meta) {
+    return null;
+  }
 
   const contentType = res.headers.get('content-type') || '';
   let errJson = null;
@@ -102,6 +112,9 @@ export async function apiFetch(path, { method = 'GET', body, headers = {}, idemp
     );
   }
 
+  if (responseType === 'blob') {
+    return await res.blob();
+  }
   if (res.status === 204 || res.headers.get('content-length') === '0') {
     return null;
   }
