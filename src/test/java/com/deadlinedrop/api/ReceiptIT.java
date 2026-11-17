@@ -400,8 +400,11 @@ class ReceiptIT {
         assertThat(c.receipt()).isNull();
 
         assertThat(put(c, FILE)).isEqualTo(200);
+        // What curl --data "" sends (deploy/smoke-flow.sh): a form Content-Type and an empty body.
+        HttpHeaders formHeaders = auth(student);
+        formHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         ResponseEntity<String> fin = rest.postForEntity("/api/submissions/" + c.submissionId() + "/finalize",
-                new HttpEntity<>(null, auth(student)), String.class);
+                new HttpEntity<>("", formHeaders), String.class);
         assertThat(fin.getStatusCode()).as(fin.getBody()).isEqualTo(HttpStatus.OK);
         assertThat(objectMapper.readTree(fin.getBody()).get("status").asString()).isEqualTo("UPLOADED");
         assertThat(jdbc.queryForObject("SELECT receipt_nonce FROM submissions WHERE id = ?", UUID.class,

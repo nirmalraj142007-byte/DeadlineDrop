@@ -40,7 +40,7 @@ public final class CommitDtos {
     }
 
     /** Optional finalize body; {@code receipt} is present only for a commit that was answered with one. */
-    public record FinalizeRequest(@Size(max = 2048) String receipt) {
+    public record FinalizeRequest(String receipt) {
     }
 
     /** Finalize result; {@code uploadedAt} is null while the submission is still COMMITTED. */
