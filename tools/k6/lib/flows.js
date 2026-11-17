@@ -55,6 +55,7 @@ export function armC(ctx) {
   let submissionId = null;
   let uploadUrl = null;
   let uploadHeaders = {};
+  let receipt = null;
   let error = null;
   let commitMs = null;
   let finalizeMs = null;
@@ -97,6 +98,8 @@ export function armC(ctx) {
         submissionId = json.submissionId || json.id;
         uploadUrl = json.uploadUrl;
         uploadHeaders = json.uploadHeaders || {};
+        // Database down at commit: the stamp is in a signed receipt, sent back at finalize.
+        receipt = json.status === 'RECEIPT_ISSUED' ? json.receipt : null;
       } catch (e) {
         error = 'commit_json_parse_error';
       }
@@ -136,16 +139,27 @@ export function armC(ctx) {
           break;
         }
         finalizeAttempts++;
-        const finRes = http.post(
-          `${baseUrl}/api/submissions/${submissionId}/finalize`,
-          '',
-          {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Length': '0',
-            },
-          }
-        );
+        const finRes = receipt
+          ? http.post(
+            `${baseUrl}/api/submissions/${submissionId}/finalize`,
+            JSON.stringify({ receipt: receipt }),
+            {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+              },
+            }
+          )
+          : http.post(
+            `${baseUrl}/api/submissions/${submissionId}/finalize`,
+            '',
+            {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Length': '0',
+              },
+            }
+          );
         finalizeStatus = finRes.status;
         finalizeMs = finRes.timings.duration;
         noteFailure(failedStatuses, 'finalize', finalizeStatus);
@@ -183,6 +197,7 @@ export function armC(ctx) {
     finalizeMs: finalizeMs,
     failedStatuses: failedStatuses,
     submissionId: submissionId,
+    receiptIssued: receipt !== null,
     skipFinalize: skipFinalize,
     error: error,
   };

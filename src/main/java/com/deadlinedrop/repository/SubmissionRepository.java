@@ -69,6 +69,11 @@ public class SubmissionRepository {
                     + "size_bytes, content_type, object_path, status, timing, committed_at) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?::submission_status, ?::submission_timing, ?)";
 
+    private static final String INSERT_WITH_RECEIPT_SQL =
+            "INSERT INTO submissions (id, assignment_id, student_id, idempotency_key, request_hash, sha256, "
+                    + "size_bytes, content_type, object_path, status, timing, committed_at, receipt_nonce) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?::submission_status, ?::submission_timing, ?, ?)";
+
     private static final String LINK_SQL = "UPDATE submissions SET superseded_by = ? WHERE id = ?";
 
     private static final String EVENT_SQL =
@@ -90,6 +95,12 @@ public class SubmissionRepository {
     public Optional<Row> findById(UUID id) {
         Objects.requireNonNull(id, "id must not be null");
         return jdbcTemplate.query(SELECT_COLUMNS + "WHERE id = ?", ROW_MAPPER, id).stream().findFirst();
+    }
+
+    /** The row created by redeeming the receipt with this nonce, if it was redeemed already. */
+    public Optional<Row> findByReceiptNonce(UUID nonce) {
+        Objects.requireNonNull(nonce, "nonce must not be null");
+        return jdbcTemplate.query(SELECT_COLUMNS + "WHERE receipt_nonce = ?", ROW_MAPPER, nonce).stream().findFirst();
     }
 
     public Optional<Row> findByStudentAndKey(UUID studentId, UUID key) {
@@ -119,6 +130,21 @@ public class SubmissionRepository {
                 row.id(), row.assignmentId(), row.studentId(), row.idempotencyKey(), row.requestHash(), row.sha256(),
                 row.sizeBytes(), row.contentType(), row.objectPath(), row.status().name(), row.timing().name(),
                 utc(row.committedAt()));
+    }
+
+    /**
+     * Inserts a COMMITTED row from a redeemed receipt. {@code committed_at} is the stamp signed into
+     * the receipt; {@code db_committed_at} takes the DB default (now), so the audit column shows
+     * when the row was really written.
+     */
+    public void insertCommittedFromReceipt(Row row, UUID receiptNonce) {
+        Objects.requireNonNull(row, "row must not be null");
+        Objects.requireNonNull(receiptNonce, "receiptNonce must not be null");
+        jdbcTemplate.update(
+                INSERT_WITH_RECEIPT_SQL,
+                row.id(), row.assignmentId(), row.studentId(), row.idempotencyKey(), row.requestHash(), row.sha256(),
+                row.sizeBytes(), row.contentType(), row.objectPath(), row.status().name(), row.timing().name(),
+                utc(row.committedAt()), receiptNonce);
     }
 
     public void linkSupersededBy(List<UUID> oldIds, UUID newId) {

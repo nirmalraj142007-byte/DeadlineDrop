@@ -9,12 +9,14 @@ import com.deadlinedrop.domain.Submission.Status;
 import com.deadlinedrop.domain.Timing;
 import com.deadlinedrop.repository.SubmissionRepository;
 import com.deadlinedrop.repository.SubmissionRepository.Superseded;
+import com.deadlinedrop.service.ReceiptService.Receipt;
 import com.deadlinedrop.storage.StoragePort;
 import com.deadlinedrop.storage.StoragePort.SignedUrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -24,6 +26,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.HexFormat;
 import java.util.List;
 import java.util.Objects;
@@ -31,7 +34,8 @@ import java.util.UUID;
 
 /**
  * The commit step of the hash commitment: stamps the submission at arrival, records the hash it
- * binds to, supersedes any live submission, and only then hands out a signed upload URL.
+ * binds to, supersedes any live submission, and only then hands out a signed upload URL. If the
+ * database cannot be reached and receipts are enabled, the stamp goes into a signed receipt instead.
  */
 @Service
 @Profile("!storage")
@@ -56,6 +60,10 @@ public class CommitService {
     /**
      * Outcome of a commit. {@code signedUrl} is null when signing failed or the submission is no
      * longer awaiting bytes; the stamp is never lost either way.
+     *
+     * <p>When the database could not be reached, {@code receipt} holds the signed receipt and
+     * {@code timing} and {@code status} are null: no row exists yet, and on time or late is decided
+     * when the receipt is redeemed at finalize.
      */
     public record CommitResult(
             UUID submissionId,
@@ -65,7 +73,12 @@ public class CommitService {
             SignedUrl signedUrl,
             boolean replayed,
             long dbMs,
-            long signMs) {
+            long signMs,
+            String receipt) {
+
+        public boolean receiptIssued() {
+            return receipt != null;
+        }
     }
 
     private record Outcome(Row row, boolean replayed) {
@@ -76,19 +89,22 @@ public class CommitService {
     private final AssignmentAccess assignmentAccess;
     private final DeadlinePolicy deadlinePolicy;
     private final StoragePort storage;
+    private final ReceiptService receipts;
 
     public CommitService(
             PlatformTransactionManager transactionManager,
             SubmissionRepository submissions,
             AssignmentAccess assignmentAccess,
             DeadlinePolicy deadlinePolicy,
-            StoragePort storage) {
+            StoragePort storage,
+            ReceiptService receipts) {
         this.transactionTemplate = new TransactionTemplate(
                 Objects.requireNonNull(transactionManager, "transactionManager must not be null"));
         this.submissions = Objects.requireNonNull(submissions, "submissions must not be null");
         this.assignmentAccess = Objects.requireNonNull(assignmentAccess, "assignmentAccess must not be null");
         this.deadlinePolicy = Objects.requireNonNull(deadlinePolicy, "deadlinePolicy must not be null");
         this.storage = Objects.requireNonNull(storage, "storage must not be null");
+        this.receipts = Objects.requireNonNull(receipts, "receipts must not be null");
     }
 
     public CommitResult commit(CommitCommand c) {
@@ -96,7 +112,15 @@ public class CommitService {
         String requestHash = requestHash(c);
 
         long dbStart = System.nanoTime();
-        Outcome outcome = runWithOneRetry(c, requestHash);
+        Outcome outcome;
+        try {
+            outcome = runWithOneRetry(c, requestHash);
+        } catch (RuntimeException e) {
+            if (!receipts.enabled() || !DatabaseOutage.isOutage(e)) {
+                throw e;
+            }
+            return issueReceipt(c, e, (System.nanoTime() - dbStart) / 1_000_000);
+        }
         long dbMs = (System.nanoTime() - dbStart) / 1_000_000;
 
         Row row = outcome.row();
@@ -117,7 +141,53 @@ public class CommitService {
         long signMs = (System.nanoTime() - signStart) / 1_000_000;
 
         return new CommitResult(row.id(), row.committedAt(), row.timing(), row.status(), signed,
-                outcome.replayed(), dbMs, signMs);
+                outcome.replayed(), dbMs, signMs, null);
+    }
+
+    /**
+     * The database is down: put the arrival stamp in a signed receipt instead of a row. Nothing
+     * that needs the database is checked here (enrolment, assignment limits, deadline); finalize
+     * checks all of it when the receipt is redeemed. The upload URL is signed for the declared
+     * size and type, so the bytes can move while the database is still down.
+     */
+    private CommitResult issueReceipt(CommitCommand c, RuntimeException outage, long dbMs) {
+        UUID submissionId = UUID.randomUUID();
+        UUID nonce = UUID.randomUUID();
+        String objectPath = objectPath(c.assignmentId(), c.studentId(), submissionId);
+
+        long signStart = System.nanoTime();
+        SignedUrl signed;
+        try {
+            signed = storage.signPut(objectPath, c.contentType(), c.sizeBytes(), UPLOAD_URL_TTL);
+        } catch (RuntimeException signFailure) {
+            // A receipt without an upload URL is useless: re-issuing a URL needs the database.
+            // Nothing was stamped anywhere, so the browser simply retries the commit.
+            signFailure.addSuppressed(outage);
+            log.atError()
+                    .addKeyValue("event", "receipt_sign_failed")
+                    .setCause(signFailure)
+                    .log("database unreachable and signing the upload URL failed; no receipt issued");
+            throw new ApiException(HttpStatus.SERVICE_UNAVAILABLE, ErrorCodes.SIGNING_UNAVAILABLE,
+                    "Storage signing is unavailable; retry the request");
+        }
+        long signMs = (System.nanoTime() - signStart) / 1_000_000;
+
+        // The token carries epoch milliseconds; the response must show the stamp the row will get.
+        Instant stamp = c.arrivedAt().truncatedTo(ChronoUnit.MILLIS);
+        String token = receipts.issue(new Receipt(submissionId, c.studentId(), c.assignmentId(), c.sha256(),
+                c.sizeBytes(), c.contentType(), stamp, nonce));
+        log.atWarn()
+                .addKeyValue("event", "receipt_issued")
+                .addKeyValue("submissionId", submissionId)
+                .addKeyValue("assignmentId", c.assignmentId())
+                .addKeyValue("committedAt", stamp)
+                .addKeyValue("cause", outage.getClass().getSimpleName())
+                .log("database unreachable at commit; issued a signed receipt instead of a row");
+        return new CommitResult(submissionId, stamp, null, null, signed, false, dbMs, signMs, token);
+    }
+
+    static String objectPath(UUID assignmentId, UUID studentId, UUID submissionId) {
+        return "a/" + assignmentId + "/s/" + studentId + "/" + submissionId;
     }
 
     /**
@@ -169,7 +239,7 @@ public class CommitService {
         // Late commits are accepted and marked LATE (docs/decisions.md D3).
         Timing timing = deadlinePolicy.timing(c.arrivedAt(), assignment);
         UUID id = UUID.randomUUID();
-        String objectPath = "a/" + c.assignmentId() + "/s/" + c.studentId() + "/" + id;
+        String objectPath = objectPath(c.assignmentId(), c.studentId(), id);
 
         List<Superseded> superseded = submissions.supersedeLive(c.assignmentId(), c.studentId(), c.arrivedAt());
 

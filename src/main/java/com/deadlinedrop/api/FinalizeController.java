@@ -1,6 +1,7 @@
 package com.deadlinedrop.api;
 
 import io.swagger.v3.oas.annotations.Operation;
+import com.deadlinedrop.api.dto.CommitDtos.FinalizeRequest;
 import com.deadlinedrop.api.dto.CommitDtos.ReissueRequest;
 import com.deadlinedrop.api.dto.CommitDtos.SubmissionStatusResponse;
 import com.deadlinedrop.api.dto.CommitDtos.UploadUrlResponse;
@@ -37,11 +38,20 @@ public class FinalizeController {
         this.uploadUrlService = Objects.requireNonNull(uploadUrlService, "uploadUrlService must not be null");
     }
 
-    @Operation(summary = "Confirm the committed bytes arrived in storage; never moves the stamp")
+    @Operation(summary = "Confirm the committed bytes arrived in storage; never moves the stamp. "
+            + "Send {\"receipt\": ...} when the commit returned one (the database was down at commit).")
     @PostMapping("/api/submissions/{id}/finalize")
     @PreAuthorize("hasRole('STUDENT')")
-    public SubmissionStatusResponse finalizeSubmission(@PathVariable UUID id, Authentication authentication) {
-        finalizeService.finalize(CurrentUser.id(authentication), id);
+    public SubmissionStatusResponse finalizeSubmission(
+            @PathVariable UUID id,
+            @Valid @RequestBody(required = false) FinalizeRequest body,
+            Authentication authentication) {
+        UUID studentId = CurrentUser.id(authentication);
+        if (body != null && body.receipt() != null && !body.receipt().isBlank()) {
+            finalizeService.finalizeWithReceipt(studentId, id, body.receipt());
+        } else {
+            finalizeService.finalize(studentId, id);
+        }
         Details details = finalizeService.describe(id);
         return new SubmissionStatusResponse(
                 details.submissionId(), details.status().name(), details.timing().name(), details.uploadedAt());

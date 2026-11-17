@@ -23,7 +23,11 @@ public final class CommitDtos {
             @NotBlank @Size(max = 100) String contentType) {
     }
 
-    /** {@code uploadUrl}, {@code uploadHeaders} and {@code urlExpiresAt} are null when signing failed. */
+    /**
+     * {@code uploadUrl}, {@code uploadHeaders} and {@code urlExpiresAt} are null when signing failed.
+     * {@code receipt} is null unless the database was unreachable: then {@code status} is
+     * RECEIPT_ISSUED, {@code timing} is PENDING, and the browser sends the receipt back at finalize.
+     */
     public record CommitResponse(
             UUID submissionId,
             Instant committedAt,
@@ -31,7 +35,12 @@ public final class CommitDtos {
             String status,
             String uploadUrl,
             Map<String, String> uploadHeaders,
-            Instant urlExpiresAt) {
+            Instant urlExpiresAt,
+            String receipt) {
+    }
+
+    /** Optional finalize body; {@code receipt} is present only for a commit that was answered with one. */
+    public record FinalizeRequest(@Size(max = 2048) String receipt) {
     }
 
     /** Finalize result; {@code uploadedAt} is null while the submission is still COMMITTED. */

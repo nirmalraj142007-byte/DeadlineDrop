@@ -161,7 +161,12 @@ export async function runArmCFlow({ assignment, file, idempotencyKey, ui }) {
   const submissionId = commitRes.submissionId;
   const committedAt = commitRes.committedAt;
   const committedIst = formatIst(committedAt);
-  ui.updateStatus(`Time locked ✓ ${committedIst}`);
+  // The database was down at commit: the stamp is in a signed receipt, sent back at finalize.
+  const receipt = commitRes.status === 'RECEIPT_ISSUED' ? commitRes.receipt : null;
+  const lockedText = receipt
+    ? 'Time locked ✓ (receipt issued; the server will record it when it recovers)'
+    : `Time locked ✓ ${committedIst}`;
+  ui.updateStatus(lockedText);
 
   let uploadUrl = commitRes.uploadUrl;
   let uploadHeaders = commitRes.uploadHeaders || {};
@@ -201,7 +206,7 @@ export async function runArmCFlow({ assignment, file, idempotencyKey, ui }) {
         ui.updateProgress(pct);
         const mbpsText = mbps > 0 ? ` (${mbps.toFixed(1)} Mbps)` : '';
         ui.updateStatus(
-          `Time locked ✓ ${committedIst} · Upload ${pct}%${mbpsText} · keep this tab open until the upload finishes; grace ends ${formatIst(assignment.graceEndsAt)}`
+          `${lockedText} · Upload ${pct}%${mbpsText} · keep this tab open until the upload finishes; grace ends ${formatIst(assignment.graceEndsAt)}`
         );
       }
     );
@@ -271,7 +276,8 @@ export async function runArmCFlow({ assignment, file, idempotencyKey, ui }) {
 
     try {
       finalizeRes = await apiFetch(`/api/submissions/${submissionId}/finalize`, {
-        method: 'POST'
+        method: 'POST',
+        body: receipt ? { receipt } : undefined
       });
       break;
     } catch (err) {

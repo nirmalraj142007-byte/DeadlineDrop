@@ -104,6 +104,9 @@ class DatabaseDownIT {
         registry.add("spring.datasource.password", POSTGRES::getPassword);
         registry.add("dd.storage.server.enabled", () -> "true");
         registry.add("dd.storage.root", () -> STORAGE_ROOT.toAbsolutePath().toString());
+        // With receipts on (the default) a commit during an outage gets a signed receipt instead of
+        // a 503; ReceiptIT covers that. This test pins the fail-fast path, which receipts-off keeps.
+        registry.add("dd.receipt.enabled", () -> "false");
     }
 
     @AfterAll

@@ -2,13 +2,9 @@ package com.deadlinedrop.web;
 
 import com.deadlinedrop.api.ApiException;
 import com.deadlinedrop.api.ErrorCodes;
+import com.deadlinedrop.service.DatabaseOutage;
 import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
-import java.sql.SQLException;
-import java.sql.SQLTransientConnectionException;
-import java.util.Collections;
-import java.util.IdentityHashMap;
-import java.util.Set;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -55,17 +51,6 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-
-    /** SQL standard class 08: connection exception (08001 cannot connect, 08003 closed, 08006 failure). */
-    private static final String SQLSTATE_CONNECTION_EXCEPTION_CLASS = "08";
-
-    /**
-     * HikariCP (7.0.2) throws this, with no SQLState, from a connection it has already evicted
-     * because a statement failed with a class-08 error. Spring's TransactionTemplate then reports
-     * the failed rollback instead of the original error, so this is all that is left to recognise.
-     * DatabaseDownIT runs against the real pool and fails if a Hikari upgrade changes it.
-     */
-    private static final String HIKARI_EVICTED_CONNECTION_MESSAGE = "Connection is closed";
 
     public record ValidationError(String field, String message) {}
 
@@ -307,22 +292,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     static boolean isConnectionFailure(Throwable ex) {
-        Set<Throwable> seen = Collections.newSetFromMap(new IdentityHashMap<>());
-        for (Throwable t = ex; t != null && seen.add(t); t = t.getCause()) {
-            if (t instanceof SQLTransientConnectionException) {
-                return true;
-            }
-            if (t instanceof SQLException sql) {
-                String state = sql.getSQLState();
-                if (state != null && state.startsWith(SQLSTATE_CONNECTION_EXCEPTION_CLASS)) {
-                    return true;
-                }
-                if (state == null && HIKARI_EVICTED_CONNECTION_MESSAGE.equals(sql.getMessage())) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return DatabaseOutage.hasConnectionFailureCause(ex);
     }
 
     @ExceptionHandler(Exception.class)

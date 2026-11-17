@@ -31,13 +31,13 @@ class MigrationIT {
     }
 
     @Test
-    @DisplayName("1. flyway_schema_history has 5 successful rows")
-    void flywaySchemaHistoryHasFiveSuccessfulRows() {
+    @DisplayName("1. flyway_schema_history has 6 successful rows (V1-V6)")
+    void flywaySchemaHistoryHasSixSuccessfulRows() {
         Integer count = jdbcTemplate.queryForObject(
                 "SELECT count(*) FROM flyway_schema_history WHERE success = true",
                 Integer.class
         );
-        assertThat(count).isEqualTo(5);
+        assertThat(count).isEqualTo(6);
     }
 
     @Test

@@ -32,6 +32,11 @@ dd:
   telemetry:
     # Secret salt for the anonymous id (HMAC-SHA256 of the student id). Required: the app stops without it.
     salt: ${TELEMETRY_SALT:}
+  receipt:
+    # When the database cannot be reached at commit, issue a signed receipt instead of a 503.
+    enabled: ${RECEIPT_ENABLED:true}
+    # Base64, at least 32 bytes. Required: the app stops without it.
+    hmac-key: ${RECEIPT_HMAC_KEY:}
   chaos:
     # Off by default: with the flag off /admin/chaos/** does not exist (404).
     enabled: ${CHAOS_ENABLED:false}

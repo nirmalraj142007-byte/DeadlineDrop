@@ -8,6 +8,8 @@ JWT_SECRET: dGVzdC1zZWNyZXQta2V5LXdpdGgtYXQtbGVhc3QtMzItYnl0ZXMtbG9uZw==
 dd:
   telemetry:
     salt: "test-telemetry-salt-at-least-16-chars"
+  receipt:
+    hmac-key: "dGVzdC1yZWNlaXB0LWhtYWMta2V5LWF0LWxlYXN0LTMyLWJ5dGVz"
   internal:
     token: "test-internal-token-at-least-32-characters"
   storage:

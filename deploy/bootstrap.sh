@@ -67,6 +67,10 @@ create_secret_if_absent "dd-jwt-secret" "$RANDOM_JWT_SECRET"
 RANDOM_TELEMETRY_SALT=$(openssl rand -base64 32 | tr -d '\r\n')
 create_secret_if_absent "dd-telemetry-salt" "$RANDOM_TELEMETRY_SALT"
 
+# Signs commit receipts issued while the database is down (HMAC-SHA256, 32 random bytes).
+RANDOM_RECEIPT_KEY=$(openssl rand -base64 32 | tr -d '\r\n')
+create_secret_if_absent "dd-receipt-key" "$RANDOM_RECEIPT_KEY"
+
 RANDOM_SEED_PASS=$(openssl rand -base64 32 | tr -d '\r\n')
 create_secret_if_absent "dd-seed-password" "$RANDOM_SEED_PASS"
 

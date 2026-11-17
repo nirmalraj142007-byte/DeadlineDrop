@@ -40,6 +40,11 @@ public class CommitController {
 
     private static final Logger log = LoggerFactory.getLogger(CommitController.class);
 
+    /** Response status when the stamp went into a signed receipt because the database was down. */
+    static final String RECEIPT_STATUS = "RECEIPT_ISSUED";
+    /** On time or late is decided when the receipt is redeemed, against the assignment in the database. */
+    static final String RECEIPT_TIMING = "PENDING";
+
     private final CommitService commitService;
     private final Clock clock;
 
@@ -73,11 +78,12 @@ public class CommitController {
         CommitResponse response = new CommitResponse(
                 result.submissionId(),
                 result.committedAt(),
-                result.timing().name(),
-                result.status().name(),
+                result.receiptIssued() ? RECEIPT_TIMING : result.timing().name(),
+                result.receiptIssued() ? RECEIPT_STATUS : result.status().name(),
                 signed == null ? null : signed.url(),
                 signed == null ? null : signed.headers(),
-                signed == null ? null : signed.expiresAt());
+                signed == null ? null : signed.expiresAt(),
+                result.receipt());
 
         long appMs = Math.max(0, Duration.between(arrivedAt, clock.instant()).toMillis());
         String serverTiming = "app;dur=" + appMs + ", db;dur=" + result.dbMs() + ", sign;dur=" + result.signMs();
