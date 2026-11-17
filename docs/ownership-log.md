@@ -666,3 +666,12 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 - **Why:** The teacher flows had to work end to end against the real stack, not just compile.
 - **Trade-off:** I kept the local data and patched one row rather than a clean reseed; the empty-hash root cause is still unexplained, so if it recurs the next step is to check what writes to `users`.
 - **File to read first:** `src/main/resources/static/js/courses.js`
+
+---
+
+## 2026-11-17 — Phase 26: signed-URL security tests (G13)
+
+- **What changed:** Committed `SignedUrlSecurityIT` (oversize PUT, unsigned content type, PUT to another path) and `tools/smoke-bucket.sh`, and ran the script against the real bucket via dd-arm-c: results in `results/smoke-bucket.log`. GCS rejected the 2 MiB PUT (400 EntityTooLarge), the wrong Content-Type (403 SignatureDoesNotMatch) and the changed object name (403 SignatureDoesNotMatch). D11 in `docs/decisions.md` records this. Fixed three script bugs on the way: it sourced a nonexistent `tools/env.sh`, the tampered-URL regex matched `//host` so case (c) never reached Google, and it wrote to `/tmp`.
+- **Why:** The design depends on the signed URL binding size, type and path; that had to be shown against Google, not only the local storage server.
+- **Trade-off:** The smoke run commits with an all-zero hash and never finalizes, so those submissions expire in the cloud database for student0001 on Lab 1; and the 422 SIZE_MISMATCH finalize path was not exercised against GCS because GCS refused the bytes first (it is covered locally by `SignedUrlSecurityIT`).
+- **File to read first:** `tools/smoke-bucket.sh`

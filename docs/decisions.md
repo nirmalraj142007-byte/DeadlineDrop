@@ -63,3 +63,6 @@ Outcome of the D4 gate. Nirmal fills in exactly one line and deletes the other:
   fast on e2-standard-2 (2 vCPU, 8 GB). Total stays 6 vCPU under the 8-vCPU cap; `create-fleet.sh` sums
   guestCpus per cohort's type before creating anything and refuses an existing VM of the wrong type. Not yet
   verified: the first step of phase 32 (`docs/phase32-plan.md`) repeats the 1,000-student memory dry run.
+
+## D11: Signed-URL Edge-Case Enforcement (phase 26, 2026-11-17)
+The real bucket enforces the signed `x-goog-content-length-range` itself: `results/smoke-bucket.log` shows a 2 MiB PUT against a 1 MiB signature rejected with 400 EntityTooLarge, a PUT with a different Content-Type and a PUT to a different object name both rejected with 403 SignatureDoesNotMatch, so size is enforced by GCS at PUT time and no oversize object is stored. The local storage server mirrors these rejections for `SignedUrlSecurityIT`, and `FinalizeService` still compares the stored size with the committed size (422 SIZE_MISMATCH, object deleted) as a second line, but that path was not exercised against GCS because GCS never accepted the oversize bytes.

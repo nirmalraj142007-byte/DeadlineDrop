@@ -1,0 +1,28 @@
+=== smoke-bucket.sh ===
+Date: 2026-11-17T15:20:37Z
+Arm C URL: https://dd-arm-c-aheo6nqyga-el.a.run.app
+
+--- Step 0: login as student0001@dd.local ---
+Login OK (token length 252)
+
+--- Step 1: commit — declare 1 MiB, application/pdf ---
+Commit OK — submission d396f365-1dd8-4a8f-8a63-13b74c138625
+Signed URL (truncated): https://storage.googleapis.com/deadlinedrop-nirmal-dd-objects/a/11111111-1111-1111-1111-111111111111/s/4c0d9291-a2c3-4b1a-99d5-c446d5f74fee/d396f365-1dd8-4a8f-8a63-13b74c138625?...
+
+Signed headers: "x-goog-content-length-range":"0,1048576","Content-Type":"application/pdf"
+
+--- (a) PUT 2 MiB to the signed URL (signed for 1 MiB) ---
+HTTP status (a): 400
+Response body (a, first 200 bytes): <?xml version='1.0' encoding='UTF-8'?><Error><Code>EntityTooLarge</Code><Message>Your proposed upload is larger than the maximum object size specified in your Policy Document.</Message><Details>Conten
+
+(a) GCS enforced the size range at PUT time — status 400 (expected 400/413)
+
+--- (b) PUT with Content-Type: text/plain (application/pdf was signed) ---
+HTTP status (b): 403
+Response body (b, first 200 bytes): <?xml version='1.0' encoding='UTF-8'?><Error><Code>SignatureDoesNotMatch</Code><Message>Access denied.</Message><Details>The request signature we calculated does not match the signature you provided. 
+
+--- (c) PUT to signed URL with object name changed ---
+HTTP status (c): 403
+Response body (c, first 200 bytes): <?xml version='1.0' encoding='UTF-8'?><Error><Code>SignatureDoesNotMatch</Code><Message>Access denied.</Message><Details>The request signature we calculated does not match the signature you provided. 
+
+=== smoke-bucket.sh complete ===
