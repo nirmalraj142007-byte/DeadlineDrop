@@ -187,6 +187,14 @@ public class FinalizeService {
             String requestHash = CommitService.requestHash(new CommitCommand(r.studentId(), r.assignmentId(),
                     r.nonce(), r.sha256(), r.sizeBytes(), r.contentType(), r.committedAt()));
 
+            // The newest commit wins. A submission committed after this receipt's stamp (the student
+            // committed again once the database was back) stays live; the receipt's submission is
+            // recorded, already superseded by it, so its history is kept and nothing live is touched.
+            Optional<Row> live = submissions.findLiveForUpdate(r.assignmentId(), r.studentId());
+            if (live.isPresent() && live.get().committedAt().isAfter(r.committedAt())) {
+                return recordAsSuperseded(r, objectPath, timing, requestHash, live.get(), now);
+            }
+
             List<Superseded> superseded = submissions.supersedeLive(r.assignmentId(), r.studentId(), now);
             Row row = new Row(r.submissionId(), r.assignmentId(), r.studentId(), r.nonce(), requestHash, r.sha256(),
                     r.sizeBytes(), r.contentType(), objectPath, Status.COMMITTED, timing, r.committedAt(),
@@ -208,6 +216,30 @@ public class FinalizeService {
             return stateMachine.markUploaded(r.submissionId(), Actor.BROWSER_FINALIZE);
         });
         return Objects.requireNonNull(status, "the redeem transaction returned no status");
+    }
+
+    /**
+     * Inserts the receipt's submission as SUPERSEDED by {@code newer}, which is left as it is. The
+     * events show both steps (committed at the signed stamp, then superseded on redeem), and no
+     * verify job is enqueued: a superseded submission is never graded.
+     */
+    private Status recordAsSuperseded(Receipt r, String objectPath, Timing timing, String requestHash,
+                                      Row newer, Instant now) {
+        Row row = new Row(r.submissionId(), r.assignmentId(), r.studentId(), r.nonce(), requestHash, r.sha256(),
+                r.sizeBytes(), r.contentType(), objectPath, Status.SUPERSEDED, timing, r.committedAt(),
+                null, null, null, null, now, newer.id(), null, null);
+        submissions.insertSupersededFromReceipt(row, r.nonce());
+        submissions.insertEvent(r.submissionId(), null, Status.COMMITTED, Actor.RECEIPT, r.committedAt());
+        submissions.insertEvent(r.submissionId(), Status.COMMITTED, Status.SUPERSEDED, Actor.RECEIPT, now);
+
+        log.atInfo()
+                .addKeyValue("event", "receipt_redeemed_superseded")
+                .addKeyValue("submissionId", r.submissionId())
+                .addKeyValue("committedAt", r.committedAt())
+                .addKeyValue("supersededBy", newer.id())
+                .addKeyValue("newerCommittedAt", newer.committedAt())
+                .log("receipt redeemed after a newer commit; recorded as superseded, the newer one stays live");
+        return Status.SUPERSEDED;
     }
 
     private void checkObjectMatches(ObjectInfo info, UUID submissionId, String objectPath,

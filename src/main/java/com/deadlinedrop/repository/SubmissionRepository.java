@@ -74,6 +74,16 @@ public class SubmissionRepository {
                     + "size_bytes, content_type, object_path, status, timing, committed_at, receipt_nonce) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?::submission_status, ?::submission_timing, ?, ?)";
 
+    private static final String INSERT_SUPERSEDED_WITH_RECEIPT_SQL =
+            "INSERT INTO submissions (id, assignment_id, student_id, idempotency_key, request_hash, sha256, "
+                    + "size_bytes, content_type, object_path, status, timing, committed_at, receipt_nonce, "
+                    + "superseded_at, superseded_by) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'SUPERSEDED', ?::submission_timing, ?, ?, ?, ?)";
+
+    private static final String FIND_LIVE_FOR_UPDATE_SQL =
+            SELECT_COLUMNS + "WHERE assignment_id = ? AND student_id = ? "
+                    + "AND status NOT IN ('EXPIRED','SUPERSEDED') FOR UPDATE";
+
     private static final String LINK_SQL = "UPDATE submissions SET superseded_by = ? WHERE id = ?";
 
     private static final String EVENT_SQL =
@@ -145,6 +155,32 @@ public class SubmissionRepository {
                 row.id(), row.assignmentId(), row.studentId(), row.idempotencyKey(), row.requestHash(), row.sha256(),
                 row.sizeBytes(), row.contentType(), row.objectPath(), row.status().name(), row.timing().name(),
                 utc(row.committedAt()), receiptNonce);
+    }
+
+    /**
+     * The live submission (at most one, by {@code ux_live_submission}) for this student and
+     * assignment, locked until the transaction ends so a concurrent commit cannot replace it unseen.
+     */
+    public Optional<Row> findLiveForUpdate(UUID assignmentId, UUID studentId) {
+        Objects.requireNonNull(assignmentId, "assignmentId must not be null");
+        Objects.requireNonNull(studentId, "studentId must not be null");
+        return jdbcTemplate.query(FIND_LIVE_FOR_UPDATE_SQL, ROW_MAPPER, assignmentId, studentId).stream().findFirst();
+    }
+
+    /**
+     * Inserts a redeemed receipt's row directly as SUPERSEDED by {@code row.supersededBy()}: a newer
+     * commit already exists, so this one is kept for the record but never becomes live.
+     */
+    public void insertSupersededFromReceipt(Row row, UUID receiptNonce) {
+        Objects.requireNonNull(row, "row must not be null");
+        Objects.requireNonNull(receiptNonce, "receiptNonce must not be null");
+        Objects.requireNonNull(row.supersededAt(), "supersededAt must not be null");
+        Objects.requireNonNull(row.supersededBy(), "supersededBy must not be null");
+        jdbcTemplate.update(
+                INSERT_SUPERSEDED_WITH_RECEIPT_SQL,
+                row.id(), row.assignmentId(), row.studentId(), row.idempotencyKey(), row.requestHash(), row.sha256(),
+                row.sizeBytes(), row.contentType(), row.objectPath(), row.timing().name(),
+                utc(row.committedAt()), receiptNonce, utc(row.supersededAt()), row.supersededBy());
     }
 
     public void linkSupersededBy(List<UUID> oldIds, UUID newId) {

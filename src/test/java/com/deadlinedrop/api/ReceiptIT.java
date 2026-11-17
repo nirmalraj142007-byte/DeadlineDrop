@@ -391,6 +391,47 @@ class ReceiptIT {
     }
 
     @Test
+    void aReceiptRedeemedAfterANewerCommitIsRecordedAsSupersededAndTheNewerCommitStaysLive() {
+        // v1: receipt during the outage at 23:59:50, bytes uploaded.
+        CommitResponse v1 = receiptWithBytes(student);
+
+        // v2: after recovery the student commits again, 5 s later. It is live.
+        clock.set(clock.instant().plusSeconds(5));
+        CommitResponse v2 = read(commitRaw(student), CommitResponse.class);
+        assertThat(v2.status()).isEqualTo("COMMITTED");
+
+        // Then the browser that held v1 finally redeems it. The newest commit must win.
+        clock.set(clock.instant().plusSeconds(5));
+        ResponseEntity<String> fin = finalizeWith(student, v1.submissionId(), v1.receipt());
+
+        assertThat(fin.getStatusCode()).as(fin.getBody()).isEqualTo(HttpStatus.OK);
+        assertThat(objectMapper.readTree(fin.getBody()).get("status").asString()).isEqualTo("SUPERSEDED");
+
+        assertThat(status(v2.submissionId())).isEqualTo("COMMITTED");
+        assertThat(jdbc.queryForObject("SELECT superseded_by FROM submissions WHERE id = ?", UUID.class,
+                v2.submissionId())).isNull();
+        assertThat(status(v1.submissionId())).isEqualTo("SUPERSEDED");
+        assertThat(jdbc.queryForObject("SELECT superseded_by FROM submissions WHERE id = ?", UUID.class,
+                v1.submissionId())).isEqualTo(v2.submissionId());
+        assertThat(((java.sql.Timestamp) jdbc.queryForMap("SELECT committed_at FROM submissions WHERE id = ?",
+                v1.submissionId()).get("committed_at")).toInstant()).isEqualTo(v1.committedAt());
+
+        assertThat(jdbc.queryForList("SELECT coalesce(from_status::text, '-') || '>' || to_status::text || ':' || actor::text "
+                + "FROM submission_events WHERE submission_id = ? ORDER BY at, id", String.class, v1.submissionId()))
+                .containsExactly("->COMMITTED:RECEIPT", "COMMITTED>SUPERSEDED:RECEIPT");
+        assertThat(jdbc.queryForList("SELECT coalesce(from_status::text, '-') || '>' || to_status::text || ':' || actor::text "
+                + "FROM submission_events WHERE submission_id = ? ORDER BY at, id", String.class, v2.submissionId()))
+                .containsExactly("->COMMITTED:COMMIT");
+        assertThat(count("SELECT count(*) FROM submissions WHERE status NOT IN ('EXPIRED','SUPERSEDED')")).isEqualTo(1);
+        assertThat(count("SELECT count(*) FROM jobs")).isZero();
+
+        // Redeeming v1 again replays SUPERSEDED and still leaves v2 alone.
+        ResponseEntity<String> again = finalizeWith(student, v1.submissionId(), v1.receipt());
+        assertThat(objectMapper.readTree(again.getBody()).get("status").asString()).isEqualTo("SUPERSEDED");
+        assertThat(status(v2.submissionId())).isEqualTo("COMMITTED");
+    }
+
+    @Test
     void withTheDatabaseUpTheNormalPathIsUnchanged() {
         ResponseEntity<String> commit = commitRaw(student);
         assertThat(commit.getStatusCode()).isEqualTo(HttpStatus.CREATED);

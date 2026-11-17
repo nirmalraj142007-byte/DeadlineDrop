@@ -697,3 +697,13 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 - **Why:** F3 (database restart) was the case we report against ourselves. With the receipt, the stamp no longer needs the database at 11:59; it needs only the key.
 - **Trade-off:** The receipt path skips every check that needs the database (enrolment, type, size limit, deadline) at commit and runs them at finalize, so a non-enrolled student can get a signed URL during an outage (their object is deleted at finalize). In exchange the stamp is never lost to the outage. Not built: the bucket-listing recovery for "browser died after upload while the database was down" (D12), and binding a receipt to the Idempotency-Key. F3 with the receipt has not been measured yet, so the "database down at 11:59" clause stays off-limits.
 - **File to read first:** `src/main/java/com/deadlinedrop/service/FinalizeService.java` (`finalizeWithReceipt`)
+
+---
+
+## 2026-11-17 — Phase 28 fix: the newest commit wins when a receipt is redeemed late
+
+- **What changed:** `FinalizeService.redeem` now locks the live submission for the student and assignment (`SubmissionRepository.findLiveForUpdate`, `SELECT ... FOR UPDATE`) before writing. If that row's `committed_at` is later than the receipt's signed stamp, the receipt's submission is inserted directly as SUPERSEDED (`insertSupersededFromReceipt`: `superseded_by` = the live row, `superseded_at` = now), with events null→COMMITTED and COMMITTED→SUPERSEDED, both actor RECEIPT. The live row is not touched, no verify job is enqueued, and finalize returns `SUPERSEDED`. Otherwise (no live row, or one committed at or before the stamp) behaviour is unchanged. New `ReceiptIT` case: receipt v1 during the outage, normal commit v2 after recovery, redeem v1 → v1 SUPERSEDED by v2, v2 still COMMITTED with its single COMMIT event, no jobs; redeeming v1 again replays SUPERSEDED. D12's "other edges" note updated.
+- **Acceptance run:** `./mvnw verify` green (49 unit, 173 IT; `ReceiptIT` 12).
+- **Why:** The receipt keeps the stamp honest. It must not let an older file overwrite a file the student deliberately committed later, which is what the old code did when a stale tab finally redeemed its receipt.
+- **Trade-off:** "Later" compares the two server stamps. The receipt's is truncated to the millisecond, so a later commit within the same millisecond would count as equal and the receipt would win. In practice that needs two commits from one student within 1 ms. The lock also serialises a redeem with a concurrent commit for the same student; if a commit inserts a live row first, the unique index makes the redeem retry once and then compare.
+- **File to read first:** `src/main/java/com/deadlinedrop/service/FinalizeService.java` (`redeem`, `recordAsSuperseded`)
