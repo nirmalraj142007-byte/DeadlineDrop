@@ -58,6 +58,15 @@ public class AssignmentController {
         return ResponseEntity.ok(dto);
     }
 
+    @Operation(summary = "List a teacher's assignments for one course")
+    @GetMapping("/api/courses/{courseId}/assignments")
+    @PreAuthorize("hasRole('TEACHER')")
+    public ResponseEntity<List<AssignmentDto>> getAssignmentsForCourse(
+            @PathVariable("courseId") UUID courseId,
+            Authentication authentication) {
+        return ResponseEntity.ok(assignmentService.getAssignmentsForCourse(courseId, CurrentUser.id(authentication)));
+    }
+
     @Operation(summary = "Change an assignment's deadline, grace window or limits (teacher)")
     @PatchMapping("/api/assignments/{id}")
     @PreAuthorize("hasRole('TEACHER')")

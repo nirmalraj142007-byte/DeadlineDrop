@@ -117,6 +117,9 @@ label {
 input[type="text"],
 input[type="email"],
 input[type="password"],
+input[type="date"],
+input[type="time"],
+input[type="number"],
 input[type="file"],
 select,
 textarea {
@@ -134,6 +137,9 @@ textarea {
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+input[type="number"]:focus,
 input[type="file"]:focus,
 select:focus,
 textarea:focus {
@@ -540,4 +546,37 @@ fieldset.form-group {
 
 .how-recorded {
   margin-top: var(--space-4);
+}
+
+.form-error {
+  color: var(--danger);
+  font-size: var(--fs-200);
+  margin-top: var(--space-1);
+  margin-bottom: 0;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: var(--space-4);
+}
+
+.choice-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.choice-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-300);
+  font-weight: 400;
+}
+
+.course-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
 }

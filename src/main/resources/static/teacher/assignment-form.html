@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeadlineDrop — Assignment</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <header>
+    <a href="/teacher/courses.html" class="brand">DeadlineDrop</a>
+    <nav>
+      <span id="user-display" class="chip chip-muted">Teacher</span>
+      <button type="button" id="sign-out-btn" class="btn">Sign out</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="card" aria-labelledby="assignment-form-heading">
+      <h1 id="assignment-form-heading">New assignment</h1>
+      <div id="assignment-banner"></div>
+      <form id="assignment-form" novalidate>
+        <div class="form-group">
+          <label for="assignment-title">Title</label>
+          <input id="assignment-title" name="title" type="text" maxlength="200" required>
+          <p id="title-error" class="form-error" aria-live="polite"></p>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="deadline-date">Deadline date (Asia/Kolkata)</label>
+            <input id="deadline-date" name="deadlineDate" type="date" required>
+            <p id="deadlineAt-error" class="form-error" aria-live="polite"></p>
+          </div>
+          <div class="form-group">
+            <label for="deadline-time">Deadline time (Asia/Kolkata)</label>
+            <input id="deadline-time" name="deadlineTime" type="time" required>
+          </div>
+        </div>
+        <p id="students-see" class="text-muted" aria-live="polite">Students see: choose a deadline</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="grace-minutes">Grace minutes</label>
+            <input id="grace-minutes" name="graceMinutes" type="number" min="0" max="60" value="15" required>
+            <p id="graceSeconds-error" class="form-error" aria-live="polite"></p>
+          </div>
+          <div class="form-group">
+            <label for="max-size-mb">Maximum size (MB)</label>
+            <input id="max-size-mb" name="maxSizeMb" type="number" min="1" max="25" value="25" required>
+            <p class="text-muted">Maximum 25 MB</p>
+            <p id="maxBytes-error" class="form-error" aria-live="polite"></p>
+          </div>
+        </div>
+        <fieldset class="form-group">
+          <legend>Allowed types</legend>
+          <div class="choice-list">
+            <label class="choice-label"><input name="allowedTypes" type="checkbox" value="application/pdf" checked> PDF</label>
+            <label class="choice-label"><input name="allowedTypes" type="checkbox" value="application/zip"> ZIP</label>
+            <label class="choice-label"><input name="allowedTypes" type="checkbox" value="image/png"> PNG</label>
+          </div>
+          <p id="allowedTypes-error" class="form-error" aria-live="polite"></p>
+        </fieldset>
+        <button id="assignment-submit" class="btn btn-primary" type="submit">Create assignment</button>
+        <a class="btn" href="/teacher/courses.html">Cancel</a>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>DeadlineDrop — Hash commitment assignment portal</p>
+  </footer>
+
+  <script type="module" src="/js/shell.js"></script>
+  <script type="module" src="/js/assignment-form.js"></script>
+</body>
+</html>

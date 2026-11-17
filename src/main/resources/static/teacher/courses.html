@@ -9,7 +9,7 @@
 </head>
 <body>
   <header>
-    <a href="/" class="brand">DeadlineDrop</a>
+    <a href="/teacher/courses.html" class="brand">DeadlineDrop</a>
     <nav>
       <span id="user-display" class="chip chip-muted">Teacher</span>
       <button type="button" id="sign-out-btn" class="btn">Sign out</button>
@@ -17,10 +17,31 @@
   </header>
 
   <main>
-    <div class="card">
-      <h2>Courses</h2>
-      <p>Teacher courses view is coming in the next phase.</p>
-    </div>
+    <section class="card" aria-labelledby="new-course-heading">
+      <h1 id="new-course-heading">New course</h1>
+      <div id="course-form-banner"></div>
+      <form id="course-form" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="course-code">Course code</label>
+            <input id="course-code" name="code" type="text" maxlength="20" required autocomplete="off">
+            <p id="course-code-error" class="form-error" aria-live="polite"></p>
+          </div>
+          <div class="form-group">
+            <label for="course-title">Course title</label>
+            <input id="course-title" name="title" type="text" maxlength="200" required>
+            <p id="course-title-error" class="form-error" aria-live="polite"></p>
+          </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Create course</button>
+      </form>
+    </section>
+
+    <section aria-labelledby="courses-heading">
+      <h2 id="courses-heading">Courses</h2>
+      <div id="courses-state"></div>
+      <div id="courses-container"></div>
+    </section>
   </main>
 
   <footer>
@@ -28,5 +49,6 @@
   </footer>
 
   <script type="module" src="/js/shell.js"></script>
+  <script type="module" src="/js/courses.js"></script>
 </body>
 </html>

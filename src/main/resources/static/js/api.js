@@ -5,13 +5,14 @@
  */
 
 export class ApiError extends Error {
-  constructor(status, code, detail, requestId) {
+  constructor(status, code, detail, requestId, errors = []) {
     super(detail || code || `HTTP ${status}`);
     this.name = 'ApiError';
     this.status = status;
     this.code = code;
     this.detail = detail;
     this.requestId = requestId;
+    this.errors = Array.isArray(errors) ? errors : [];
   }
 }
 
@@ -67,7 +68,8 @@ export async function apiFetch(path, { method = 'GET', body, headers = {}, idemp
         401,
         'INVALID_CREDENTIALS',
         errJson.detail || 'Wrong email or password',
-        errJson.requestId || res.headers.get('x-request-id') || null
+        errJson.requestId || res.headers.get('x-request-id') || null,
+        errJson.errors
       );
     }
 
@@ -78,7 +80,7 @@ export async function apiFetch(path, { method = 'GET', body, headers = {}, idemp
       window.location.href = '/?expired=1';
     }
     const requestId = (errJson && errJson.requestId) || res.headers.get('x-request-id') || null;
-    throw new ApiError(401, 'UNAUTHENTICATED', 'Your session expired, sign in again', requestId);
+      throw new ApiError(401, 'UNAUTHENTICATED', 'Your session expired, sign in again', requestId);
   }
 
   if (!res.ok) {
@@ -87,7 +89,8 @@ export async function apiFetch(path, { method = 'GET', body, headers = {}, idemp
         errJson.status || res.status,
         errJson.code || 'UNKNOWN_ERROR',
         errJson.detail || errJson.message,
-        errJson.requestId || res.headers.get('x-request-id') || null
+        errJson.requestId || res.headers.get('x-request-id') || null,
+        errJson.errors
       );
     }
     const text = await res.text();

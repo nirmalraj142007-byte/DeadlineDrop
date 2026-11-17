@@ -395,6 +395,58 @@ class DomainApiIT {
     }
 
     @Test
+    void listCourseAssignmentsOwnerGets200OrderedByDeadline() {
+        CourseDto course = restTemplate.exchange("/api/courses", HttpMethod.POST, new HttpEntity<>(new CreateCourseRequest("CS101", "CS 101"), authHeader(teacher1Token)), CourseDto.class).getBody();
+        Instant later = SIMULATED_TIME.plus(Duration.ofDays(9));
+        Instant sooner = SIMULATED_TIME.plus(Duration.ofDays(2));
+        for (Object[] row : new Object[][] {{"Later", later}, {"Sooner", sooner}}) {
+            ResponseEntity<AssignmentDto> created = restTemplate.exchange(
+                    "/api/courses/" + course.id() + "/assignments", HttpMethod.POST,
+                    new HttpEntity<>(new CreateAssignmentRequest((String) row[0], (Instant) row[1], 0, 1024L, List.of("application/pdf")), authHeader(teacher1Token)),
+                    AssignmentDto.class);
+            assertThat(created.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        }
+
+        ResponseEntity<List<AssignmentDto>> resp = restTemplate.exchange(
+                "/api/courses/" + course.id() + "/assignments", HttpMethod.GET,
+                new HttpEntity<>(authHeader(teacher1Token)), new ParameterizedTypeReference<>() { });
+
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(resp.getBody()).extracting(AssignmentDto::title).containsExactly("Sooner", "Later");
+    }
+
+    @Test
+    void listCourseAssignmentsOtherTeacherForbidden403() {
+        CourseDto course = restTemplate.exchange("/api/courses", HttpMethod.POST, new HttpEntity<>(new CreateCourseRequest("CS101", "CS 101"), authHeader(teacher1Token)), CourseDto.class).getBody();
+
+        ResponseEntity<String> resp = restTemplate.exchange(
+                "/api/courses/" + course.id() + "/assignments", HttpMethod.GET,
+                new HttpEntity<>(authHeader(teacher2Token)), String.class);
+
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    void listCourseAssignmentsStudentForbidden403() {
+        CourseDto course = restTemplate.exchange("/api/courses", HttpMethod.POST, new HttpEntity<>(new CreateCourseRequest("CS101", "CS 101"), authHeader(teacher1Token)), CourseDto.class).getBody();
+
+        ResponseEntity<String> resp = restTemplate.exchange(
+                "/api/courses/" + course.id() + "/assignments", HttpMethod.GET,
+                new HttpEntity<>(authHeader(student1Token)), String.class);
+
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    void listCourseAssignmentsUnknownCourse404() {
+        ResponseEntity<String> resp = restTemplate.exchange(
+                "/api/courses/" + UUID.randomUUID() + "/assignments", HttpMethod.GET,
+                new HttpEntity<>(authHeader(teacher1Token)), String.class);
+
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
     void createAssignmentValidationFailed400() {
         CourseDto course = restTemplate.exchange("/api/courses", HttpMethod.POST, new HttpEntity<>(new CreateCourseRequest("CS101", "CS 101"), authHeader(teacher1Token)), CourseDto.class).getBody();
 

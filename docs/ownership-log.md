@@ -656,3 +656,13 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 - **Why:** The receipt is where the time lock becomes visible to the student, and measurement must never affect the submission.
 - **Trade-off:** For EXPIRED and REJECTED receipts the timing chip still says ON TIME (the time lock was on time) so I added a second "NOT ACCEPTED" chip rather than hiding the timing. Also `submit.js` still shows a "View Receipt" button instead of auto-redirecting, because navigating away could cancel the telemetry request.
 - **File to read first:** `src/main/resources/static/js/receipt.js`
+
+---
+
+## 2026-11-17 — Phase 25: teacher courses page and assignment form (verified and committed)
+
+- **What changed:** Committed the phase 25 work left uncommitted by another agent (teacher courses page, assignment form, `GET /api/courses/{id}/assignments` with `@PreAuthorize("hasRole('TEACHER')")`). Added four tests to `DomainApiIT` for the endpoint: owner 200 ordered by deadline, other teacher 403, student 403, unknown course 404. Fixed two bugs found by the browser checks in `js/courses.js`: `event.currentTarget` was null after `await`, so creating a course never refreshed the list; and the enrolment result message was wiped by the re-render that followed it (now kept per course). Browser checks were driven in real Chrome through the DevTools Protocol: DEMO101 listed with 1000 students; duplicate code shows "That course code is taken"; enrolling student0001, student0002 and nobody@dd.local reports "2 enrolled, 0 already enrolled, 1 unknown: nobody@dd.local"; "Lab 2" due 23:59 IST stored as 18:29:00 UTC; a stale second tab shows "Someone else edited this assignment, reload" and its edit is not applied.
+- **Login failure:** teacher@dd.local had an empty `password_hash` in the local `dd_c` database (students and admin were intact; no code in the repo blanks hashes, and teacher login had worked earlier the same day, so the cause is unknown). `SeedRunner` inserts with `ON CONFLICT DO NOTHING`, so re-seeding would not repair it. I repaired only that row by copying the admin hash (all seeded accounts share one hash made from SEED_PASSWORD) instead of `docker compose down -v`, which would have wiped the other local courses.
+- **Why:** The teacher flows had to work end to end against the real stack, not just compile.
+- **Trade-off:** I kept the local data and patched one row rather than a clean reseed; the empty-hash root cause is still unexplained, so if it recurs the next step is to check what writes to `users`.
+- **File to read first:** `src/main/resources/static/js/courses.js`

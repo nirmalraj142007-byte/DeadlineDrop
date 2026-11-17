@@ -99,6 +99,21 @@ public class AssignmentService {
         return toDto(assignment);
     }
 
+    @Transactional(readOnly = true)
+    public List<AssignmentDto> getAssignmentsForCourse(UUID courseId, UUID teacherId) {
+        Objects.requireNonNull(courseId, "courseId must not be null");
+        Objects.requireNonNull(teacherId, "teacherId must not be null");
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> ApiException.notFound(ErrorCodes.NOT_FOUND, "Course not found: " + courseId));
+        if (!course.getTeacherId().equals(teacherId)) {
+            throw ApiException.forbidden(ErrorCodes.FORBIDDEN, "Not course owner");
+        }
+        return assignmentRepository.findByCourseIdOrderByDeadlineAtAsc(courseId).stream()
+                .map(AssignmentService::toDto)
+                .toList();
+    }
+
     @Transactional
     public AssignmentDto updateAssignment(UUID assignmentId, UUID teacherId, UpdateAssignmentRequest request) {
         Objects.requireNonNull(assignmentId, "assignmentId must not be null");

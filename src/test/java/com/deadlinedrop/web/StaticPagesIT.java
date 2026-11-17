@@ -78,6 +78,17 @@ class StaticPagesIT {
     }
 
     @Test
+    void getTeacherSetupPages_return200() {
+        ResponseEntity<String> courses = rest.getForEntity("/teacher/courses.html", String.class);
+        assertThat(courses.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(courses.getBody()).contains("New course", "courses-container", "/js/courses.js");
+
+        ResponseEntity<String> assignmentForm = rest.getForEntity("/teacher/assignment-form.html", String.class);
+        assertThat(assignmentForm.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(assignmentForm.getBody()).contains("Students see:", "Maximum 25 MB", "/js/assignment-form.js");
+    }
+
+    @Test
     void getReceiptAndConsentPages_return200() {
         ResponseEntity<String> receipt = rest.getForEntity("/student/receipt.html", String.class);
         assertThat(receipt.getStatusCode()).isEqualTo(HttpStatus.OK);
