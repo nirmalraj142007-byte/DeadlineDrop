@@ -218,9 +218,25 @@ echo "Configuring IAM roles for dd-deployer..."
 add_project_iam_binding_with_retry "serviceAccount:${DEPLOY_SA}" "roles/run.admin"
 add_project_iam_binding_with_retry "serviceAccount:${DEPLOY_SA}" "roles/artifactregistry.writer"
 add_sa_iam_binding_with_retry "${RUN_SA}" "serviceAccount:${DEPLOY_SA}" "roles/iam.serviceAccountUser"
+# The deploy job only has to rewrite the bucket's CORS list (deploy/cors.sh). A custom role with
+# just the two bucket-metadata permissions does that and cannot list, read or delete objects,
+# which roles/storage.admin could.
+CORS_ROLE_ID="ddBucketCorsUpdater"
+if ! gcloud iam roles describe "${CORS_ROLE_ID}" --project="${PROJECT_ID}" >/dev/null 2>&1; then
+  gcloud iam roles create "${CORS_ROLE_ID}" \
+    --project="${PROJECT_ID}" \
+    --title="DeadlineDrop bucket CORS updater" \
+    --description="Read and update bucket metadata (CORS) only; no object access" \
+    --permissions="storage.buckets.get,storage.buckets.update" \
+    --stage=GA >/dev/null
+fi
 gcloud storage buckets add-iam-policy-binding "gs://${BUCKET}" \
   --member="serviceAccount:${DEPLOY_SA}" \
-  --role="roles/storage.admin" >/dev/null
+  --role="projects/${PROJECT_ID}/roles/${CORS_ROLE_ID}" >/dev/null
+# Earlier bootstraps granted roles/storage.admin; take it away if it is still there.
+gcloud storage buckets remove-iam-policy-binding "gs://${BUCKET}" \
+  --member="serviceAccount:${DEPLOY_SA}" \
+  --role="roles/storage.admin" >/dev/null 2>&1 || true
 
 PROJECT_NUMBER=$(gcloud projects describe "${PROJECT_ID}" --format="value(projectNumber)")
 WIF_PRINCIPAL="principalSet://iam.googleapis.com/projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/${POOL_ID}/attribute.repository/${REPO}"

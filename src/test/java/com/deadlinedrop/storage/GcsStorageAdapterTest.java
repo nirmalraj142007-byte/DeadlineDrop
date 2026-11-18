@@ -36,6 +36,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * A unit test with the Google client mocked, kept on purpose and limited to what a mock can prove:
+ * which arguments the adapter hands to the client (signing method, expiry, headers, query
+ * parameters) and how it maps the client's answers to {@code ApiException}. It says nothing about
+ * Cloud Storage behaviour; signing needs real credentials, so that is covered by the cloud smoke
+ * test (deploy/smoke.sh). Storage behaviour in integration tests runs against the real
+ * LocalStorageAdapter (StorageIT), with no mocks.
+ */
 @ExtendWith(MockitoExtension.class)
 class GcsStorageAdapterTest {
 

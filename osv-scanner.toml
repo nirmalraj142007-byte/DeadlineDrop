@@ -1,0 +1,2 @@
+# Accepted findings go here, one [[IgnoredVulns]] block each, with a reason and an ignoreUntil date,
+# and a matching line in docs/decisions.md D13. Empty on purpose: every finding so far was upgraded.

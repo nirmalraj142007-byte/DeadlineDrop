@@ -1,9 +1,16 @@
 [extend]
 useDefault = true
 
-[allowlist]
-description = "Allow dummy secrets in test configurations and test sources"
+[[allowlists]]
+description = "Dummy secrets in test configurations and test sources"
 paths = [
     '''src/main/resources/application-test\.yml''',
     '''src/test/'''
+]
+
+[[allowlists]]
+description = "k6 dry-run summaries record the load-test students' access tokens. They are 12-hour tokens of seeded accounts (Student 0001...), all expired on 2026-11-14; counted evidence is never edited."
+targetRules = ["jwt"]
+paths = [
+    '''results/runs/'''
 ]

@@ -288,7 +288,35 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         if (isConnectionFailure(ex)) {
             return handleDatabaseUnavailable(ex, request);
         }
+        if (isBadValue(ex)) {
+            ProblemDetail pd = buildProblemDetail(
+                    HttpStatus.BAD_REQUEST,
+                    ErrorCodes.VALIDATION_FAILED,
+                    "A value in the request cannot be stored (for example a NUL character)",
+                    resolvePath(request));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_PROBLEM_JSON)
+                    .body(pd);
+        }
         return handleUnhandledException(ex, request);
+    }
+
+    /**
+     * SQLState class 22 ("data exception") means the database refused a value the caller sent, such
+     * as a NUL byte in text (22021) that Bean Validation does not look for. That is the caller's
+     * mistake, not a server fault.
+     */
+    static boolean isBadValue(Throwable ex) {
+        for (Throwable t = ex; t != null; t = t.getCause()) {
+            if (t instanceof java.sql.SQLException sql && sql.getSQLState() != null
+                    && sql.getSQLState().startsWith("22")) {
+                return true;
+            }
+            if (t.getCause() == t) {
+                break;
+            }
+        }
+        return false;
     }
 
     static boolean isConnectionFailure(Throwable ex) {
