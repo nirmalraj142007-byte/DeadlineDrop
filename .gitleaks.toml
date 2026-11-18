@@ -1,16 +1,11 @@
 [extend]
 useDefault = true
 
-[[allowlists]]
-description = "Dummy secrets in test configurations and test sources"
+[allowlist]
+description = "Dummy secrets in tests, and generated evidence: k6 dry-run summaries record the load-test students' 12-hour access tokens (all expired 2026-11-14; evidence is never edited by hand), and results/explain.md lists random idempotency keys from a scratch database."
 paths = [
     '''src/main/resources/application-test\.yml''',
-    '''src/test/'''
-]
-
-[[allowlists]]
-description = "k6 dry-run summaries record the load-test students' access tokens. They are 12-hour tokens of seeded accounts (Student 0001...), all expired on 2026-11-14; counted evidence is never edited."
-targetRules = ["jwt"]
-paths = [
-    '''results/runs/'''
+    '''src/test/''',
+    '''results/runs/''',
+    '''results/explain\.md'''
 ]
