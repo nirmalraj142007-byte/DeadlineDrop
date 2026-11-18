@@ -12,3 +12,6 @@ probe_response.json
 probe_logs.json
 __pycache__/
 .pytest_cache/
+
+# Real pilot data (names, emails, credentials); never committed
+/pilot/

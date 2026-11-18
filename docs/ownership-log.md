@@ -718,3 +718,13 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 - **Why:** The pilot puts real students on the site, so headers, authorization and dependency patches had to be checked before the evidence freeze, not after.
 - **Trade-off:** HSTS is not covered by an IT (the cloud profile needs GCS credentials), so it is checked with `curl -sI` against the deployed arm. Raising Tomcat and Jackson above the Boot BOM means those pins must be dropped when Boot catches up.
 - **File to read first:** `src/test/java/com/deadlinedrop/security/AuthorizationMatrixIT.java`
+
+---
+
+## 2026-11-18 — Phase 30: prior art and public network profiles (no pilot)
+
+- **What changed:** `docs/prior-art.md` (Moodle, Canvas, Classroom; 272 words, five links). `results/network/public-profiles.csv` and `docs/network-profiles.md`: Ookla Global Index medians for India (Sep 2026), p20/p50/p80 upload and latency for mobile and fixed computed from Ookla's 2026 Q3 open-data tiles by `tools/network/ookla_percentiles.py`, and three cohorts (slow 7 Mbps / 40 ms / 0.1% loss, medium 20 / 25 / 0.05%, fast 54 / 10 / 0.01%) each with a Mathis limit above its rate (1.6x, 1.3x, 2.6x). D8 in `docs/decisions.md` now reads: no student pilot, profiles from published data, click-time curve a stated assumption tested at 0.5x and 2x. `.gitignore` gained `/pilot/` (it was not ignored, though the project rules say it is). The optional self-measurement note points at `telemetry_events.upload_mbps`.
+- **What was not done, and why:** the approved change replaced steps 2-7, so no admin user endpoint, `create-pilot.sh`, student or teacher briefs, mock plan or dry run was built. Moodle's docs site answered 403 with a bot-check, which was not bypassed; the Canvas due/until page loaded with no text; TRAI MySpeed publishes no averages and the April-June 2026 TRAI report has no measured upload figures; Opensignal returned 403. Prior-art says so for each rather than describing them.
+- **Why:** with no pilot, the cohorts need a public, citable basis, and the claim that arm C beats arm B on slow links must not rest on invented numbers.
+- **Trade-off:** the tile percentiles are percentiles of tile averages (test-weighted), so they understate the spread between individual users, and the India bounding box catches some border areas. The loss values are assumptions chosen only to keep TCP above the shaped rate.
+- **File to read first:** `docs/network-profiles.md`

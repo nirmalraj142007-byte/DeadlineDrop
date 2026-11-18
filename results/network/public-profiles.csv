@@ -1,0 +1,20 @@
+source,segment,metric,statistic,value,unit,period,retrieved,url,notes
+Ookla Speedtest Global Index India,mobile,upload,median,9.82,Mbps,2026-09,2026-11-18,https://www.speedtest.net/global-index/india,country median
+Ookla Speedtest Global Index India,mobile,latency,median,26,ms,2026-09,2026-11-18,https://www.speedtest.net/global-index/india,country median
+Ookla Speedtest Global Index India,fixed,upload,median,57.90,Mbps,2026-09,2026-11-18,https://www.speedtest.net/global-index/india,country median
+Ookla Speedtest Global Index India,fixed,latency,median,7,ms,2026-09,2026-11-18,https://www.speedtest.net/global-index/india,country median
+Ookla open data tiles (India box),mobile,upload,p20,7.124,Mbps,2026-Q3,2026-11-18,https://registry.opendata.aws/speedtest-global-performance/,test-weighted percentile of tile averages; 560673 tiles; 4411080 tests
+Ookla open data tiles (India box),mobile,upload,p50,13.677,Mbps,2026-Q3,2026-11-18,https://registry.opendata.aws/speedtest-global-performance/,same
+Ookla open data tiles (India box),mobile,upload,p80,21.248,Mbps,2026-Q3,2026-11-18,https://registry.opendata.aws/speedtest-global-performance/,same
+Ookla open data tiles (India box),mobile,latency,p20,22,ms,2026-Q3,2026-11-18,https://registry.opendata.aws/speedtest-global-performance/,same
+Ookla open data tiles (India box),mobile,latency,p50,29,ms,2026-Q3,2026-11-18,https://registry.opendata.aws/speedtest-global-performance/,same
+Ookla open data tiles (India box),mobile,latency,p80,41,ms,2026-Q3,2026-11-18,https://registry.opendata.aws/speedtest-global-performance/,same
+Ookla open data tiles (India box),fixed,upload,p20,18.544,Mbps,2026-Q3,2026-11-18,https://registry.opendata.aws/speedtest-global-performance/,453699 tiles; 8849715 tests
+Ookla open data tiles (India box),fixed,upload,p50,54.409,Mbps,2026-Q3,2026-11-18,https://registry.opendata.aws/speedtest-global-performance/,same
+Ookla open data tiles (India box),fixed,upload,p80,107.412,Mbps,2026-Q3,2026-11-18,https://registry.opendata.aws/speedtest-global-performance/,same
+Ookla open data tiles (India box),fixed,latency,p20,5,ms,2026-Q3,2026-11-18,https://registry.opendata.aws/speedtest-global-performance/,same
+Ookla open data tiles (India box),fixed,latency,p50,9,ms,2026-Q3,2026-11-18,https://registry.opendata.aws/speedtest-global-performance/,same
+Ookla open data tiles (India box),fixed,latency,p80,20,ms,2026-Q3,2026-11-18,https://registry.opendata.aws/speedtest-global-performance/,same
+TRAI MySpeed,mobile,upload,average,,Mbps,,2026-11-18,https://myspeed.trai.gov.in/,NOT OBTAINED: portal is a client-side test with no published averages
+TRAI Performance Indicators Apr-Jun 2026,mobile,upload,any,,Mbps,2026-Q2,2026-11-18,https://www.trai.gov.in/sites/default/files/2026-10/QPIR_12102026.pdf,NOT OBTAINED: text search of the PDF found only tariff-offered-speed compliance tables and no measured upload figures
+Opensignal India,mobile,upload,any,,Mbps,,2026-11-18,https://insights.opensignal.com/india,NOT OBTAINED: HTTP 403

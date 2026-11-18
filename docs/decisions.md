@@ -39,9 +39,8 @@ Deployed Cloud Run service URLs for initial ablation arms in `asia-south1`:
 
 
 ## D8: Pilot Decision (day 5 gate, Tue 10 Nov 2026)
-Outcome of the D4 gate. Nirmal fills in exactly one line and deletes the other:
-- Confirmed by <name>, date <dd Nov>, approx N <n>, file types <..>
-- No confirmation: mock deadline scheduled for <day 13 or 14> with 30+ people
+No student pilot: network profiles come from published Indian speed data; click-time curve is a stated assumption tested at 0.5x and 2x (approved change to review gap G4).
+Profiles and their sources: `docs/network-profiles.md`.
 
 ## D10: First cloud runs (phase 19, 2026-11-14)
 - **Medium cohort loss 0.5% -> 0.2% (PLACEHOLDER; phase 32 replaces every cohort value from pilot percentiles).**
