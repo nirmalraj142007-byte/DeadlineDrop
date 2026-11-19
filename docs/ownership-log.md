@@ -740,3 +740,12 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 - **Trade-off:** one rate per cohort matches the shaper but not real users, whose spread the Ookla tile averages understate. The 0.5x row stands in for those slower users instead of a per-student distribution. The model also has no load, so measured A minus the model is read as the load-induced error.
 - **Open for phase 32:** `tools/vm/cohorts.env` still shapes 1 / 4 / 20 Mbps; the model applies only once it says 7 / 20 / 54 Mbps (and RTT 40 / 25 / 10 ms). `run.sh` records `scheduleMode: "profiles"`, while the schedule files say `PUBLIC_PROFILES`.
 - **File to read first:** `tools/model/model.py` (`expected`, then `assumptions`)
+
+## 2026-11-19 — Phase 32 (first counted runs), stopped before the sweep (laptop shutdown)
+
+- **What changed:** cohorts.env set from docs/network-profiles.md (committed alone, ffc11c9). Sweep tooling: SWEEP block in deploy/arms.env and tools/sweep-mode.sh; tools/run.sh resumable, with invalid runs (`"valid": false`, `invalidReason`) repeated into `_rerun` folders, an export wait of up to 5 min for COMMITTED/UPLOADED rows (recorded in meta.json), scheduleMode PUBLIC_PROFILES, and a `-dirty` check that ignores results/; tools/sweep.sh and tools/plans/day15.txt; analyze.py lists invalid runs apart; rush.js drops access tokens from the k6 summary (D13). Gates passed: sanity day 15 (slow -5.9%, medium -7.5%, fast -9.4%; first fast attempt -18.1% kept in results/sanity/day15-attempt1/), and the 1,000-student memory dry run peaked at 32.0 / 33.5 / 50.0% (results/dryrun-1000/vm-memory-day15.txt).
+- **Stopped:** the sweep was killed 2.5 min in, during run A 100 r1, because the laptop had to shut down. That run is marked invalid ("laptop shutdown"). The fleet is deleted and sweep mode is off. **0 counted runs completed.**
+- **Why:** the counted sweep must be resumable and honest about runs that fail for infrastructure reasons, without anyone editing a counted folder by hand.
+- **Trade-off:** checking the VMs every 2 min during a run adds SSH traffic from the laptop; it catches a dead VM within minutes instead of at export.
+- **Resume:** `bash tools/sweep-mode.sh on`, `bash tools/vm/create-fleet.sh create`, `SANITY_SUFFIX=-day15b bash tools/vm/sanity.sh`, then `bash tools/sweep.sh tools/plans/day15.txt`. The first line becomes `A_100_r1_rerun`.
+- **Read first:** `tools/run.sh`.

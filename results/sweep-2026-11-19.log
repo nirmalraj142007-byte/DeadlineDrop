@@ -1,0 +1,42 @@
+2026-11-19T16:19:05Z sweep started: plan tools/plans/day15.txt, commit 08a137c, host DESKTOP-T7TBPCV
+2026-11-19T16:19:05Z sleep inhibited while the sweep runs (helper pid 3616)
+2026-11-19T16:19:05Z START a 100 r1
+Run folder: /c/dev/deadlinedrop/results/runs/20261119T161908Z_A_100_r1
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261119T161908Z_A_100_r1/preflight.json
+slow: skew 32.5 ms (best rtt 81 ms), warm median 70.8 ms
+medium: skew 32.5 ms (best rtt 81 ms), warm median 72.6 ms
+fast: skew 31.5 ms (best rtt 77 ms), warm median 67.5 ms
+PREFLIGHT OK for arm a
+Generated schedule with 100 students in C:\dev\deadlinedrop\results\runs\20261119T161908Z_A_100_r1\schedule:
+  Classes: {'ON_TIME': 85, 'MARGIN': 5, 'LATE': 10}
+  Cohorts: {'slow': 43, 'medium': 34, 'fast': 23}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  63%shard-fast.json           | 6 kB |   6.3 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:01 |  42%shard-medium.json         | 9 kB |   9.4 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:01 |  34%shard-slow.json           | 11 kB |  11.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 43 students: k6 starts 142s before the earliest click
+Assignment 5ef465e3-53d9-49a1-9e93-89055a61db0d, deadline T=2026-11-19T16:34:03Z, grace 300s
+dd-k6-slow: starting k6 (43 students)
+dd-k6-medium: starting k6 (34 students)
+dd-k6-fast: starting k6 (23 students)
+2026-11-19T16:21:49Z STOPPED by operator (laptop shutdown): sweep killed during a 100 r1 preflight; run marked invalid
+k6 started on: slow medium fast (132s before the earliest click)
+Waiting 1152s until T + grace + 2 min
+RUN INVALID: VM dd-k6-slow stopped answering, or k6 died without a summary, at 16:24:23Z (/c/dev/deadlinedrop/results/runs/20261119T161908Z_A_100_r1)
