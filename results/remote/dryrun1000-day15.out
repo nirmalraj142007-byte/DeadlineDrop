@@ -1,0 +1,17 @@
+2026-11-19T15:49:36Z batch started on DESKTOP-T7TBPCV, commit b3417b2
+2026-11-19T15:49:57Z ssh to all VMs ok
+2026-11-19T15:49:57Z resuming at 1000
+2026-11-19T15:50:13Z memory samplers started
+2026-11-19T15:50:14Z START run-c-1000: bash /c/dev/deadlinedrop/tools/run.sh c 1000 1 none --dryrun
+2026-11-19T16:17:59Z END run-c-1000: exit 0
+  PEAK dd-k6-slow 32.0% (total - available) at 2026-11-19T16:10:43Z
+  PEAK dd-k6-medium 33.5% (total - available) at 2026-11-19T16:11:33Z
+  PEAK dd-k6-fast 50.0% (total - available) at 2026-11-19T16:10:49Z
+    lost 0  duplicates 0  pending 0  connectionErrors 0
+    Server-Timing medians (ms): {'n': 1000, 'app': 107.0, 'db': 28.0, 'sign': 76.0, 'other': 2.0, 'largestPhase': 'sign'}
+  Removing gs://deadlinedrop-nirmal-dd-objects/a/be2bc6f1-75e3-4894-80f4-e05afc5ae3b6/s/00371928-141b-4905-a815-b8269d8dae89/41a8d27b-eb5a-49d6-848d-236737948f2d#1795104271893029...
+  Removing gs://deadlinedrop-nirmal-dd-objects/a/be2bc6f1-75e3-4894-80f4-e05afc5ae3b6/s/01e5f362-89eb-4ec2-9f15-87020d6a7561/89465291-f0bf-47f3-ab30-96b59c2f3c82#1795104693635629...
+  ........................................................................
+  Run complete: /c/dev/deadlinedrop/results/runs/20261119T155014Z_C_1000_r1_dryrun (counted=false, analyze exit 0)
+2026-11-19T16:18:41Z run-c-1000 exit 0 (a dry run: reported, not a stop condition)
+2026-11-19T16:18:41Z DONE (STOP_AFTER=1000)

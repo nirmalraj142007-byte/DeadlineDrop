@@ -303,7 +303,9 @@ IMAGE_DIGEST="$(gv run revisions describe "${REVISION}" --region="${REGION}" --p
 SQL_TIER_NOW="$(gv sql instances describe "${SQL_INSTANCE}" --project="${PROJECT_ID}" --format='value(settings.tier)')"
 K6_VERSION="$(retry vm_ssh "$(vm_name "${COHORTS[0]}")" "k6 version" | tr -d '\r' | head -n 1)"
 GIT_SHA="$(git -C "${REPO_ROOT}" rev-parse HEAD)"
-[ -n "$(git -C "${REPO_ROOT}" status --porcelain)" ] && GIT_SHA="${GIT_SHA}-dirty"
+# Dirty = uncommitted code or config. results/ is left out: this run's own folder is always new there,
+# which marked every earlier run "-dirty".
+[ -n "$(git -C "${REPO_ROOT}" status --porcelain -- . ':(exclude)results')" ] && GIT_SHA="${GIT_SHA}-dirty"
 "${PY}" - "$(to_native_path "${RUN_DIR}/meta.json")" "$(to_native_path "${RUN_DIR}/preflight.json")" "$(to_native_path "${SERVICE_JSON}")" \
   "${ARM}" "${SIZE}" "${REPEAT}" "${FAULT}" "${COUNTED}" "${DEADLINE_ISO}" "${COHORT_MIN}" "${GRACE_S}" \
   "${REGION}" "${SQL_TIER_NOW}" "${K6_VERSION}" "${IMAGE_DIGEST}" "${GIT_SHA}" "${SCHEDULE_LABEL}" "${ASSIGNMENT_ID}" "${SEED}" "${COHORTS[*]}" \
