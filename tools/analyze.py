@@ -23,7 +23,7 @@ Recorded outcome comes ONLY from the export:
   arm A/B the student's baseline row (the earliest one if there are several) -> its timing.
 
 Output: <run_dir>/confusion.json, and <run_dir>/../../SUMMARY.md rebuilt from every run under
-<run_dir>/.. whose meta.json says "counted": true.
+<run_dir>/.. whose meta.json says "counted": true (runs with "valid": false are listed apart).
 
 Exit codes: 0 ok; 2 unreadable input; 3 arm C with onTime_lateOrMissing > 0 or late_onTime > 0
 (review G3: the real design must misjudge nobody).
@@ -408,13 +408,17 @@ def write_summary(runs_dir: Path, summary_path: Path) -> None:
         '`"counted": true`. Never edit by hand; dry runs (`"counted": false`) are not listed.',
         "",
     ]
-    counted = []
+    counted, invalid = [], []
     for meta_path in sorted(runs_dir.glob("*/meta.json")):
         try:
             meta = load_json(meta_path)
         except InputError:
             continue
-        if meta.get("counted") is True:
+        if meta.get("counted") is not True:
+            continue
+        if meta.get("valid") is False:  # tools/run.sh: an infrastructure failure; repeated as _rerun
+            invalid.append((meta_path.parent, meta.get("invalidReason") or "no reason recorded"))
+        else:
             counted.append(meta_path.parent)
     if not counted:
         lines.append("No counted runs yet.")
@@ -435,6 +439,14 @@ def write_summary(runs_dir: Path, summary_path: Path) -> None:
                 f"{c['onTime_lateOrMissing']} | {c['late_onTime']} | "
                 f"{'n/a' if rate is None else f'{rate:.4f}'} | {c['checks']['lost']} | {c['checks']['duplicates']} |"
             )
+    if invalid:
+        lines += [
+            "",
+            "Invalid runs (counted, but marked `\"valid\": false` by `tools/run.sh` for an infrastructure",
+            "reason; not scored above, repeated in a `_rerun` folder):",
+            "",
+        ]
+        lines += [f"- `{d.name}`: {reason}" for d, reason in invalid]
     summary_path.parent.mkdir(parents=True, exist_ok=True)
     summary_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 

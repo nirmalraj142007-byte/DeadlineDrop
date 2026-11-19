@@ -20,7 +20,10 @@ LOG_DIR="${REPO_ROOT}/results/remote"
 LOG="${LOG_DIR}/progress.log"
 MEM_DIR="${REPO_ROOT}/results/dryrun-1000"
 mkdir -p "${LOG_DIR}" "${MEM_DIR}"
-export SCHEDULE_MODE=placeholder
+# Phase 32: cohorts.env holds the public profiles, so the schedule describes the same links.
+export SCHEDULE_MODE="${SCHEDULE_MODE:-profiles}"
+# MEM_OUT names the memory report (phase 19 wrote vm-memory.txt; later runs keep it and add their own).
+MEM_OUT="${MEM_OUT:-vm-memory.txt}"
 PY="$(find_python)"
 
 say() { echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) $*" | tee -a "${LOG}"; }
@@ -85,11 +88,11 @@ for c in "${COHORTS[@]}"; do
   vm_ssh "${vm}" 'kill $(cat ~/dd/mem.pid) 2>/dev/null; true' >/dev/null 2>&1
   vm_scp "${vm}:dd/mem.log" "${MEM_DIR}/mem-${c}.log" >/dev/null 2>&1 || stop "fetching mem.log from ${vm}"
 done
-"${PY}" - "$(to_native_path "${MEM_DIR}")" "${COHORTS[@]}" > "${MEM_DIR}/vm-memory.txt" <<'PYEOF'
+"${PY}" - "$(to_native_path "${MEM_DIR}")" "${COHORTS[@]}" > "${MEM_DIR}/${MEM_OUT}" <<'PYEOF'
 import sys
 from pathlib import Path
 d, cohorts = Path(sys.argv[1]), sys.argv[2:]
-print("# free -m on each k6 VM every 5 s during the 1,000-student arm C dry run (phase 19, step 5d)")
+print("# free -m on each k6 VM every 5 s during the 1,000-student arm C dry run")
 print("# columns: vm, UTC time, total MiB, used MiB, available MiB, used %")
 peaks = []
 for c in cohorts:
@@ -109,7 +112,7 @@ for vm, (pct, at) in peaks:
     print(f"PEAK {vm} {pct:.1f}% (total - available) at {at}")
 PYEOF
 rm -f "${MEM_DIR}"/mem-*.log
-tail -n 3 "${MEM_DIR}/vm-memory.txt" | sed 's/^/  /' | tee -a "${LOG}"
+tail -n 3 "${MEM_DIR}/${MEM_OUT}" | sed 's/^/  /' | tee -a "${LOG}"
 tail -n 6 "${LOG_DIR}/run-c-1000.out" | sed 's/^/  /' | tee -a "${LOG}"
 say "run-c-1000 exit ${RC1000} (a dry run: reported, not a stop condition)"
 fi

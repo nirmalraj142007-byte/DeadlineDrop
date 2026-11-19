@@ -151,7 +151,10 @@ export default async function (data) {
   }
 }
 
+// setup() returns every student's access token; k6 copies it into the summary as setup_data.
+// Measured runs must not store tokens (docs/decisions.md D13), so it is dropped here.
 export function handleSummary(data) {
+  delete data.setup_data;
   return {
     'summary.json': JSON.stringify(data, null, 2),
   };

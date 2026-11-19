@@ -160,3 +160,19 @@ def test_summary_lists_only_counted_runs(tmp_path):
     summary = (tmp_path / "SUMMARY.md").read_text(encoding="utf-8")
     assert "`counted`" in summary and "`dry`" not in summary
     assert "No counted runs yet." not in summary
+
+
+def test_summary_lists_invalid_runs_apart(tmp_path):
+    good = make_run(tmp_path, "c", [vu("s1@dd.local", -60000)], [row("s1@dd.local", "ON_TIME")],
+                    name="20261119T100000Z_C_100_r1_rerun", counted=True)
+    bad = tmp_path / "runs" / "20261119T090000Z_C_100_r1"
+    bad.mkdir(parents=True)
+    (bad / "meta.json").write_text(json.dumps(
+        {"arm": "c", "size": 100, "repeat": 1, "counted": True, "valid": False,
+         "invalidReason": "PREFLIGHT FAILED: clock skew above 100 ms"}), encoding="utf-8")
+    run_analyze(good)
+    summary = (tmp_path / "SUMMARY.md").read_text(encoding="utf-8")
+    table = summary.split("Invalid runs")[0]
+    assert "| `20261119T100000Z_C_100_r1_rerun` | C |" in table
+    assert "20261119T090000Z_C_100_r1`" not in table
+    assert "- `20261119T090000Z_C_100_r1`: PREFLIGHT FAILED: clock skew above 100 ms" in summary

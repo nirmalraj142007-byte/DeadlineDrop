@@ -3,7 +3,8 @@
 # measured link against tools/vm/cohorts.env:
 #   throughput within ±10% of <COHORT>_RATE, RTT (TCP connect) within ±10 ms of <COHORT>_DELAY.
 #   bash tools/vm/sanity.sh
-# Writes results/sanity/<cohort>.txt (full k6 output + verdict). Exit 1 if any cohort is outside.
+# Writes results/sanity/<cohort><SANITY_SUFFIX>.txt (full k6 output + verdict; SANITY_SUFFIX defaults
+# to empty, e.g. SANITY_SUFFIX=-day15). Exit 1 if any cohort is outside.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -15,6 +16,7 @@ source "${SCRIPT_DIR}/cohorts.env"
 RATE_TOL_PCT=10
 RTT_TOL_MS=10
 OUT_DIR="${REPO_ROOT}/results/sanity"
+SANITY_SUFFIX="${SANITY_SUFFIX:-}"
 mkdir -p "${OUT_DIR}"
 PY="$(find_python)"
 BASE="$(arm_url c)"
@@ -42,7 +44,7 @@ echo "Sanity assignment ${ASSIGNMENT_ID} on ${BASE}"
 run_cohort() {
   local c="$1" i="$2" vm out email
   vm="$(vm_name "${c}")"
-  out="${OUT_DIR}/${c}.txt"
+  out="${OUT_DIR}/${c}${SANITY_SUFFIX}.txt"
   email="$(printf 'student%04d@dd.local' "${i}")"
   # Always ship the current profile: cohorts.env may have changed since create-fleet, and the SSH
   # user (and so ~) differs between an operator's account and a controller's service account.
@@ -65,7 +67,7 @@ for p in "${pids[@]}"; do wait "${p}" || { echo "sanity on a VM failed; see resu
 
 FAILED=0
 for c in "${COHORTS[@]}"; do
-  out="${OUT_DIR}/${c}.txt"
+  out="${OUT_DIR}/${c}${SANITY_SUFFIX}.txt"
   upper="$(echo "${c}" | tr '[:lower:]' '[:upper:]')"
   rate_var="${upper}_RATE"; delay_var="${upper}_DELAY"
   verdict="$("${PY}" - "$(to_native_path "${out}.k6")" "${!rate_var}" "${!delay_var}" "${RATE_TOL_PCT}" "${RTT_TOL_MS}" <<'PYEOF'

@@ -10,6 +10,24 @@ source "${SCRIPT_DIR}/arms.env"
 # Signed commit receipts while the database is down (phase 28). Same value on every arm for parity.
 RECEIPT_ENABLED="${RECEIPT_ENABLED:-true}"
 
+# SWEEP=on (set by tools/sweep-mode.sh) applies the SWEEP block of arms.env: a warm minimum instance
+# and startup CPU boost. Unset or "off" keeps MIN_INSTANCES from arms.env. Boost stays on in both
+# modes, as every deploy before phase 32 had it.
+SWEEP="${SWEEP:-off}"
+CPU_BOOST_FLAG="--cpu-boost"
+case "${SWEEP}" in
+  on)
+    MIN_INSTANCES="${SWEEP_MIN_INSTANCES:?SWEEP_MIN_INSTANCES missing in arms.env}"
+    case "${SWEEP_CPU_BOOST:?SWEEP_CPU_BOOST missing in arms.env}" in
+      on) CPU_BOOST_FLAG="--cpu-boost" ;;
+      off) CPU_BOOST_FLAG="--no-cpu-boost" ;;
+      *) echo "Error: SWEEP_CPU_BOOST must be on or off, got '${SWEEP_CPU_BOOST}'" >&2; exit 1 ;;
+    esac
+    ;;
+  off) ;;
+  *) echo "Error: SWEEP must be on or off, got '${SWEEP}'" >&2; exit 1 ;;
+esac
+
 if [ "${1:-}" = "seed" ]; then
   ARM="${2:-}"
   N="${3:-50}"
