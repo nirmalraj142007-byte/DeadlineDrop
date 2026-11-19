@@ -17,6 +17,7 @@ The schedule generator runs in two modes:
   - Hashing: $T_{\text{hash}} = \text{size} / 80\text{ MB/s}$ simulating in-browser Web Crypto SHA-256 calculation.
   - Arrival curve: Convex last-minutes rush curve where 40% of the cohort clicks in the final 60 seconds.
   - Every output shard and metadata file is explicitly marked `PLACEHOLDER` so synthetic runs are never confused with empirical measurements.
+- **`profiles`** (`PUBLIC_PROFILES`): same sizes, hash time and click curve as `placeholder`, but every student gets their cohort's rate and RTT from the published Indian profiles (`docs/network-profiles.md`: slow 7 Mbps / 40 ms, medium 20 / 25, fast 54 / 10), with no per-student spread because the shaper gives a cohort one link. `tools/model/model.py` imports the same constants to predict the result (`results/model/`).
 - **`bootstrap`**: Resamples `(size, speed, rtt, hashMs)` tuples and click offsets directly from the pilot CSV collected during live runs.
 
 ## Components
