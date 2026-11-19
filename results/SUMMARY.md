@@ -8,4 +8,4 @@ No counted runs yet.
 Invalid runs (counted, but marked `"valid": false` by `tools/run.sh` for an infrastructure
 reason; not scored above, repeated in a `_rerun` folder):
 
-- `20261119T161908Z_A_100_r1`: VM dd-k6-slow stopped answering, or k6 died without a summary, at 16:24:23Z
+- `20261119T161908Z_A_100_r1`: laptop shutdown

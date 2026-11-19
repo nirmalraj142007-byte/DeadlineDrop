@@ -7,6 +7,7 @@
   "valid": false,
   "startedAt": "2026-11-19T16:19:08Z",
   "rerunOf": null,
-  "invalidReason": "VM dd-k6-slow stopped answering, or k6 died without a summary, at 16:24:23Z",
-  "invalidAt": "2026-11-19T16:24:23Z"
+  "invalidReason": "laptop shutdown",
+  "invalidAt": "2026-11-19T16:21:49Z",
+  "invalidNote": "Operator stop at 16:21:49Z for laptop shutdown. A run.sh process survived the stop and, after the fleet was deleted, wrote: VM dd-k6-slow stopped answering, or k6 died without a summary, at 16:24:23Z. Reason restored to the operator's."
 }
