@@ -1,0 +1,44 @@
+{
+  "arm": "b",
+  "size": 250,
+  "repeat": 3,
+  "fault": "none",
+  "counted": true,
+  "assignmentId": "03f8d1a1-ecca-46f8-a10b-1b98c60a6688",
+  "T": "2026-11-20T19:48:25Z",
+  "cohortMinutes": 10.0,
+  "graceS": 300,
+  "maxInstances": 3,
+  "minInstances": 1,
+  "cpu": "1",
+  "memory": "1Gi",
+  "concurrency": 80,
+  "pool": 5,
+  "maxConnections": 50,
+  "sqlTier": "db-g1-small",
+  "region": "asia-south1",
+  "skewMs": {
+    "dd-k6-slow": 30.5,
+    "dd-k6-medium": 32.0,
+    "dd-k6-fast": 30.5
+  },
+  "k6Version": "k6 v2.3.0 (commit/e088784614, go1.26.8, linux/amd64)",
+  "imageDigest": "asia-south1-docker.pkg.dev/deadlinedrop-nirmal/dd/app@sha256:30ad36a385ecc912cad9438af972a5fe97d777811d9da1b546aaf4bd367ced51",
+  "gitSha": "496966e01bc183ea30fe4fe94942a511aaeebcd6",
+  "scheduleMode": "PUBLIC_PROFILES",
+  "scheduleSeed": 204941691,
+  "vmNames": [
+    "dd-k6-slow",
+    "dd-k6-medium",
+    "dd-k6-fast"
+  ],
+  "valid": true,
+  "startedAt": "2026-11-20T19:33:04Z",
+  "rerunOf": null,
+  "exportWait": {
+    "until": "noPending",
+    "waitedS": 1,
+    "maxS": 300,
+    "pendingRowsAtExport": 0
+  }
+}

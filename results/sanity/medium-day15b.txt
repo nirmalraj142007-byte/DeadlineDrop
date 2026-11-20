@@ -1,0 +1,38 @@
+# k6 sanity from dd-k6-medium (cohort medium) against https://dd-arm-c-aheo6nqyga-el.a.run.app, 2026-11-20T15:21:47Z
+# profile: rate 20mbit, delay 25ms; assignment 841acf6e-8c1e-428d-97cc-ee7b86e3a1ee
+## shaping
+Shaping ens4 as 'medium': rate 20mbit, delay 25ms, loss 0.05%
+qdisc netem 1: root refcnt 3 limit 100000 delay 25ms loss 0.05%
+qdisc fq 10: parent 1:1 limit 10000p flow_limit 100p buckets 1024 orphan_mask 1023 quantum 2948b initial_quantum 14740b maxrate 20Mbit low_rate_threshold 550Kbit refill_delay 40ms timer_slack 10us horizon 10s horizon_drop 
+## k6
+Sanity arm C: file 20971520 bytes
+  TCP connect RTT samples (ms): 26.0, 26.1, 26.0, 26.0, 26.1, 26.0, 26.1
+  RTT median: 26.0 ms
+  Commit request: 264.1 ms (Server-Timing: app;dur=223, db;dur=34, sign;dur=178)
+  PUT: 9030 ms, throughput 18.579 Mbit/s
+  Finalize status: 200
+SANITY {"rttMs":26,"rttSamplesMs":[26,26.1,26,26,26.1,26,26.1],"throughputMbps":18.579,"putMs":9030,"commitMs":264.1,"serverTiming":"app;dur=223, db;dur=34, sign;dur=178"}
+
+
+  █ TOTAL RESULTS 
+
+    HTTP
+    http_req_duration..............: avg=895.24ms min=38.64ms med=42.65ms max=8.92s  p(90)=264.13ms p(95)=4.59s 
+      { expected_response:true }...: avg=895.24ms min=38.64ms med=42.65ms max=8.92s  p(90)=264.13ms p(95)=4.59s 
+    http_req_failed................: 0.00% 0 out of 11
+    http_reqs......................: 11    1.032169/s
+
+    EXECUTION
+    iteration_duration.............: avg=10.65s   min=10.65s  med=10.65s  max=10.65s p(90)=10.65s   p(95)=10.65s
+    iterations.....................: 1     0.093834/s
+    vus............................: 1     min=1       max=1
+    vus_max........................: 1     min=1       max=1
+
+    NETWORK
+    data_received..................: 84 kB 7.9 kB/s
+    data_sent......................: 21 MB 2.0 MB/s
+
+
+
+## verdict
+PASS throughput 18.579 Mbit/s vs 20.0 (-7.1%, limit +/-10%); RTT 26 ms vs 25.0 (+1.0 ms, limit +/-10 ms)

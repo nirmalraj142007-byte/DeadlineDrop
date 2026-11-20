@@ -1,0 +1,17 @@
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261120T175242Z_A_250_r2/preflight.json
+slow: skew 30.5 ms (best rtt 77 ms), warm median 66.9 ms
+medium: skew 31.0 ms (best rtt 80 ms), warm median 73.2 ms
+fast: skew 29.5 ms (best rtt 75 ms), warm median 65.2 ms
+PREFLIGHT OK for arm a
