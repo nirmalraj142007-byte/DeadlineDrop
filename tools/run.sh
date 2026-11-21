@@ -121,14 +121,20 @@ on_exit() {
 }
 trap on_exit EXIT
 
-if [ "${FAULT}" != "none" ] && [ ! -f "${REPO_ROOT}/tools/faults/${FAULT}.sh" ]; then
+# scale<N> (phase 33 scaling experiment) is a configuration variant, not a fault: nothing is injected,
+# and the arms deliberately run different max-instances and pool settings, so preflight skips parity
+# (recorded in preflight.json) but still enforces the connection budget, skew and warmth.
+VARIANT=false
+case "${FAULT}" in scale[0-9]*) VARIANT=true ;; esac
+if [ "${FAULT}" != "none" ] && [ "${VARIANT}" = false ] && [ ! -f "${REPO_ROOT}/tools/faults/${FAULT}.sh" ]; then
   echo "Error: fault '${FAULT}' needs tools/faults/${FAULT}.sh (arrives in phase 34)." >&2
   exit 1
 fi
 
 # (1) preflight
 STEP="preflight"
-if ! OUT="${RUN_DIR}/preflight.json" bash "${REPO_ROOT}/tools/preflight.sh" "${ARM}" 2>&1 | tee "${RUN_DIR}/preflight.log"; then
+SKIP_PARITY=""; [ "${VARIANT}" = true ] && SKIP_PARITY="configuration variant ${FAULT}: arms differ on purpose"
+if ! OUT="${RUN_DIR}/preflight.json" PREFLIGHT_SKIP_PARITY="${SKIP_PARITY}" bash "${REPO_ROOT}/tools/preflight.sh" "${ARM}" 2>&1 | tee "${RUN_DIR}/preflight.log"; then
   why="$(grep -o 'PREFLIGHT FAILED: .*' "${RUN_DIR}/preflight.log" | tail -n 1 | tr -d '\r')"
   invalidate "${why:-preflight failed (see preflight.log)}"
 fi
@@ -238,7 +244,7 @@ for p in "${pids[@]}"; do wait "${p}" || { echo "starting k6 on a VM failed" >&2
 echo "k6 started on: ${STARTED[*]} ($(( EARLIEST_CLICK_S - $(date +%s) ))s before the earliest click)"
 
 # (6) fault: the script owns its timing relative to T
-if [ "${FAULT}" != "none" ]; then
+if [ "${FAULT}" != "none" ] && [ "${VARIANT}" = false ]; then
   ARM="${ARM}" T_EPOCH_MS="${T_EPOCH_MS}" GRACE_S="${GRACE_S}" ASSIGNMENT_ID="${ASSIGNMENT_ID}" RUN_DIR="${RUN_DIR}" \
     bash "${REPO_ROOT}/tools/faults/${FAULT}.sh" &
   FAULT_PID=$!

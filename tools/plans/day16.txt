@@ -1,0 +1,21 @@
+# Day 16 counted sweep (phase 33): arm size repeat [fault]
+# Arms interleave a b c within each (size, repeat), as on day 15; all three arms of one
+# (size, repeat) replay the same schedule (seed per size, repeat).
+a 500 1
+b 500 1
+c 500 1
+a 500 2
+b 500 2
+c 500 2
+a 500 3
+b 500 3
+c 500 3
+a 1000 1
+b 1000 1
+c 1000 1
+a 1000 2
+b 1000 2
+c 1000 2
+a 1000 3
+b 1000 3
+c 1000 3

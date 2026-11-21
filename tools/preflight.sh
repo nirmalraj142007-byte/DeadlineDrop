@@ -31,8 +31,16 @@ fail() { echo "PREFLIGHT FAILED: $*" >&2; exit 1; }
 
 # ---- (a) parity ----
 echo "== (a) parity =="
-bash "${SCRIPT_DIR}/parity.sh" || fail "arms A, B and C are not identical (diff above)"
-echo "parity clean"
+# PREFLIGHT_SKIP_PARITY=<reason> (set by run.sh only for a scale<N> configuration variant) skips this
+# check and records the reason in preflight.json; every other check still runs.
+PARITY_RESULT="clean"
+if [ -n "${PREFLIGHT_SKIP_PARITY:-}" ]; then
+  PARITY_RESULT="skipped (${PREFLIGHT_SKIP_PARITY})"
+  echo "parity ${PARITY_RESULT}"
+else
+  bash "${SCRIPT_DIR}/parity.sh" || fail "arms A, B and C are not identical (diff above)"
+  echo "parity clean"
+fi
 
 # ---- (b) connection budget ----
 echo "== (b) connection budget =="
@@ -163,17 +171,17 @@ print(max((abs(v['skewMs']) if 'skewMs' in v else 1e9) for v in r.values()))" "$
 
 # ---- write preflight.json ----
 "${PY}" - "$(to_native_path "${OUT}")" "$(to_native_path "${BUDGET_JSON}")" "$(to_native_path "${RESULT_JSON}")" \
-  "${ARM}" "${URL}" "${MAX_CONN}" "${TOTAL_CONN}" "${CONN_RESERVE}" "${SKEW_LIMIT_MS}" "${WARM_LIMIT_MS}" <<'PYEOF'
+  "${ARM}" "${URL}" "${MAX_CONN}" "${TOTAL_CONN}" "${CONN_RESERVE}" "${SKEW_LIMIT_MS}" "${WARM_LIMIT_MS}" "${PARITY_RESULT}" <<'PYEOF'
 import datetime
 import json
 import sys
 
-out, budget, vms, arm, url, max_conn, total_conn, reserve, skew_limit, warm_limit = sys.argv[1:11]
+out, budget, vms, arm, url, max_conn, total_conn, reserve, skew_limit, warm_limit, parity = sys.argv[1:12]
 doc = {
     "arm": arm,
     "baseUrl": url,
     "checkedAt": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-    "parity": "clean",
+    "parity": parity,
     "connectionBudget": {
         "services": json.load(open(budget, encoding="utf-8")),
         "sum": int(total_conn),
