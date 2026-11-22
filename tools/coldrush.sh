@@ -4,8 +4,9 @@
 # 1. pause the Cloud Scheduler jobs that call arm C every minute (dd-drain-c, dd-reconcile-c),
 #    since they would keep an instance alive; they are resumed on exit, also on error
 # 2. tools/sweep-mode.sh off c (min-instances 0 on arm C only; A and B stay warm, parity differs)
-# 3. poll Cloud Monitoring run.googleapis.com/container/instance_count until arm C has had zero
-#    instances for IDLE_MIN_S (15 min), counting only points after the last non-zero one
+# 3. poll Cloud Monitoring run.googleapis.com/container/instance_count until arm C's last non-zero
+#    point is IDLE_MIN_S (15 min) plus 4 min of report lag in the past, and Cloud Logging shows no
+#    request to arm C since then
 # 4. time one GET /api/time from this machine: the first request after the idle period (cold start)
 # 5. resume the scheduler jobs, then tools/run.sh c 500 1 coldrush (a configuration variant)
 # 6. append a "cold_rush" block to results/coldstart.json
@@ -45,7 +46,12 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# Seconds arm C has had zero instances by Monitoring (zero points after the last non-zero one), or -1.
+# Seconds since arm C's last non-zero instance_count point, or -1 while that cannot be shown: no
+# non-zero point in the lookback (the warm instance not reported yet) or no zero point after it.
+# Monitoring stops writing points a few minutes after a revision reaches zero (day 17: the count of
+# zero points froze at 360 s), so the idle time is measured from the last non-zero point, not by
+# counting zero points. The caller also waits INGEST_LAG_S beyond IDLE_MIN_S, since a late non-zero
+# point could still arrive, and checks Cloud Logging for requests in the window.
 zero_seconds() {
   local token start end resp
   token="$(gv auth print-access-token)"
@@ -57,7 +63,7 @@ zero_seconds() {
     --data-urlencode "interval.startTime=${start}" \
     --data-urlencode "interval.endTime=${end}")" || { echo "-1"; return 0; }
   printf '%s' "${resp}" | "${PY}" -c "
-import json, sys
+import json, sys, time
 from datetime import datetime
 total = {}  # instances per minute, summed over the active and idle series (and revisions)
 for ts in json.load(sys.stdin).get('timeSeries', []):
@@ -71,25 +77,51 @@ if not nonzero:
 else:
     last_nz = max(nonzero)
     zeros_after = [t for t, v in total.items() if v == 0 and t > last_nz]
-    print(int(max(zeros_after) - last_nz) if zeros_after else -1)
+    print(int(time.time() - last_nz) if zeros_after else -1)
 " | tr -d '\r'
 }
 
+# Requests Cloud Logging recorded for arm C since <ISO time> (0 = nothing reached the service).
+requests_since() {
+  gcloud logging read "resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"${SERVICE}\" AND httpRequest.requestMethod:* AND timestamp>=\"$1\"" \
+    --project="${PROJECT_ID}" --limit=1000 --format='value(timestamp)' 2>/dev/null | grep -c . || true
+}
+
+# Steps 1 and 2 are skipped when already in place (a resumed attempt): a redeploy would itself start
+# an instance and restart the idle period.
 echo "== 1. pausing Cloud Scheduler jobs that keep ${SERVICE} warm =="
 PAUSED=true
 for j in "${SCHEDULER_JOBS[@]}"; do
-  gcloud scheduler jobs pause "${j}" --location="${REGION}" --project="${PROJECT_ID}" --quiet
+  if [ "$(gv scheduler jobs describe "${j}" --location="${REGION}" --project="${PROJECT_ID}" --format='value(state)')" = "PAUSED" ]; then
+    echo "  ${j} already paused"
+  else
+    gcloud scheduler jobs pause "${j}" --location="${REGION}" --project="${PROJECT_ID}" --quiet
+  fi
 done
 
 echo "== 2. sweep mode off for arm C only (min-instances 0) =="
-bash "${SCRIPT_DIR}/sweep-mode.sh" off c
+MIN_NOW="$(gv run services describe "${SERVICE}" --region="${REGION}" --project="${PROJECT_ID}" \
+  --format='value(spec.template.metadata.annotations."autoscaling.knative.dev/minScale")')"
+if [ "${MIN_NOW:-0}" = "0" ]; then
+  echo "  ${SERVICE} already at min-instances 0; not redeploying"
+else
+  bash "${SCRIPT_DIR}/sweep-mode.sh" off c
+fi
 
-echo "== 3. waiting until ${SERVICE} has had zero instances for ${IDLE_MIN_S}s (Cloud Monitoring) =="
+INGEST_LAG_S=240
+echo "== 3. waiting until ${SERVICE}'s last instance is ${IDLE_MIN_S}s + ${INGEST_LAG_S}s report lag in the past (Cloud Monitoring) =="
 waited_from="$(date +%s)"
 while :; do
   z="$(zero_seconds)"
-  echo "  $(date -u +%H:%M:%SZ) zero instances for ${z}s"
-  [ "${z}" -ge "${IDLE_MIN_S}" ] && break
+  echo "  $(date -u +%H:%M:%SZ) last instance ${z}s ago"
+  if [ "${z}" -ge $(( IDLE_MIN_S + INGEST_LAG_S )) ]; then
+    since="$(date -u -d "@$(( $(date +%s) - z ))" +%Y-%m-%dT%H:%M:%SZ)"
+    n_req="$(requests_since "${since}")"
+    echo "  Cloud Logging: ${n_req} requests to ${SERVICE} since ${since}"
+    [ "${n_req}" -eq 0 ] && break
+    echo "Error: ${SERVICE} received requests while Monitoring showed zero instances; not cold" >&2
+    exit 1
+  fi
   if [ $(( $(date +%s) - waited_from )) -gt "${IDLE_TIMEOUT_S}" ]; then
     echo "Error: ${SERVICE} did not reach ${IDLE_MIN_S}s at zero instances within ${IDLE_TIMEOUT_S}s" >&2
     exit 1
@@ -158,7 +190,9 @@ doc["cold_rush"] = {
     "method": (
         "Cloud Scheduler jobs dd-drain-c/dd-reconcile-c paused and arm C at min-instances 0 (tools/sweep-mode.sh "
         "off c); Cloud Monitoring instance_count polled until arm C had zero instances for at least 15 min "
-        "(idleMinutes = zero points after the last non-zero one). One GET /api/time from the operator's machine "
+        "(idleMinutes = time since the last non-zero instance_count point, required to be at least 15 min plus "
+        "4 min of report lag, with Cloud Logging showing no request to arm C in that time; Monitoring stops "
+        "writing zero points a few minutes after a revision reaches zero). One GET /api/time from the operator's machine "
         "timed the first request after the idle period; then the scheduler jobs were resumed and tools/run.sh "
         "c 500 1 coldrush ran. Its preflight, assignment creation and k6 logins reach arm C before the first "
         "click, so the first instance's cold start is paid before the rush; the rush measures scale-out from "
