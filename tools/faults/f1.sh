@@ -35,19 +35,28 @@ case "${FAULT_STAGE}" in
     [ -n "${token}" ] || { echo "admin login failed on ${BASE}" >&2; exit 1; }
     sleep_until_ms "${target}"
     body_file="$(mktemp)"
-    sent_ms="$(now_ms)"
-    # --data '' sends Content-Length: 0; a bodiless POST without it gets 411 from Google's front end
-    # (day 17, first A f1 attempt).
-    code="$(curl -s -o "${body_file}" -w '%{http_code}' --max-time 30 -X POST --data '' \
-      -H "Authorization: Bearer ${token}" "${BASE}/admin/chaos/halt" || true)"
-    answered_ms="$(now_ms)"
+    # Up to HALT_ATTEMPTS tries, 1 s apart: at the rush peak Cloud Run's front end can answer a single
+    # request 503 (day 17, second A f1 attempt: 3 such 503s in 15 min, the halt among them).
+    # Every attempt is recorded, so the moment the crash landed is exact.
+    # --data '' sends Content-Length: 0; a bodiless POST without it gets 411 (first A f1 attempt).
+    HALT_ATTEMPTS=5
+    attempts=""
+    for n in $(seq 1 "${HALT_ATTEMPTS}"); do
+      sent_ms="$(now_ms)"
+      code="$(curl -s -o "${body_file}" -w '%{http_code}' --max-time 30 -X POST --data '' \
+        -H "Authorization: Bearer ${token}" "${BASE}/admin/chaos/halt" || true)"
+      answered_ms="$(now_ms)"
+      attempts="${attempts:+${attempts}, }${code} at T$(( sent_ms - T_EPOCH_MS ))ms"
+      [ "${code}" = "202" ] && break
+      [ "${n}" -lt "${HALT_ATTEMPTS}" ] && sleep 1
+    done
     # HaltResponse {"halting": "<K_REVISION>"}
     instance="$(grep -o '"halting":"[^"]*"' "${body_file}" | head -n 1 | cut -d'"' -f4 || true)"
     echo "POST /admin/chaos/halt -> ${code}: $(cat "${body_file}")"
     rm -f "${body_file}"
     json_write "${OUT}" plannedAt "$(iso_ms "${target}")" haltSentAt "$(iso_ms "${sent_ms}")" \
       haltAnsweredAt "$(iso_ms "${answered_ms}")" haltSentMinusTMs "$(( sent_ms - T_EPOCH_MS ))" \
-      haltHttpCode "${code}" instance "${instance:-null}"
+      haltHttpCode "${code}" instance "${instance:-null}" haltAttempts "${attempts}"
     [ "${code}" = "202" ] || { echo "halt was not accepted (HTTP ${code})" >&2; exit 1; }
     ;;
   post)

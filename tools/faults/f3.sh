@@ -30,23 +30,30 @@ json_write "${OUT}" fault "${FAULT_NAME:-f3}" sqlInstance "${SQL_INSTANCE}" oper
   plannedAt "$(iso_ms "${target}")" restartRequestedAt "$(iso_ms "${requested_ms}")" \
   restartRequestedMinusTMs "$(( requested_ms - T_EPOCH_MS ))" restartCommandReturnedAt "$(iso_ms "${returned_ms}")"
 
-first_fail_ms=""; healthy_after_ms=""; checks=0; failed=0; op_done_ms=""
+# Polling goes on until the restart operation is DONE and a check after that is healthy: the first
+# healthy check after a failure can come before the operation ends (day 17: A, B, C f3 stopped 9-20 s
+# early, so their operationEndTime is null; the end times were read from gcloud afterwards).
+# failedAfterRecovery counts failures after the first recovery (a second outage inside one restart).
+first_fail_ms=""; healthy_after_ms=""; checks=0; failed=0; failed_after=0; op_done_ms=""
 deadline_s=$(( $(date +%s) + POLL_MAX_S ))
 while [ "$(date +%s)" -lt "${deadline_s}" ]; do
   t_ms="$(now_ms)"
   code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 "${BASE}/actuator/health" || true)"
   checks=$(( checks + 1 ))
   if [ "${code}" = "200" ]; then
-    if [ -n "${first_fail_ms}" ]; then healthy_after_ms="${t_ms}"; break; fi
-    if [ -z "${op_done_ms}" ] && [ -n "${op}" ] && [ $(( checks % 5 )) -eq 0 ]; then
+    if [ -n "${first_fail_ms}" ] && [ -z "${healthy_after_ms}" ]; then healthy_after_ms="${t_ms}"; fi
+    if [ -z "${op_done_ms}" ] && [ -n "${op}" ]; then
       st="$(gv sql operations describe "${op}" --project="${PROJECT_ID}" --format='value(status)' 2>/dev/null || true)"
       [ "${st}" = "DONE" ] && op_done_ms="${t_ms}"
     fi
-    if [ -n "${op_done_ms}" ] && [ $(( t_ms - op_done_ms )) -ge $(( NO_FAILURE_AFTER_S * 1000 )) ]; then
-      healthy_after_ms="${t_ms}"; break
+    if [ -n "${op_done_ms}" ]; then
+      [ -n "${first_fail_ms}" ] && break
+      # never saw a failure: stop once healthy this long after the operation ended
+      if [ $(( t_ms - op_done_ms )) -ge $(( NO_FAILURE_AFTER_S * 1000 )) ]; then healthy_after_ms="${t_ms}"; break; fi
     fi
   else
     failed=$(( failed + 1 ))
+    [ -n "${healthy_after_ms}" ] && failed_after=$(( failed_after + 1 ))
     if [ -z "${first_fail_ms}" ]; then
       first_fail_ms="${t_ms}"
       echo "first failed health check at $(iso_ms "${t_ms}") (HTTP ${code})"
@@ -60,7 +67,7 @@ if [ -n "${op}" ]; then
   op_start="$(gv sql operations describe "${op}" --project="${PROJECT_ID}" --format='value(startTime)' || true)"
   op_end="$(gv sql operations describe "${op}" --project="${PROJECT_ID}" --format='value(endTime)' || true)"
 fi
-json_write "${OUT}" healthChecks "${checks}" failedHealthChecks "${failed}" \
+json_write "${OUT}" healthChecks "${checks}" failedHealthChecks "${failed}" failedAfterRecovery "${failed_after}" \
   firstFailedHealthCheckAt "$([ -n "${first_fail_ms}" ] && iso_ms "${first_fail_ms}" || echo null)" \
   firstHealthyAfterRestartAt "$([ -n "${healthy_after_ms}" ] && iso_ms "${healthy_after_ms}" || echo null)" \
   firstHealthyAfterRestartMinusTMs "$([ -n "${healthy_after_ms}" ] && echo $(( healthy_after_ms - T_EPOCH_MS )) || echo null)" \
