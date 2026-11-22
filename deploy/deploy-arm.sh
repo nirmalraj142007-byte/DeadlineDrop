@@ -9,6 +9,10 @@ source "${SCRIPT_DIR}/arms.env"
 
 # Signed commit receipts while the database is down (phase 28). Same value on every arm for parity.
 RECEIPT_ENABLED="${RECEIPT_ENABLED:-true}"
+# Failure injection (phase 34, F1): /admin/chaos/** exists only with CHAOS_ENABLED=true. Off unless
+# tools/faults/f1.sh turns it on for one run; parity.sh ignores it, since only the faulted arm has it.
+CHAOS_ENABLED="${CHAOS_ENABLED:-false}"
+case "${CHAOS_ENABLED}" in true|false) ;; *) echo "Error: CHAOS_ENABLED must be true or false, got '${CHAOS_ENABLED}'" >&2; exit 1 ;; esac
 
 # SWEEP=on (set by tools/sweep-mode.sh) applies the SWEEP block of arms.env: a warm minimum instance
 # and startup CPU boost. Unset or "off" keeps MIN_INSTANCES from arms.env. Boost stays on in both
@@ -117,7 +121,7 @@ gcloud run deploy "${SERVICE_NAME}" \
   --service-account="${RUN_SA}" \
   --add-cloudsql-instances="${PROJECT_ID}:${REGION}:${SQL_INSTANCE}" \
   --set-secrets="JWT_SECRET=dd-jwt-secret:latest,DB_PASSWORD=dd-db-password:latest,TELEMETRY_SALT=dd-telemetry-salt:latest,RECEIPT_HMAC_KEY=dd-receipt-key:latest" \
-  --set-env-vars="^|^SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}|DB_NAME=${DB_NAME}|BUCKET=${BUCKET}|CLOUD_SQL_INSTANCE=${PROJECT_ID}:${REGION}:${SQL_INSTANCE}|DB_POOL_MAX=${DB_POOL_MAX}|RECEIPT_ENABLED=${RECEIPT_ENABLED}${OIDC_ENV}" \
+  --set-env-vars="^|^SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}|DB_NAME=${DB_NAME}|BUCKET=${BUCKET}|CLOUD_SQL_INSTANCE=${PROJECT_ID}:${REGION}:${SQL_INSTANCE}|DB_POOL_MAX=${DB_POOL_MAX}|RECEIPT_ENABLED=${RECEIPT_ENABLED}|CHAOS_ENABLED=${CHAOS_ENABLED}${OIDC_ENV}" \
   --cpu="${CPU}" \
   --memory="${MEMORY}" \
   --concurrency="${CONCURRENCY}" \

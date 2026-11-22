@@ -38,8 +38,10 @@ if [ -n "${PREFLIGHT_SKIP_PARITY:-}" ]; then
   PARITY_RESULT="skipped (${PREFLIGHT_SKIP_PARITY})"
   echo "parity ${PARITY_RESULT}"
 else
+  # PARITY_IGNORE_ENV (run.sh, f3-noreceipt only) names env vars that differ on purpose for this run.
   bash "${SCRIPT_DIR}/parity.sh" || fail "arms A, B and C are not identical (diff above)"
-  echo "parity clean"
+  [ -n "${PARITY_IGNORE_ENV:-}" ] && PARITY_RESULT="clean except ${PARITY_IGNORE_ENV} (differs on purpose for this run)"
+  echo "parity ${PARITY_RESULT}"
 fi
 
 # ---- (b) connection budget ----

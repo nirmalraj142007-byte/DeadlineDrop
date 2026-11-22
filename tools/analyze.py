@@ -379,7 +379,67 @@ def analyze(run_dir: Path) -> dict:
     }
     if arm == "C":
         result["serverTimingMedianMs"] = server_timing_summary(st_values)
+    f2 = f2_block(arm, meta, students, export, t_ms)
+    if f2 is not None:
+        result["f2"] = f2
     return result
+
+
+def parse_instant_ms(value):
+    """Epoch ms of an ISO-8601 instant from the export, or None."""
+    if not value:
+        return None
+    try:
+        dt = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except ValueError as e:
+        raise InputError(f"export instant is not ISO-8601: {value!r}") from e
+    return int(round(dt.timestamp() * 1000))
+
+
+def f2_block(arm: str, meta: dict, students: dict, export: dict, t_ms: int):
+    """F2 (browser dies after upload): what became of every student who skipped finalize.
+
+    For each one: the final status of the row the run is judged on (arm C: the verified row if any,
+    else the earliest live one; A and B: the earliest row), and seconds from the end of the upload
+    (vu-log putEndMs) to the row's uploaded_at (the reconciler's UPLOADED transition in arm C).
+    None when the run is not an F2 run and nobody skipped finalize.
+    """
+    skipped = {e: r for e, r in students.items() if r.get("skipFinalize")}
+    if meta.get("fault") != "f2" and not skipped:
+        return None
+    per_student, by_status, seconds = [], defaultdict(int), []
+    for email, rec in sorted(skipped.items()):
+        rows = export.get(email, [])
+        outcome, row, _ = recorded(arm, rows)
+        status = row.get("status") if row else "NO_ROW"
+        by_status[status] += 1
+        put_end = rec.get("putEndMs")
+        uploaded = parse_instant_ms(row.get("uploadedAt")) if row else None
+        secs = None
+        if isinstance(put_end, (int, float)) and uploaded is not None:
+            secs = round((uploaded - put_end) / 1000.0, 1)
+            seconds.append(secs)
+        per_student.append({
+            "email": email,
+            "truth": truth(int(rec["clickMs"]), t_ms),
+            "recorded": outcome,
+            "putStatus": rec.get("putStatus"),
+            "finalStatus": status,
+            "uploadedAt": row.get("uploadedAt") if row else None,
+            "secondsUploadEndToUploaded": secs,
+        })
+    return {
+        "skippedFinalize": len(skipped),
+        "uploadSucceeded": sum(1 for r in skipped.values() if r.get("putStatus") == 200),
+        "finalStatus": dict(sorted(by_status.items())),
+        "secondsUploadEndToUploaded": {
+            "n": len(seconds),
+            "p50": round_or_none(percentile(seconds, 0.50)),
+            "p95": round_or_none(percentile(seconds, 0.95)),
+            "max": round_or_none(max(seconds)) if seconds else None,
+        },
+        "students": per_student,
+    }
 
 
 def server_timing_summary(values: dict[str, list[float]]):

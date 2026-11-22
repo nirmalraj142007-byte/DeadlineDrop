@@ -176,3 +176,31 @@ def test_summary_lists_invalid_runs_apart(tmp_path):
     assert "| `20261119T100000Z_C_100_r1_rerun` | C |" in table
     assert "20261119T090000Z_C_100_r1`" not in table
     assert "- `20261119T090000Z_C_100_r1`: PREFLIGHT FAILED: clock skew above 100 ms" in summary
+
+
+def test_f2_block_reports_status_and_seconds_to_uploaded(tmp_path):
+    put_end = T_MS - 120000  # upload ended 2 min before T
+    lines = [
+        vu("s1@dd.local", -180000, skipFinalize=True, finalizeStatus=None, putEndMs=put_end),
+        vu("s2@dd.local", -170000, skipFinalize=True, finalizeStatus=None, putEndMs=put_end),
+        vu("s3@dd.local", -160000),
+    ]
+    reconciled = row("s1@dd.local", "ON_TIME")
+    reconciled["uploadedAt"] = "2026-11-20T09:59:30.5Z"  # 90.5 s after the upload ended
+    rows = [reconciled, row("s3@dd.local", "ON_TIME")]  # s2 has no row at all
+    run = make_run(tmp_path, "c", lines, rows)
+    code, confusion, _ = run_analyze(run)
+    f2 = confusion["f2"]
+    assert f2["skippedFinalize"] == 2
+    assert f2["finalStatus"] == {"NO_ROW": 1, "VERIFIED": 1}
+    assert f2["secondsUploadEndToUploaded"]["n"] == 1
+    assert f2["secondsUploadEndToUploaded"]["max"] == 90.5
+    by_email = {s["email"]: s for s in f2["students"]}
+    assert by_email["s2@dd.local"]["recorded"] == "MISSING"
+    assert code == 3  # a truly on-time student with no record is a misjudgement in arm C
+
+
+def test_no_f2_block_without_skipped_students(tmp_path):
+    run = make_run(tmp_path, "c", [vu("s1@dd.local", -60000)], [row("s1@dd.local", "ON_TIME")])
+    _, confusion, _ = run_analyze(run)
+    assert "f2" not in confusion

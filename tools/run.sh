@@ -13,6 +13,15 @@
 # marked invalid the next time. The next invocation repeats an invalid run into a new folder with the
 # suffix _rerun (_rerun2, ...); both folders stay.
 # Exit codes: 0 ok or skipped; 1 usage; 3 arm C misjudged a student (a valid result); 4 invalid run.
+#
+# Faults (phase 34): tools/faults/<fault>.sh is called once per stage, with FAULT_STAGE set:
+#   pre     before preflight (e.g. redeploy the arm with CHAOS_ENABLED=true); a failure makes the run invalid
+#   inject  in the background once k6 is running; the script owns its timing relative to T
+#   post    after meta.json is written (so meta.json describes the revision that took the load), or
+#           from the exit trap if the run stops early (e.g. redeploy with CHAOS_ENABLED=false)
+# Each stage gets ARM, GRACE_S and RUN_DIR; inject also gets T_EPOCH_MS and ASSIGNMENT_ID.
+# f2 also makes gen_schedule.py skip finalize for 10% of students. coldrush, like scale<N>, is a
+# configuration variant with no fault script (arm C alone runs min-instances 0).
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -109,8 +118,23 @@ invalidate() { # invalidate <reason>: mark the run invalid and stop
   INVALID_REASON="$1"
   exit "${EXIT_INVALID}"
 }
+FAULT_PRE_DONE=false
+FAULT_POST_DONE=false
+fault_stage() { # fault_stage <pre|inject|post>: run tools/faults/<fault>.sh for one stage
+  ARM="${ARM}" FAULT_STAGE="$1" T_EPOCH_MS="${T_EPOCH_MS:-}" GRACE_S="${GRACE_S}" \
+    ASSIGNMENT_ID="${ASSIGNMENT_ID:-}" RUN_DIR="${RUN_DIR}" bash "${REPO_ROOT}/tools/faults/${FAULT}.sh"
+}
+fault_post() { # undo what the pre stage did, once
+  if [ "${FAULT_PRE_DONE}" != true ] || [ "${FAULT_POST_DONE}" = true ]; then return 0; fi
+  FAULT_POST_DONE=true
+  echo "== fault ${FAULT}: post stage =="
+  fault_stage post
+}
 on_exit() {
   local rc=$?
+  if [ "${rc}" -ne 0 ]; then
+    fault_post || echo "WARNING: fault ${FAULT} post stage failed; undo it by hand (see tools/faults/${FAULT}.sh)" >&2
+  fi
   if [ "${FINISHED}" != true ] && [ "${rc}" -ne 0 ]; then
     local reason="${INVALID_REASON:-run.sh exited ${rc} during step '${STEP}'}"
     reason="${reason//\"/\'}"
@@ -124,17 +148,28 @@ trap on_exit EXIT
 # scale<N> (phase 33 scaling experiment) is a configuration variant, not a fault: nothing is injected,
 # and the arms deliberately run different max-instances and pool settings, so preflight skips parity
 # (recorded in preflight.json) but still enforces the connection budget, skew and warmth.
+# coldrush (phase 34) is the same kind of variant: arm C alone runs min-instances 0.
 VARIANT=false
-case "${FAULT}" in scale[0-9]*) VARIANT=true ;; esac
+case "${FAULT}" in scale[0-9]*|coldrush) VARIANT=true ;; esac
 if [ "${FAULT}" != "none" ] && [ "${VARIANT}" = false ] && [ ! -f "${REPO_ROOT}/tools/faults/${FAULT}.sh" ]; then
   echo "Error: fault '${FAULT}' needs tools/faults/${FAULT}.sh (arrives in phase 34)." >&2
   exit 1
 fi
 
+# (0) fault pre stage (e.g. redeploy with CHAOS_ENABLED=true)
+if [ "${FAULT}" != "none" ] && [ "${VARIANT}" = false ]; then
+  STEP="fault pre stage"
+  echo "== fault ${FAULT}: pre stage =="
+  FAULT_PRE_DONE=true
+  fault_stage pre || invalidate "fault ${FAULT} pre stage failed"
+fi
+
 # (1) preflight
 STEP="preflight"
 SKIP_PARITY=""; [ "${VARIANT}" = true ] && SKIP_PARITY="configuration variant ${FAULT}: arms differ on purpose"
-if ! OUT="${RUN_DIR}/preflight.json" PREFLIGHT_SKIP_PARITY="${SKIP_PARITY}" bash "${REPO_ROOT}/tools/preflight.sh" "${ARM}" 2>&1 | tee "${RUN_DIR}/preflight.log"; then
+# f3-noreceipt runs arm C with RECEIPT_ENABLED=false on purpose; parity still compares everything else.
+PARITY_IGNORE=""; [ "${FAULT}" = "f3-noreceipt" ] && PARITY_IGNORE="RECEIPT_ENABLED"
+if ! OUT="${RUN_DIR}/preflight.json" PREFLIGHT_SKIP_PARITY="${SKIP_PARITY}" PARITY_IGNORE_ENV="${PARITY_IGNORE}" bash "${REPO_ROOT}/tools/preflight.sh" "${ARM}" 2>&1 | tee "${RUN_DIR}/preflight.log"; then
   why="$(grep -o 'PREFLIGHT FAILED: .*' "${RUN_DIR}/preflight.log" | tail -n 1 | tr -d '\r')"
   invalidate "${why:-preflight failed (see preflight.log)}"
 fi
@@ -164,9 +199,13 @@ STEP="schedule and copies"
 # Schedule and copies come BEFORE T is fixed: through a shaped controller link the gcloud ssh/scp calls
 # alone can exceed the start margin, and none of them depends on T.
 SEED=$(( 16#$(printf 'dd-schedule:%s:%s' "${SIZE}" "${REPEAT}" | sha256sum | cut -c1-7) ))
+# F2 (browser dies after upload): 10% of students upload and never call finalize. gen_schedule.py
+# draws skipFinalize for every student whatever the fraction, so all other fields match the no-fault run.
+SKIP_FINALIZE_FRAC=0.0; [ "${FAULT}" = "f2" ] && SKIP_FINALIZE_FRAC=0.10
 "${PY}" "$(to_native_path "${REPO_ROOT}/tools/gen_schedule.py")" \
   --mode "${SCHEDULE_MODE}" --n "${SIZE}" --cohort-minutes "${COHORT_MIN}" --grace-s "${GRACE_S}" \
-  --max-mb "${MAX_MB}" --seed "${SEED}" --out "$(to_native_path "${RUN_DIR}/schedule")"
+  --max-mb "${MAX_MB}" --seed "${SEED}" --skip-finalize-frac "${SKIP_FINALIZE_FRAC}" \
+  --out "$(to_native_path "${RUN_DIR}/schedule")"
 
 # (3) copy shard and k6 scripts to each VM (in parallel)
 copy_to_vm() {
@@ -245,9 +284,9 @@ echo "k6 started on: ${STARTED[*]} ($(( EARLIEST_CLICK_S - $(date +%s) ))s befor
 
 # (6) fault: the script owns its timing relative to T
 if [ "${FAULT}" != "none" ] && [ "${VARIANT}" = false ]; then
-  ARM="${ARM}" T_EPOCH_MS="${T_EPOCH_MS}" GRACE_S="${GRACE_S}" ASSIGNMENT_ID="${ASSIGNMENT_ID}" RUN_DIR="${RUN_DIR}" \
-    bash "${REPO_ROOT}/tools/faults/${FAULT}.sh" &
+  fault_stage inject > "${RUN_DIR}/fault-${FAULT}.log" 2>&1 &
   FAULT_PID=$!
+  echo "fault ${FAULT}: inject stage running (log: fault-${FAULT}.log)"
 fi
 
 # (7) wait until T + grace + 2 min, checking every VM_CHECK_EVERY_S that each VM answers and still
@@ -267,7 +306,12 @@ while :; do
       || invalidate "VM $(vm_name "${c}") stopped answering, or k6 died without a summary, at $(date -u +%H:%M:%SZ)"
   done
 done
-if [ -n "${FAULT_PID:-}" ]; then wait "${FAULT_PID}" || echo "Warning: fault script exited non-zero" >&2; fi
+FAULT_EXIT=null
+if [ -n "${FAULT_PID:-}" ]; then
+  FAULT_EXIT=0
+  wait "${FAULT_PID}" || FAULT_EXIT=$?
+  [ "${FAULT_EXIT}" -eq 0 ] || echo "Warning: fault ${FAULT} inject stage exited ${FAULT_EXIT} (see fault-${FAULT}.log)" >&2
+fi
 
 # (8) export, vu-logs, summaries. Before the final export, wait until no submission of this assignment
 # is still COMMITTED or UPLOADED (finalize and the reconciler settle them), at most EXPORT_WAIT_MAX_S
@@ -315,13 +359,13 @@ GIT_SHA="$(git -C "${REPO_ROOT}" rev-parse HEAD)"
 "${PY}" - "$(to_native_path "${RUN_DIR}/meta.json")" "$(to_native_path "${RUN_DIR}/preflight.json")" "$(to_native_path "${SERVICE_JSON}")" \
   "${ARM}" "${SIZE}" "${REPEAT}" "${FAULT}" "${COUNTED}" "${DEADLINE_ISO}" "${COHORT_MIN}" "${GRACE_S}" \
   "${REGION}" "${SQL_TIER_NOW}" "${K6_VERSION}" "${IMAGE_DIGEST}" "${GIT_SHA}" "${SCHEDULE_LABEL}" "${ASSIGNMENT_ID}" "${SEED}" "${COHORTS[*]}" \
-  "${EXPORT_WAIT_UNTIL}" "${WAITED_S}" "${PENDING_ROWS}" "${EXPORT_WAIT_MAX_S}" <<'PYEOF'
+  "${EXPORT_WAIT_UNTIL}" "${WAITED_S}" "${PENDING_ROWS}" "${EXPORT_WAIT_MAX_S}" "${FAULT_EXIT}" <<'PYEOF'
 import json
 import sys
 
 (out, pre, svc, arm, size, repeat, fault, counted, t_iso, cohort_min, grace_s, region, tier,
  k6v, digest, sha, mode, assignment, seed, cohorts, wait_until, waited_s, pending_rows,
- wait_max_s) = sys.argv[1:25]
+ wait_max_s, fault_exit) = sys.argv[1:26]
 with open(out, encoding="utf-8") as f:
     started = json.load(f)  # written at the start of run.sh: valid, startedAt, rerunOf
 pre = json.load(open(pre, encoding="utf-8"))
@@ -348,6 +392,8 @@ meta = {
     "memory": limits["memory"],
     "concurrency": spec["containerConcurrency"],
     "pool": int(env["DB_POOL_MAX"]),
+    "receiptEnabled": env.get("RECEIPT_ENABLED"),
+    "chaosEnabled": env.get("CHAOS_ENABLED", "false"),
     "maxConnections": pre["connectionBudget"]["maxConnections"],
     "sqlTier": tier,
     "region": region,
@@ -365,12 +411,27 @@ meta = {
     # "maxWait" = the cap was reached with pendingRowsAtExport rows still pending.
     "exportWait": {"until": wait_until, "waitedS": int(waited_s), "maxS": int(wait_max_s),
                    "pendingRowsAtExport": int(pending_rows)},
+    # Exit code of tools/faults/<fault>.sh's inject stage; null when the run had no fault script.
+    "faultExit": None if fault_exit == "null" else int(fault_exit),
 }
 with open(out, "w", encoding="utf-8") as f:
     json.dump(meta, f, indent=2)
     f.write("\n")
 PYEOF
 rm -f "${SERVICE_JSON}"
+
+# fault post stage, after meta.json describes the revision that took the load
+if [ "${FAULT_PRE_DONE}" = true ]; then
+  # The measurement is complete, so a failed undo does not make the run invalid; it is recorded, and
+  # the next run's preflight (parity) catches a setting left behind.
+  STEP="fault post stage"
+  if fault_post; then
+    meta_set "${META}" '{"faultPost": "ok"}'
+  else
+    meta_set "${META}" '{"faultPost": "failed"}'
+    echo "WARNING: fault ${FAULT} post stage failed; undo it by hand (see tools/faults/${FAULT}.sh)" >&2
+  fi
+fi
 FINISHED=true
 
 # (10) analysis: exit 3 means arm C misjudged a student (review G3). The bucket is still cleaned

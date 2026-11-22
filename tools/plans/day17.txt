@@ -1,0 +1,14 @@
+# Day 17 failure sweep (phase 34): arm size repeat fault
+# Each line calls tools/run.sh with tools/faults/<fault>.sh (pre, inject and post stages).
+# f1 instance crash at T-60 s (CHAOS_ENABLED=true for that run only); f2 browser dies after upload
+# (10% skip finalize); f3 Cloud SQL restart at T-90 s; f3-noreceipt the same with RECEIPT_ENABLED=false
+# on arm C (the receipt shipped in phase 28, docs/decisions.md D12).
+a 500 1 f1
+b 500 1 f1
+c 500 1 f1
+b 500 1 f2
+c 500 1 f2
+a 500 1 f3
+b 500 1 f3
+c 500 1 f3
+c 500 1 f3-noreceipt

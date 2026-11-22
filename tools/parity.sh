@@ -29,6 +29,7 @@ for arm in "${ARMS[@]}"; do
     fi
   done
   "${PY}" - "$(to_native_path "${TMP}/${arm}.raw.yaml")" "$(to_native_path "${TMP}/${arm}.yaml")" <<'PYEOF'
+import os
 import re
 import sys
 
@@ -36,6 +37,9 @@ import sys
 PER_ARM_ENV = {
     "SPRING_PROFILES_ACTIVE", "DB_NAME", "INTERNAL_AUDIENCE", "SCHEDULER_SA_EMAIL", "CHAOS_ENABLED",
 }
+# PARITY_IGNORE_ENV (comma-separated, set by run.sh for one fault run, e.g. RECEIPT_ENABLED for
+# f3-noreceipt) adds names for that run only; everything else is still compared.
+PER_ARM_ENV |= {n.strip() for n in os.environ.get("PARITY_IGNORE_ENV", "").split(",") if n.strip()}
 # Metadata that differs on every deploy or between services.
 VOLATILE_KEY = re.compile(
     r"^\s*(uid|generation|resourceVersion|creationTimestamp|selfLink|revisionName|"

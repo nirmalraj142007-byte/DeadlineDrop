@@ -50,6 +50,7 @@ export function armC(ctx) {
   let commitAttempts = 0;
   let putStatus = null;
   let putMs = null;
+  let putEndMs = null; // epoch ms when the upload answered (F2: upload end to UPLOADED)
   let finalizeStatus = null;
   let finalizeAttempts = 0;
   let submissionId = null;
@@ -126,6 +127,7 @@ export function armC(ctx) {
     const putStart = Date.now();
     const putRes = http.put(uploadUrl, fileBytes, { headers: headers, timeout: UPLOAD_TIMEOUT });
     putMs = Date.now() - putStart;
+    putEndMs = putStart + putMs;
     putStatus = putRes.status;
     noteFailure(failedStatuses, 'put', putStatus);
 
@@ -192,6 +194,7 @@ export function armC(ctx) {
     serverTiming: serverTiming,
     putStatus: putStatus,
     putMs: putMs,
+    putEndMs: putEndMs,
     finalizeStatus: finalizeStatus,
     finalizeAttempts: finalizeAttempts,
     finalizeMs: finalizeMs,
@@ -222,6 +225,7 @@ export function armB(ctx) {
   let commitAttempts = 0;
   let putStatus = null;
   let putMs = null;
+  let putEndMs = null; // epoch ms when the upload answered (F2: upload end to UPLOADED)
   let finalizeStatus = null;
   let finalizeAttempts = 0;
   let submissionId = null;
@@ -293,6 +297,7 @@ export function armB(ctx) {
     const putStart = Date.now();
     const putRes = http.put(uploadUrl, fileBytes, { headers: headers, timeout: UPLOAD_TIMEOUT });
     putMs = Date.now() - putStart;
+    putEndMs = putStart + putMs;
     putStatus = putRes.status;
     noteFailure(failedStatuses, 'put', putStatus);
 
@@ -354,6 +359,7 @@ export function armB(ctx) {
     serverTiming: serverTiming,
     putStatus: putStatus,
     putMs: putMs,
+    putEndMs: putEndMs,
     finalizeStatus: finalizeStatus,
     finalizeAttempts: finalizeAttempts,
     finalizeMs: finalizeMs,
@@ -383,6 +389,7 @@ export function armA(ctx) {
   let commitAttempts = 0;
   let putStatus = null;
   let putMs = null;
+  let putEndMs = null; // epoch ms when the upload answered (F2: upload end to UPLOADED)
   let finalizeStatus = null;
   let finalizeAttempts = 0;
   let submissionId = null;
@@ -419,6 +426,7 @@ export function armA(ctx) {
       }
     );
     putMs = Date.now() - putStart;
+    putEndMs = putStart + putMs;
     commitStatus = res.status;
     putStatus = res.status;
     finalizeStatus = res.status;
@@ -459,6 +467,7 @@ export function armA(ctx) {
     serverTiming: serverTiming,
     putStatus: putStatus,
     putMs: putMs,
+    putEndMs: putEndMs,
     finalizeStatus: finalizeStatus,
     finalizeAttempts: finalizeAttempts,
     finalizeMs: finalizeMs,
