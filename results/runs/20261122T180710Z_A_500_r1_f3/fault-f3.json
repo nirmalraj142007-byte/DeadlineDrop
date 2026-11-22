@@ -1,0 +1,17 @@
+{
+  "fault": "f3",
+  "sqlInstance": "dd-pg",
+  "operation": "b0af33b6-3d11-4610-9ce3-90430000002f",
+  "plannedAt": "2026-11-22T18:21:45.000Z",
+  "restartRequestedAt": "2026-11-22T18:21:45.855Z",
+  "restartRequestedMinusTMs": -89145,
+  "restartCommandReturnedAt": "2026-11-22T18:21:49.373Z",
+  "healthChecks": 3,
+  "failedHealthChecks": 2,
+  "firstFailedHealthCheckAt": "2026-11-22T18:21:50.504Z",
+  "firstHealthyAfterRestartAt": "2026-11-22T18:22:00.084Z",
+  "firstHealthyAfterRestartMinusTMs": -74916,
+  "unhealthyForMs": 9580,
+  "operationStartTime": "2026-11-22T18:21:48.583Z",
+  "operationEndTime": null
+}

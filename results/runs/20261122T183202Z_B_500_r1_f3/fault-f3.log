@@ -1,0 +1,4 @@
+sleeping 718859 ms until 2026-11-22T18:46:42.000Z
+restart of dd-pg requested at 2026-11-22T18:46:42.455Z (operation f4a9f743-0406-4cd6-bac7-6d770000002f)
+first failed health check at 2026-11-22T18:46:46.630Z (HTTP 503)
+healthy again at 2026-11-22T18:46:57.063Z

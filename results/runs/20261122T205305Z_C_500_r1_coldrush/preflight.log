@@ -1,0 +1,17 @@
+== (a) parity ==
+parity skipped (configuration variant coldrush: arms differ on purpose)
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261122T205305Z_C_500_r1_coldrush/preflight.json
+slow: skew 33.0 ms (best rtt 82 ms), warm median 70.2 ms
+medium: skew 32.0 ms (best rtt 78 ms), warm median 68.2 ms
+fast: skew 32.0 ms (best rtt 78 ms), warm median 66.5 ms
+PREFLIGHT OK for arm c

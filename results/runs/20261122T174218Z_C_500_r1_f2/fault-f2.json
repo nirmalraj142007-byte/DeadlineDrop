@@ -1,0 +1,6 @@
+{
+  "fault": "f2",
+  "skipFinalizeFrac": "0.10",
+  "studentsSkippingFinalize": 47,
+  "injection": "none at run time: the schedule marks these students skipFinalize"
+}

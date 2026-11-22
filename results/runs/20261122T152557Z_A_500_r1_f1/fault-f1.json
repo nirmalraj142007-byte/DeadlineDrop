@@ -1,0 +1,11 @@
+{
+  "fault": "f1",
+  "chaosEnabledAt": "2026-11-22T15:27:20.955Z",
+  "chaosStatusBefore": 200,
+  "plannedAt": "2026-11-22T15:43:29.000Z",
+  "haltSentAt": "2026-11-22T15:43:29.803Z",
+  "haltAnsweredAt": "2026-11-22T15:43:30.728Z",
+  "haltSentMinusTMs": -59197,
+  "haltHttpCode": 411,
+  "instance": null
+}

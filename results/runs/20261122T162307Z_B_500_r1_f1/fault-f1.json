@@ -1,0 +1,13 @@
+{
+  "fault": "f1",
+  "chaosEnabledAt": "2026-11-22T16:24:11.989Z",
+  "chaosStatusBefore": 200,
+  "plannedAt": "2026-11-22T16:39:33.000Z",
+  "haltSentAt": "2026-11-22T16:39:33.882Z",
+  "haltAnsweredAt": "2026-11-22T16:39:34.433Z",
+  "haltSentMinusTMs": -59118,
+  "haltHttpCode": 202,
+  "instance": "dd-arm-b-00066-7v8",
+  "chaosDisabledAt": "2026-11-22T16:49:55.530Z",
+  "chaosStatusAfter": 404
+}

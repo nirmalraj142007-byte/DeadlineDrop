@@ -1,0 +1,81 @@
+== 1. pausing Cloud Scheduler jobs that keep dd-arm-c warm ==
+Job has been paused.
+Job has been paused.
+== 2. sweep mode off for arm C only (min-instances 0) ==
+dd-arm-a: asia-south1-docker.pkg.dev/deadlinedrop-nirmal/dd/app@sha256:278bfd41168ad63d038f51d873c9e9699ced6e662ee6433b5dc30143d6e855db
+dd-arm-b: asia-south1-docker.pkg.dev/deadlinedrop-nirmal/dd/app@sha256:278bfd41168ad63d038f51d873c9e9699ced6e662ee6433b5dc30143d6e855db
+dd-arm-c: asia-south1-docker.pkg.dev/deadlinedrop-nirmal/dd/app@sha256:278bfd41168ad63d038f51d873c9e9699ced6e662ee6433b5dc30143d6e855db
+=== sweep mode off: redeploying dd-arm-c with asia-south1-docker.pkg.dev/deadlinedrop-nirmal/dd/app@sha256:278bfd41168ad63d038f51d873c9e9699ced6e662ee6433b5dc30143d6e855db ===
+=== Deploying Cloud Run service dd-arm-c ===
+Deploying container to Cloud Run service [dd-arm-c] in project [deadlinedrop-nirmal] region [asia-south1]
+Deploying...
+Setting IAM Policy...................done
+Creating Revision.............................................................................................................................................................................................................done
+Routing traffic.....done
+Done.
+Service [dd-arm-c] revision [dd-arm-c-00076-wtn] has been deployed and is serving 100 percent of traffic.
+Service URL: https://dd-arm-c-1047066668481.asia-south1.run.app
+=== Updating Bucket CORS policy from deployed arm URLs ===
+C:\Users\Nirmalraj\AppData\Local\Google\Cloud SDK\google-cloud-sdk\lib\third_party\google\api_core\_python_version_support.py:266: FutureWarning: You are using a Python version (3.11.9) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+  
+C:\Users\Nirmalraj\AppData\Local\Google\Cloud SDK\google-cloud-sdk\lib\third_party\google\api_core\_python_version_support.py:266: FutureWarning: You are using a Python version (3.11.9) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+C:\Users\Nirmalraj\AppData\Local\Google\Cloud SDK\google-cloud-sdk\lib\third_party\google\api_core\_python_version_support.py:266: FutureWarning: You are using a Python version (3.11.9) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+Updating gs://deadlinedrop-nirmal-dd-objects/...
+...............
+Bucket CORS updated.
+=== parity ===
+--- dd-arm-a
++++ dd-arm-c
+@@ -14,7 +14,6 @@
+     metadata:
+       annotations:
+         autoscaling.knative.dev/maxScale: '3'
+-        autoscaling.knative.dev/minScale: '1'
+         run.googleapis.com/cloudsql-instances: deadlinedrop-nirmal:asia-south1:dd-pg
+         run.googleapis.com/execution-environment: gen2
+         run.googleapis.com/startup-cpu-boost: 'true'
+--- dd-arm-b
++++ dd-arm-c
+@@ -14,7 +14,6 @@
+     metadata:
+       annotations:
+         autoscaling.knative.dev/maxScale: '3'
+-        autoscaling.knative.dev/minScale: '1'
+         run.googleapis.com/cloudsql-instances: deadlinedrop-nirmal:asia-south1:dd-pg
+         run.googleapis.com/execution-environment: gen2
+         run.googleapis.com/startup-cpu-boost: 'true'
+parity differs (expected: sweep mode off applied to c only)
+== 3. waiting until dd-arm-c has had zero instances for 900s (Cloud Monitoring) ==
+  20:17:54Z zero instances for -1s
+  20:18:57Z zero instances for -1s
+  20:20:01Z zero instances for -1s
+  20:21:05Z zero instances for -1s
+  20:22:08Z zero instances for -1s
+  20:23:11Z zero instances for -1s
+  20:24:15Z zero instances for -1s
+  20:25:18Z zero instances for -1s
+  20:26:22Z zero instances for -1s
+  20:27:25Z zero instances for -1s
+  20:28:28Z zero instances for -1s
+  20:29:32Z zero instances for -1s
+  20:30:35Z zero instances for -1s
+  20:31:38Z zero instances for -1s
+  20:32:42Z zero instances for -1s
+  20:33:45Z zero instances for -1s
+  20:34:48Z zero instances for 60s
+  20:35:52Z zero instances for 120s
+  20:36:55Z zero instances for 180s
+  20:37:58Z zero instances for 240s
+  20:39:02Z zero instances for 300s
+  20:40:05Z zero instances for 360s
+  20:41:09Z zero instances for 360s
+  20:42:12Z zero instances for 360s
+  20:43:16Z zero instances for 360s
+  20:44:19Z zero instances for 360s
+  20:45:22Z zero instances for 360s
+  20:46:26Z zero instances for 360s
+  20:47:29Z zero instances for 360s
+  20:48:32Z zero instances for 360s

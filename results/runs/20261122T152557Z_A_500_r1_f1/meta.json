@@ -1,0 +1,12 @@
+{
+  "arm": "a",
+  "size": 500,
+  "repeat": 1,
+  "fault": "f1",
+  "counted": true,
+  "valid": false,
+  "startedAt": "2026-11-22T15:25:58Z",
+  "rerunOf": null,
+  "invalidReason": "fault f1 not injected: POST /admin/chaos/halt got HTTP 411 (no Content-Length; tools/faults/f1.sh bug, fixed); sweep stopped by the operator during vu-log collection",
+  "invalidAt": "2026-11-22T15:55:00Z"
+}

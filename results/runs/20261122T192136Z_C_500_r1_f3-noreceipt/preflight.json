@@ -1,0 +1,66 @@
+{
+  "arm": "c",
+  "baseUrl": "https://dd-arm-c-aheo6nqyga-el.a.run.app",
+  "checkedAt": "2026-11-22T19:23:58Z",
+  "parity": "clean except RECEIPT_ENABLED (differs on purpose for this run)",
+  "connectionBudget": {
+    "services": [
+      {
+        "service": "dd-arm-a",
+        "revisionMaxScale": 3,
+        "serviceMaxScale": 3,
+        "maxScale": 3,
+        "dbPoolMax": 5,
+        "connections": 15
+      },
+      {
+        "service": "dd-arm-b",
+        "revisionMaxScale": 3,
+        "serviceMaxScale": 3,
+        "maxScale": 3,
+        "dbPoolMax": 5,
+        "connections": 15
+      },
+      {
+        "service": "dd-arm-c",
+        "revisionMaxScale": 3,
+        "serviceMaxScale": 3,
+        "maxScale": 3,
+        "dbPoolMax": 5,
+        "connections": 15
+      }
+    ],
+    "sum": 45,
+    "maxConnections": 50,
+    "reserve": 5,
+    "limit": 45
+  },
+  "skewLimitMs": 100,
+  "warmLimitMs": 200,
+  "vms": {
+    "slow": {
+      "ok": true,
+      "samples": 10,
+      "skewMs": 32.5,
+      "bestRttMs": 79,
+      "maxAbsSkewMs": 48.0,
+      "warmMedianMs": 69.1
+    },
+    "medium": {
+      "ok": true,
+      "samples": 10,
+      "skewMs": 31.5,
+      "bestRttMs": 77,
+      "maxAbsSkewMs": 46.5,
+      "warmMedianMs": 66.4
+    },
+    "fast": {
+      "ok": true,
+      "samples": 10,
+      "skewMs": 31.5,
+      "bestRttMs": 79,
+      "maxAbsSkewMs": 35.5,
+      "warmMedianMs": 68.0
+    }
+  }
+}

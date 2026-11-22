@@ -1,0 +1,97 @@
+== 1. pausing Cloud Scheduler jobs that keep dd-arm-c warm ==
+  dd-drain-c already paused
+  dd-reconcile-c already paused
+== 2. sweep mode off for arm C only (min-instances 0) ==
+  dd-arm-c already at min-instances 0; not redeploying
+== 3. waiting until dd-arm-c's last instance is 900s + 240s report lag in the past (Cloud Monitoring) ==
+  20:50:30Z last instance 1049s ago
+  20:51:33Z last instance 1113s ago
+  20:52:36Z last instance 1176s ago
+  Cloud Logging: 0 requests to dd-arm-c since 2026-11-22T20:33:00Z
+== 4. first request after the idle period ==
+  GET /api/time: 17.007141s, HTTP 200
+== 5. resume scheduler jobs, then run.sh c 500 1 coldrush ==
+Job has been resumed.
+Job has been resumed.
+Run folder: /c/dev/deadlinedrop/results/runs/20261122T205305Z_C_500_r1_coldrush
+== (a) parity ==
+parity skipped (configuration variant coldrush: arms differ on purpose)
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261122T205305Z_C_500_r1_coldrush/preflight.json
+slow: skew 33.0 ms (best rtt 82 ms), warm median 70.2 ms
+medium: skew 32.0 ms (best rtt 78 ms), warm median 68.2 ms
+fast: skew 32.0 ms (best rtt 78 ms), warm median 66.5 ms
+PREFLIGHT OK for arm c
+Generated schedule with 500 students in C:\dev\deadlinedrop\results\runs\20261122T205305Z_C_500_r1_coldrush\schedule:
+  Classes: {'ON_TIME': 429, 'MARGIN': 21, 'LATE': 50}
+  Cohorts: {'slow': 156, 'medium': 201, 'fast': 143}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:08 |  10%shard-fast.json           | 39 kB |  39.2 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:12 |   7%shard-medium.json         | 55 kB |  55.5 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:09 |   9%shard-slow.json           | 42 kB |  42.6 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  29%flows.js                  | 13 kB |  13.6 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  29%flows.js                  | 13 kB |  13.6 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  29%flows.js                  | 13 kB |  13.6 kB/s | ETA: 00:00:00 | 100%
+Largest shard 201 students: k6 starts 221s before the earliest click
+Assignment 917491cd-d7aa-4da6-abeb-e98f2e02d771, deadline T=2026-11-22T21:08:48Z, grace 300s
+dd-k6-slow: starting k6 (156 students)
+dd-k6-medium: starting k6 (201 students)
+dd-k6-fast: starting k6 (143 students)
+k6 started on: slow medium fast (213s before the earliest click)
+Waiting 1233s until T + grace + 2 min
+Export taken after 1s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  36%vu-log-slow.ndjson        | 87 kB |  87.2 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  21%k6-slow.out               | 146 kB | 146.3 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:02 |  28%vu-log-medium.ndjson      | 112 kB | 112.5 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-medium.out             | 145 kB | 145.4 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  40%vu-log-fast.ndjson        | 79 kB |  79.7 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-fast.out               | 141 kB | 141.4 kB/s | ETA: 00:00:00 | 100%
+arm C: 500 students (on time 429, margin 21, late 50)
+  onTime_onTime 429  onTime_lateOrMissing 0  late_late 50  late_onTime 0  rate 0.0000
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+  Server-Timing medians (ms): {'n': 500, 'app': 109.0, 'db': 30.0, 'sign': 76.0, 'other': 3.0, 'largestPhase': 'sign'}
+Removing gs://deadlinedrop-nirmal-dd-objects/a/917491cd-d7aa-4da6-abeb-e98f2e02d771/s/02d90f34-d0e8-471a-82a0-ecd6f02976ea/46a46e52-8d4f-4c63-8eba-5a75c2de9be4#1795381655758009...
+Removing gs://deadlinedrop-nirmal-dd-objects/a/917491cd-d7aa-4da6-abeb-e98f2e02d771/s/04fb5ccb-0909-40d4-bc89-f3fda751171c/d98d9469-5991-4fec-852d-01a15c088adb#1795381682013385...
+.................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261122T205305Z_C_500_r1_coldrush (counted=true, analyze exit 0)
+== 6. cold_rush block in results/coldstart.json ==
+{
+  "runFolder": "results/runs/20261122T205305Z_C_500_r1_coldrush",
+  "idleMinutes": 19.6,
+  "idleConfirmedAt": "2026-11-22T20:52:40Z",
+  "firstRequestAfterIdleMs": 17007.1,
+  "firstRequestHttpCode": 200,
+  "minInstances": 0,
+  "students": 500,
+  "p95CommitMs": 213.4,
+  "p99CommitMs": 433.3,
+  "misclassification": {
+    "trulyOnTime": 429,
+    "onTime_lateOrMissing": 0,
+    "late_onTime": 0,
+    "rate": 0.0
+  },
+  "errorCells": {
+    "lost": 0,
+    "duplicates": 0,
+    "pendingAtExport": 0,
+    "connectionErrorResponses": 0,
+    "connectionErrorStudents": 0
+  },
+  "runExit": 0,
+  "method": "Cloud Scheduler jobs dd-drain-c/dd-reconcile-c paused and arm C at min-instances 0 (tools/sweep-mode.sh off c); Cloud Monitoring instance_count polled until arm C had zero instances for at least 15 min (idleMinutes = time since the last non-zero instance_count point, required to be at least 15 min plus 4 min of report lag, with Cloud Logging showing no request to arm C in that time; Monitoring stops writing zero points a few minutes after a revision reaches zero). One GET /api/time from the operator's machine timed the first request after the idle period; then the scheduler jobs were resumed and tools/run.sh c 500 1 coldrush ran. Its preflight, assignment creation and k6 logins reach arm C before the first click, so the first instance's cold start is paid before the rush; the rush measures scale-out from one instance with no warm minimum. Values come from the run folder's confusion.json."
+}

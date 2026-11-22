@@ -1,0 +1,12 @@
+{
+  "arm": "a",
+  "size": 500,
+  "repeat": 1,
+  "fault": "f1",
+  "counted": true,
+  "valid": false,
+  "startedAt": "2026-11-22T15:56:21Z",
+  "rerunOf": "A_500_r1_f1",
+  "invalidReason": "fault f1 not injected: inject stage exited 1 (see fault-f1.log)",
+  "invalidAt": "2026-11-22T16:23:02Z"
+}

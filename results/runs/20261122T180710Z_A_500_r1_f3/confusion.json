@@ -1,0 +1,194 @@
+{
+  "arm": "A",
+  "counted": true,
+  "scheduleMode": "PUBLIC_PROFILES",
+  "T": "2026-11-22T18:23:15Z",
+  "tEpochMs": 1795371795000,
+  "marginMs": 5000,
+  "students": 500,
+  "trulyOnTime": 429,
+  "margin": 21,
+  "trulyLate": 50,
+  "onTime_onTime": 420,
+  "onTime_lateOrMissing": 9,
+  "late_late": 50,
+  "late_onTime": 0,
+  "onTimeLateOrMissingDetail": {
+    "recordedLate": 9,
+    "recordedMissing": 0
+  },
+  "misclassificationRate": 0.020979,
+  "marginGroup": {
+    "total": 21,
+    "ON_TIME": 7,
+    "LATE": 14,
+    "MISSING": 0
+  },
+  "checks": {
+    "lost": 0,
+    "lostStudents": [],
+    "duplicates": 0,
+    "duplicateStudents": [],
+    "pendingAtExport": 0,
+    "pendingStudents": [],
+    "unloggedStudents": 0,
+    "exportRowsWithoutVuLog": 0,
+    "duplicateVuLines": 0,
+    "unparsedVuLines": 0
+  },
+  "connectionErrors": {
+    "responses": 17,
+    "students": 13
+  },
+  "latencyMs": {
+    "commit": {
+      "n": 500,
+      "p50": 2735.5,
+      "p95": 19294.5,
+      "p99": 32021.5
+    },
+    "finalStep": {
+      "n": 500,
+      "p50": 2735.5,
+      "p95": 19294.5,
+      "p99": 32021.5
+    }
+  },
+  "serverTimingMedianMs": null,
+  "misjudged": [
+    {
+      "email": "student0056@dd.local",
+      "truth": "ON_TIME",
+      "recorded": "LATE",
+      "clickMinusTMs": -6873,
+      "status": "SUBMITTED",
+      "stampedAt": "2026-11-22T18:23:40.395583Z",
+      "rowsInExport": 1,
+      "k6Error": null,
+      "commitStatus": 201,
+      "putStatus": 201,
+      "finalizeStatus": 201,
+      "vuLog": "vu-log-slow.ndjson:141"
+    },
+    {
+      "email": "student0059@dd.local",
+      "truth": "ON_TIME",
+      "recorded": "LATE",
+      "clickMinusTMs": -11219,
+      "status": "SUBMITTED",
+      "stampedAt": "2026-11-22T18:23:16.973039Z",
+      "rowsInExport": 1,
+      "k6Error": null,
+      "commitStatus": 201,
+      "putStatus": 201,
+      "finalizeStatus": 201,
+      "vuLog": "vu-log-slow.ndjson:123"
+    },
+    {
+      "email": "student0173@dd.local",
+      "truth": "ON_TIME",
+      "recorded": "LATE",
+      "clickMinusTMs": -9377,
+      "status": "SUBMITTED",
+      "stampedAt": "2026-11-22T18:23:18.863525Z",
+      "rowsInExport": 1,
+      "k6Error": null,
+      "commitStatus": 201,
+      "putStatus": 201,
+      "finalizeStatus": 201,
+      "vuLog": "vu-log-slow.ndjson:129"
+    },
+    {
+      "email": "student0176@dd.local",
+      "truth": "ON_TIME",
+      "recorded": "LATE",
+      "clickMinusTMs": -16028,
+      "status": "SUBMITTED",
+      "stampedAt": "2026-11-22T18:23:18.480277Z",
+      "rowsInExport": 1,
+      "k6Error": null,
+      "commitStatus": 201,
+      "putStatus": 201,
+      "finalizeStatus": 201,
+      "vuLog": "vu-log-slow.ndjson:128"
+    },
+    {
+      "email": "student0213@dd.local",
+      "truth": "ON_TIME",
+      "recorded": "LATE",
+      "clickMinusTMs": -14099,
+      "status": "SUBMITTED",
+      "stampedAt": "2026-11-22T18:23:20.515383Z",
+      "rowsInExport": 1,
+      "k6Error": null,
+      "commitStatus": 201,
+      "putStatus": 201,
+      "finalizeStatus": 201,
+      "vuLog": "vu-log-slow.ndjson:131"
+    },
+    {
+      "email": "student0273@dd.local",
+      "truth": "ON_TIME",
+      "recorded": "LATE",
+      "clickMinusTMs": -14137,
+      "status": "SUBMITTED",
+      "stampedAt": "2026-11-22T18:23:20.458842Z",
+      "rowsInExport": 1,
+      "k6Error": null,
+      "commitStatus": 201,
+      "putStatus": 201,
+      "finalizeStatus": 201,
+      "vuLog": "vu-log-slow.ndjson:130"
+    },
+    {
+      "email": "student0322@dd.local",
+      "truth": "ON_TIME",
+      "recorded": "LATE",
+      "clickMinusTMs": -7088,
+      "status": "SUBMITTED",
+      "stampedAt": "2026-11-22T18:23:20.980599Z",
+      "rowsInExport": 1,
+      "k6Error": null,
+      "commitStatus": 201,
+      "putStatus": 201,
+      "finalizeStatus": 201,
+      "vuLog": "vu-log-slow.ndjson:132"
+    },
+    {
+      "email": "student0410@dd.local",
+      "truth": "ON_TIME",
+      "recorded": "LATE",
+      "clickMinusTMs": -17358,
+      "status": "SUBMITTED",
+      "stampedAt": "2026-11-22T18:23:17.146509Z",
+      "rowsInExport": 1,
+      "k6Error": null,
+      "commitStatus": 201,
+      "putStatus": 201,
+      "finalizeStatus": 201,
+      "vuLog": "vu-log-slow.ndjson:124"
+    },
+    {
+      "email": "student0428@dd.local",
+      "truth": "ON_TIME",
+      "recorded": "LATE",
+      "clickMinusTMs": -10385,
+      "status": "SUBMITTED",
+      "stampedAt": "2026-11-22T18:23:17.661219Z",
+      "rowsInExport": 1,
+      "k6Error": null,
+      "commitStatus": 201,
+      "putStatus": 201,
+      "finalizeStatus": 201,
+      "vuLog": "vu-log-slow.ndjson:125"
+    }
+  ],
+  "inputs": {
+    "vuLogs": [
+      "vu-log-fast.ndjson",
+      "vu-log-medium.ndjson",
+      "vu-log-slow.ndjson"
+    ],
+    "export": "export.json"
+  }
+}

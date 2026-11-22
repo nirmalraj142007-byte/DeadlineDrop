@@ -41,5 +41,31 @@
   "median": 14842.6,
   "coldSamples": 5,
   "unit": "ms",
-  "method": "min-instances 0 and Cloud Scheduler jobs dd-drain-c/dd-reconcile-c paused; before each sample, poll Cloud Monitoring run.googleapis.com/container/instance_count (REST, gcloud access token) until the service has had zero instances for 120 s; then one GET /api/time from the operator's machine, timed by curl -w %{time_total} (DNS + TCP + TLS + cold start + response). Median over HTTP 200 samples not flagged likelyWarm (< 1000 ms). For samples 2-5 the wait only counts zero points after Monitoring has reported the instance the previous sample started."
+  "method": "min-instances 0 and Cloud Scheduler jobs dd-drain-c/dd-reconcile-c paused; before each sample, poll Cloud Monitoring run.googleapis.com/container/instance_count (REST, gcloud access token) until the service has had zero instances for 120 s; then one GET /api/time from the operator's machine, timed by curl -w %{time_total} (DNS + TCP + TLS + cold start + response). Median over HTTP 200 samples not flagged likelyWarm (< 1000 ms). For samples 2-5 the wait only counts zero points after Monitoring has reported the instance the previous sample started.",
+  "cold_rush": {
+    "runFolder": "results/runs/20261122T205305Z_C_500_r1_coldrush",
+    "idleMinutes": 19.6,
+    "idleConfirmedAt": "2026-11-22T20:52:40Z",
+    "firstRequestAfterIdleMs": 17007.1,
+    "firstRequestHttpCode": 200,
+    "minInstances": 0,
+    "students": 500,
+    "p95CommitMs": 213.4,
+    "p99CommitMs": 433.3,
+    "misclassification": {
+      "trulyOnTime": 429,
+      "onTime_lateOrMissing": 0,
+      "late_onTime": 0,
+      "rate": 0.0
+    },
+    "errorCells": {
+      "lost": 0,
+      "duplicates": 0,
+      "pendingAtExport": 0,
+      "connectionErrorResponses": 0,
+      "connectionErrorStudents": 0
+    },
+    "runExit": 0,
+    "method": "Cloud Scheduler jobs dd-drain-c/dd-reconcile-c paused and arm C at min-instances 0 (tools/sweep-mode.sh off c); Cloud Monitoring instance_count polled until arm C had zero instances for at least 15 min (idleMinutes = time since the last non-zero instance_count point, required to be at least 15 min plus 4 min of report lag, with Cloud Logging showing no request to arm C in that time; Monitoring stops writing zero points a few minutes after a revision reaches zero). One GET /api/time from the operator's machine timed the first request after the idle period; then the scheduler jobs were resumed and tools/run.sh c 500 1 coldrush ran. Its preflight, assignment creation and k6 logins reach arm C before the first click, so the first instance's cold start is paid before the rush; the rush measures scale-out from one instance with no warm minimum. Values come from the run folder's confusion.json."
+  }
 }

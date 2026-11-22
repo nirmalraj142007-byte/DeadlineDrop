@@ -1,0 +1,19 @@
+{
+  "receiptDisabledAt": "2026-11-22T19:22:30.472Z",
+  "fault": "f3-noreceipt",
+  "sqlInstance": "dd-pg",
+  "operation": "b28dd1a4-1b02-4770-99e9-52c50000002f",
+  "plannedAt": "2026-11-22T19:37:00.000Z",
+  "restartRequestedAt": "2026-11-22T19:37:00.547Z",
+  "restartRequestedMinusTMs": -89453,
+  "restartCommandReturnedAt": "2026-11-22T19:37:03.470Z",
+  "healthChecks": 3,
+  "failedHealthChecks": 2,
+  "firstFailedHealthCheckAt": "2026-11-22T19:37:04.663Z",
+  "firstHealthyAfterRestartAt": "2026-11-22T19:37:14.164Z",
+  "firstHealthyAfterRestartMinusTMs": -75836,
+  "unhealthyForMs": 9501,
+  "operationStartTime": "2026-11-22T19:37:02.829Z",
+  "operationEndTime": null,
+  "receiptEnabledAgainAt": "2026-11-22T19:47:46.793Z"
+}

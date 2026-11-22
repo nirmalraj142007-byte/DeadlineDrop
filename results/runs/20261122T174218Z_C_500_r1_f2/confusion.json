@@ -1,0 +1,512 @@
+{
+  "arm": "C",
+  "counted": true,
+  "scheduleMode": "PUBLIC_PROFILES",
+  "T": "2026-11-22T17:58:25Z",
+  "tEpochMs": 1795370305000,
+  "marginMs": 5000,
+  "students": 500,
+  "trulyOnTime": 429,
+  "margin": 21,
+  "trulyLate": 50,
+  "onTime_onTime": 429,
+  "onTime_lateOrMissing": 0,
+  "late_late": 50,
+  "late_onTime": 0,
+  "onTimeLateOrMissingDetail": {
+    "recordedLate": 0,
+    "recordedMissing": 0
+  },
+  "misclassificationRate": 0.0,
+  "marginGroup": {
+    "total": 21,
+    "ON_TIME": 20,
+    "LATE": 1,
+    "MISSING": 0
+  },
+  "checks": {
+    "lost": 0,
+    "lostStudents": [],
+    "duplicates": 0,
+    "duplicateStudents": [],
+    "pendingAtExport": 0,
+    "pendingStudents": [],
+    "unloggedStudents": 0,
+    "exportRowsWithoutVuLog": 0,
+    "duplicateVuLines": 0,
+    "unparsedVuLines": 0
+  },
+  "connectionErrors": {
+    "responses": 0,
+    "students": 0
+  },
+  "latencyMs": {
+    "commit": {
+      "n": 500,
+      "p50": 152.4,
+      "p95": 352.2,
+      "p99": 458.6
+    },
+    "finalStep": {
+      "n": 453,
+      "p50": 96.8,
+      "p95": 122.7,
+      "p99": 282.5
+    }
+  },
+  "serverTimingMedianMs": {
+    "n": 500,
+    "app": 113.0,
+    "db": 30.0,
+    "sign": 79.0,
+    "other": 2.0,
+    "largestPhase": "sign"
+  },
+  "misjudged": [],
+  "inputs": {
+    "vuLogs": [
+      "vu-log-fast.ndjson",
+      "vu-log-medium.ndjson",
+      "vu-log-slow.ndjson"
+    ],
+    "export": "export.json"
+  },
+  "f2": {
+    "skippedFinalize": 47,
+    "uploadSucceeded": 47,
+    "finalStatus": {
+      "VERIFIED": 47
+    },
+    "secondsUploadEndToUploaded": {
+      "n": 47,
+      "p50": 152.4,
+      "p95": 169.1,
+      "max": 172.4
+    },
+    "students": [
+      {
+        "email": "student0015@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:58:03.870233Z",
+        "secondsUploadEndToUploaded": 166.2
+      },
+      {
+        "email": "student0050@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:59:03.954451Z",
+        "secondsUploadEndToUploaded": 112.2
+      },
+      {
+        "email": "student0051@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:00:03.650198Z",
+        "secondsUploadEndToUploaded": 154.4
+      },
+      {
+        "email": "student0086@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:00:03.827621Z",
+        "secondsUploadEndToUploaded": 144.8
+      },
+      {
+        "email": "student0087@dd.local",
+        "truth": "MARGIN",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:01:04.212505Z",
+        "secondsUploadEndToUploaded": 160.9
+      },
+      {
+        "email": "student0093@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:59:03.900089Z",
+        "secondsUploadEndToUploaded": 128.9
+      },
+      {
+        "email": "student0121@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:00:03.465746Z",
+        "secondsUploadEndToUploaded": 170.7
+      },
+      {
+        "email": "student0129@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:00:03.708423Z",
+        "secondsUploadEndToUploaded": 149.4
+      },
+      {
+        "email": "student0148@dd.local",
+        "truth": "MARGIN",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:01:04.156303Z",
+        "secondsUploadEndToUploaded": 143.3
+      },
+      {
+        "email": "student0171@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:59:04.021387Z",
+        "secondsUploadEndToUploaded": 124.0
+      },
+      {
+        "email": "student0172@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:00:03.590954Z",
+        "secondsUploadEndToUploaded": 157.9
+      },
+      {
+        "email": "student0193@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:59:03.592295Z",
+        "secondsUploadEndToUploaded": 160.1
+      },
+      {
+        "email": "student0218@dd.local",
+        "truth": "MARGIN",
+        "recorded": "LATE",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:01:04.256286Z",
+        "secondsUploadEndToUploaded": 147.8
+      },
+      {
+        "email": "student0222@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:01:03.910513Z",
+        "secondsUploadEndToUploaded": 165.7
+      },
+      {
+        "email": "student0227@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:01:03.789428Z",
+        "secondsUploadEndToUploaded": 170.4
+      },
+      {
+        "email": "student0234@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:58:03.922868Z",
+        "secondsUploadEndToUploaded": 159.6
+      },
+      {
+        "email": "student0237@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:56:03.401916Z",
+        "secondsUploadEndToUploaded": 149.1
+      },
+      {
+        "email": "student0238@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:58:04.089683Z",
+        "secondsUploadEndToUploaded": 153.2
+      },
+      {
+        "email": "student0242@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:59:03.655989Z",
+        "secondsUploadEndToUploaded": 155.9
+      },
+      {
+        "email": "student0251@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:57:03.373538Z",
+        "secondsUploadEndToUploaded": 139.2
+      },
+      {
+        "email": "student0284@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:59:03.709637Z",
+        "secondsUploadEndToUploaded": 153.2
+      },
+      {
+        "email": "student0291@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:00:04.018232Z",
+        "secondsUploadEndToUploaded": 126.9
+      },
+      {
+        "email": "student0295@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:59:03.770843Z",
+        "secondsUploadEndToUploaded": 152.4
+      },
+      {
+        "email": "student0311@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:00:03.954966Z",
+        "secondsUploadEndToUploaded": 134.4
+      },
+      {
+        "email": "student0320@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:59:03.834691Z",
+        "secondsUploadEndToUploaded": 142.2
+      },
+      {
+        "email": "student0322@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:01:04.033157Z",
+        "secondsUploadEndToUploaded": 152.9
+      },
+      {
+        "email": "student0323@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:58:04.031219Z",
+        "secondsUploadEndToUploaded": 156.7
+      },
+      {
+        "email": "student0325@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:58:03.983232Z",
+        "secondsUploadEndToUploaded": 154.6
+      },
+      {
+        "email": "student0329@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:00:03.534329Z",
+        "secondsUploadEndToUploaded": 140.2
+      },
+      {
+        "email": "student0338@dd.local",
+        "truth": "MARGIN",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:01:04.095316Z",
+        "secondsUploadEndToUploaded": 163.1
+      },
+      {
+        "email": "student0349@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:00:03.895127Z",
+        "secondsUploadEndToUploaded": 139.3
+      },
+      {
+        "email": "student0354@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:55:03.512188Z",
+        "secondsUploadEndToUploaded": 129.3
+      },
+      {
+        "email": "student0366@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:01:03.852497Z",
+        "secondsUploadEndToUploaded": 164.2
+      },
+      {
+        "email": "student0376@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:55:03.433803Z",
+        "secondsUploadEndToUploaded": 126.4
+      },
+      {
+        "email": "student0408@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:57:03.481465Z",
+        "secondsUploadEndToUploaded": 123.4
+      },
+      {
+        "email": "student0414@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:00:03.763854Z",
+        "secondsUploadEndToUploaded": 145.8
+      },
+      {
+        "email": "student0418@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:59:03.425492Z",
+        "secondsUploadEndToUploaded": 172.4
+      },
+      {
+        "email": "student0419@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:58:04.140560Z",
+        "secondsUploadEndToUploaded": 148.1
+      },
+      {
+        "email": "student0423@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:59:03.532770Z",
+        "secondsUploadEndToUploaded": 154.7
+      },
+      {
+        "email": "student0426@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:59:03.482064Z",
+        "secondsUploadEndToUploaded": 157.2
+      },
+      {
+        "email": "student0434@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:57:03.323949Z",
+        "secondsUploadEndToUploaded": 155.9
+      },
+      {
+        "email": "student0435@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:57:03.432642Z",
+        "secondsUploadEndToUploaded": 137.0
+      },
+      {
+        "email": "student0446@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T17:54:03.404004Z",
+        "secondsUploadEndToUploaded": 155.3
+      },
+      {
+        "email": "student0448@dd.local",
+        "truth": "ON_TIME",
+        "recorded": "ON_TIME",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:01:03.969061Z",
+        "secondsUploadEndToUploaded": 159.3
+      },
+      {
+        "email": "student0457@dd.local",
+        "truth": "LATE",
+        "recorded": "LATE",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:01:04.308099Z",
+        "secondsUploadEndToUploaded": 118.8
+      },
+      {
+        "email": "student0463@dd.local",
+        "truth": "LATE",
+        "recorded": "LATE",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:02:03.378786Z",
+        "secondsUploadEndToUploaded": 128.5
+      },
+      {
+        "email": "student0480@dd.local",
+        "truth": "LATE",
+        "recorded": "LATE",
+        "putStatus": 200,
+        "finalStatus": "VERIFIED",
+        "uploadedAt": "2026-11-22T18:01:04.368500Z",
+        "secondsUploadEndToUploaded": 128.4
+      }
+    ]
+  }
+}
