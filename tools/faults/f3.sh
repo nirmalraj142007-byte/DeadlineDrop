@@ -66,5 +66,11 @@ json_write "${OUT}" healthChecks "${checks}" failedHealthChecks "${failed}" \
   firstHealthyAfterRestartMinusTMs "$([ -n "${healthy_after_ms}" ] && echo $(( healthy_after_ms - T_EPOCH_MS )) || echo null)" \
   unhealthyForMs "$([ -n "${first_fail_ms}" ] && [ -n "${healthy_after_ms}" ] && echo $(( healthy_after_ms - first_fail_ms )) || echo null)" \
   operationStartTime "${op_start:-null}" operationEndTime "${op_end:-null}"
-[ -n "${healthy_after_ms}" ] || { echo "no healthy check within ${POLL_MAX_S}s of the restart" >&2; exit 1; }
-echo "healthy again at $(iso_ms "${healthy_after_ms}")"
+# Exit non-zero only when the fault was not injected (run.sh then marks the run invalid). A database
+# that stays unhealthy is a measured outcome, recorded above, not a reason to repeat the run.
+[ -n "${op}" ] || { echo "restart was not accepted (no operation name)" >&2; exit 1; }
+if [ -n "${healthy_after_ms}" ]; then
+  echo "healthy again at $(iso_ms "${healthy_after_ms}")"
+else
+  echo "WARNING: no healthy check within ${POLL_MAX_S}s of the restart (recorded)" >&2
+fi

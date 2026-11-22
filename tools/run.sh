@@ -310,7 +310,9 @@ FAULT_EXIT=null
 if [ -n "${FAULT_PID:-}" ]; then
   FAULT_EXIT=0
   wait "${FAULT_PID}" || FAULT_EXIT=$?
-  [ "${FAULT_EXIT}" -eq 0 ] || echo "Warning: fault ${FAULT} inject stage exited ${FAULT_EXIT} (see fault-${FAULT}.log)" >&2
+  # A fault run whose fault was not injected measures nothing about that fault: invalid, repeated
+  # into a _rerun folder by the next invocation. The inject stage exits non-zero only for that.
+  [ "${FAULT_EXIT}" -eq 0 ] || invalidate "fault ${FAULT} not injected: inject stage exited ${FAULT_EXIT} (see fault-${FAULT}.log)"
 fi
 
 # (8) export, vu-logs, summaries. Before the final export, wait until no submission of this assignment

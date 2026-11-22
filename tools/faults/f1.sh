@@ -36,7 +36,9 @@ case "${FAULT_STAGE}" in
     sleep_until_ms "${target}"
     body_file="$(mktemp)"
     sent_ms="$(now_ms)"
-    code="$(curl -s -o "${body_file}" -w '%{http_code}' --max-time 30 -X POST \
+    # --data '' sends Content-Length: 0; a bodiless POST without it gets 411 from Google's front end
+    # (day 17, first A f1 attempt).
+    code="$(curl -s -o "${body_file}" -w '%{http_code}' --max-time 30 -X POST --data '' \
       -H "Authorization: Bearer ${token}" "${BASE}/admin/chaos/halt" || true)"
     answered_ms="$(now_ms)"
     # HaltResponse {"halting": "<K_REVISION>"}
