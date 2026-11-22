@@ -1,0 +1,74 @@
+{
+  "arm": "C",
+  "counted": true,
+  "scheduleMode": "PUBLIC_PROFILES",
+  "T": "2026-11-21T16:45:36Z",
+  "tEpochMs": 1795279536000,
+  "marginMs": 5000,
+  "students": 500,
+  "trulyOnTime": 429,
+  "margin": 21,
+  "trulyLate": 50,
+  "onTime_onTime": 429,
+  "onTime_lateOrMissing": 0,
+  "late_late": 50,
+  "late_onTime": 0,
+  "onTimeLateOrMissingDetail": {
+    "recordedLate": 0,
+    "recordedMissing": 0
+  },
+  "misclassificationRate": 0.0,
+  "marginGroup": {
+    "total": 21,
+    "ON_TIME": 20,
+    "LATE": 1,
+    "MISSING": 0
+  },
+  "checks": {
+    "lost": 0,
+    "lostStudents": [],
+    "duplicates": 0,
+    "duplicateStudents": [],
+    "pendingAtExport": 0,
+    "pendingStudents": [],
+    "unloggedStudents": 0,
+    "exportRowsWithoutVuLog": 0,
+    "duplicateVuLines": 0,
+    "unparsedVuLines": 0
+  },
+  "connectionErrors": {
+    "responses": 0,
+    "students": 0
+  },
+  "latencyMs": {
+    "commit": {
+      "n": 500,
+      "p50": 147.7,
+      "p95": 221.5,
+      "p99": 438.0
+    },
+    "finalStep": {
+      "n": 500,
+      "p50": 95.2,
+      "p95": 121.7,
+      "p99": 138.3
+    }
+  },
+  "serverTimingMedianMs": {
+    "n": 500,
+    "app": 108.0,
+    "db": 27.0,
+    "sign": 78.0,
+    "other": 2.0,
+    "largestPhase": "sign"
+  },
+  "misjudged": [],
+  "inputs": {
+    "vuLogs": [
+      "vu-log-fast.ndjson",
+      "vu-log-medium.ndjson",
+      "vu-log-slow.ndjson"
+    ],
+    "export": "export.json"
+  }
+}

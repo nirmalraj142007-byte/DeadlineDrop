@@ -1,5 +1,5 @@
 SHELL := C:/Program Files/Git/bin/bash.exe
-.PHONY: verify up down logs terms seed k6-local
+.PHONY: verify up down logs terms seed k6-local charts
 
 verify:
 	./mvnw verify
@@ -22,3 +22,7 @@ seed:
 k6-local:
 	bash tools/k6/run-local.sh $(or $(ARM),c) $(or $(N),20)
 
+# Phase 33: results/SUMMARY.md, results/headline.md and results/charts/*.png from every counted run.
+charts:
+	python tools/summary.py
+	python tools/charts.py

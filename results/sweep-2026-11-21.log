@@ -1,0 +1,1154 @@
+2026-11-21T15:35:03Z sweep started: plan tools/plans/day16.txt, commit 12e591c, host DESKTOP-T7TBPCV
+2026-11-21T15:35:03Z sleep inhibited while the sweep runs (helper pid 299)
+2026-11-21T15:35:04Z START a 500 r1
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T153509Z_A_500_r1
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T153509Z_A_500_r1/preflight.json
+slow: skew 32.5 ms (best rtt 79 ms), warm median 68.0 ms
+medium: skew 32.0 ms (best rtt 78 ms), warm median 66.7 ms
+fast: skew 32.0 ms (best rtt 78 ms), warm median 67.1 ms
+PREFLIGHT OK for arm a
+Generated schedule with 500 students in C:\dev\deadlinedrop\results\runs\20261121T153509Z_A_500_r1\schedule:
+  Classes: {'ON_TIME': 429, 'MARGIN': 21, 'LATE': 50}
+  Cohorts: {'slow': 156, 'medium': 201, 'fast': 143}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:08 |  10%shard-fast.json           | 39 kB |  39.2 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:12 |   7%shard-medium.json         | 55 kB |  55.5 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:09 |   9%shard-slow.json           | 42 kB |  42.6 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 201 students: k6 starts 221s before the earliest click
+Assignment 1d7f6e93-e4c2-4c3c-86ff-da6957fb079b, deadline T=2026-11-21T15:52:24Z, grace 300s
+dd-k6-slow: starting k6 (156 students)
+dd-k6-medium: starting k6 (201 students)
+dd-k6-fast: starting k6 (143 students)
+k6 started on: slow medium fast (208s before the earliest click)
+Waiting 1227s until T + grace + 2 min
+Export taken after 2s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  43%vu-log-slow.ndjson        | 74 kB |  74.3 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-slow.out               | 128 kB | 128.0 kB/s | ETA: 00:00:00 |  89%k6-slow.out               | 143 kB | 143.8 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  33%vu-log-medium.ndjson      | 95 kB |  95.8 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  21%k6-medium.out             | 146 kB | 146.6 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  47%vu-log-fast.ndjson        | 67 kB |  67.8 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.0 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-fast.out               | 140 kB | 140.8 kB/s | ETA: 00:00:00 | 100%
+arm A: 500 students (on time 429, margin 21, late 50)
+  onTime_onTime 420  onTime_lateOrMissing 9  late_late 50  late_onTime 0  rate 0.0210
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+Removing gs://deadlinedrop-nirmal-dd-objects/a/1d7f6e93-e4c2-4c3c-86ff-da6957fb079b/s/018fb093-2e67-4251-9fff-a315e7f56927/a48e0dc5-4750-4cd9-b986-2b70badfc4df#1795276323950008...
+Removing gs://deadlinedrop-nirmal-dd-objects/a/1d7f6e93-e4c2-4c3c-86ff-da6957fb079b/s/021bd531-d117-4865-b8f5-4ae0ff6b526c/8deb85cf-d5a3-41a4-9699-ad88aab09b76#1795276311740379...
+........................................................................................................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261121T153509Z_A_500_r1 (counted=true, analyze exit 0)
+2026-11-21T16:02:18Z END a 500 r1: exit 0, 20261121T153509Z_A_500_r1, ok; onTime_onTime 420  onTime_lateOrMissing 9  late_late 50  late_onTime 0  rate 0.0210
+2026-11-21T16:02:18Z START b 500 r1
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T160223Z_B_500_r1
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T160223Z_B_500_r1/preflight.json
+slow: skew 32.0 ms (best rtt 78 ms), warm median 69.6 ms
+medium: skew 32.5 ms (best rtt 81 ms), warm median 70.4 ms
+fast: skew 32.0 ms (best rtt 78 ms), warm median 66.2 ms
+PREFLIGHT OK for arm b
+Generated schedule with 500 students in C:\dev\deadlinedrop\results\runs\20261121T160223Z_B_500_r1\schedule:
+  Classes: {'ON_TIME': 429, 'MARGIN': 21, 'LATE': 50}
+  Cohorts: {'slow': 156, 'medium': 201, 'fast': 143}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:08 |  10%shard-fast.json           | 39 kB |  39.2 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:12 |   7%shard-medium.json         | 55 kB |  55.5 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:09 |   9%shard-slow.json           | 42 kB |  42.6 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 201 students: k6 starts 221s before the earliest click
+Assignment 24bf75d1-f7cb-4a81-a3d8-694039142cc7, deadline T=2026-11-21T16:19:56Z, grace 300s
+dd-k6-slow: starting k6 (156 students)
+dd-k6-medium: starting k6 (201 students)
+dd-k6-fast: starting k6 (143 students)
+k6 started on: slow medium fast (209s before the earliest click)
+Waiting 1229s until T + grace + 2 min
+Export taken after 1s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  43%vu-log-slow.ndjson        | 73 kB |  73.9 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  10.7 kB/s | ETA: 00:00:10 |  22%k6-slow.out               | 143 kB |  47.8 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  33%vu-log-medium.ndjson      | 95 kB |  95.3 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-medium.out             | 144 kB | 144.4 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  47%vu-log-fast.ndjson        | 67 kB |  67.4 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-fast.out               | 96 kB |  96.0 kB/s | ETA: 00:00:00 |  67%k6-fast.out               | 142 kB | 143.0 kB/s | ETA: 00:00:00 | 100%
+arm B: 500 students (on time 429, margin 21, late 50)
+  onTime_onTime 420  onTime_lateOrMissing 9  late_late 50  late_onTime 0  rate 0.0210
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+Removing gs://deadlinedrop-nirmal-dd-objects/a/24bf75d1-f7cb-4a81-a3d8-694039142cc7/s/0016b82b-33cc-45a2-b65d-f3a0ec5bcd04/55b94ddb-c2aa-4c94-a126-d52ae9276df1#1795277892565769...
+Removing gs://deadlinedrop-nirmal-dd-objects/a/24bf75d1-f7cb-4a81-a3d8-694039142cc7/s/003253ae-9926-400b-91a6-ebc3ea22926c/32d5de66-b906-414d-bc79-809bd5feee09#1795277882417100...
+........................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261121T160223Z_B_500_r1 (counted=true, analyze exit 0)
+2026-11-21T16:29:08Z END b 500 r1: exit 0, 20261121T160223Z_B_500_r1, ok; onTime_onTime 420  onTime_lateOrMissing 9  late_late 50  late_onTime 0  rate 0.0210
+2026-11-21T16:29:08Z START c 500 r1
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T162912Z_C_500_r1
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T162912Z_C_500_r1/preflight.json
+slow: skew 31.0 ms (best rtt 78 ms), warm median 69.4 ms
+medium: skew 31.0 ms (best rtt 76 ms), warm median 67.2 ms
+fast: skew 31.5 ms (best rtt 79 ms), warm median 67.4 ms
+PREFLIGHT OK for arm c
+Generated schedule with 500 students in C:\dev\deadlinedrop\results\runs\20261121T162912Z_C_500_r1\schedule:
+  Classes: {'ON_TIME': 429, 'MARGIN': 21, 'LATE': 50}
+  Cohorts: {'slow': 156, 'medium': 201, 'fast': 143}
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:12 |   7%shard-medium.json         | 55 kB |  55.5 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:09 |   9%shard-slow.json           | 42 kB |  42.6 kB/s | ETA: 00:00:00 | 100%
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:08 |  10%shard-fast.json           | 39 kB |  39.2 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 8 kB |   8.0 kB/s | ETA: 00:00:00 |  60%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 201 students: k6 starts 221s before the earliest click
+Assignment bcfcf34d-f0cd-4285-bf6f-ad564158fc82, deadline T=2026-11-21T16:45:36Z, grace 300s
+dd-k6-slow: starting k6 (156 students)
+dd-k6-medium: starting k6 (201 students)
+dd-k6-fast: starting k6 (143 students)
+k6 started on: slow medium fast (211s before the earliest click)
+Waiting 1231s until T + grace + 2 min
+Export taken after 1s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  38%vu-log-slow.ndjson        | 83 kB |  83.1 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  21%k6-slow.out               | 146 kB | 146.9 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:02 |  29%vu-log-medium.ndjson      | 107 kB | 107.2 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  21%k6-medium.out             | 147 kB | 147.9 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  42%vu-log-fast.ndjson        | 75 kB |  75.9 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-fast.out               | 144 kB | 144.1 kB/s | ETA: 00:00:00 | 100%
+arm C: 500 students (on time 429, margin 21, late 50)
+  onTime_onTime 429  onTime_lateOrMissing 0  late_late 50  late_onTime 0  rate 0.0000
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+  Server-Timing medians (ms): {'n': 500, 'app': 108.0, 'db': 27.0, 'sign': 78.0, 'other': 2.0, 'largestPhase': 'sign'}
+Removing gs://deadlinedrop-nirmal-dd-objects/a/bcfcf34d-f0cd-4285-bf6f-ad564158fc82/s/04fb5ccb-0909-40d4-bc89-f3fda751171c/862262ba-5442-4725-a68c-043ed8a94f61#1795279490003829...
+Removing gs://deadlinedrop-nirmal-dd-objects/a/bcfcf34d-f0cd-4285-bf6f-ad564158fc82/s/02d90f34-d0e8-471a-82a0-ecd6f02976ea/e5292da7-8a15-420a-830a-387f416a52d3#1795279463747348...
+...................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261121T162912Z_C_500_r1 (counted=true, analyze exit 0)
+2026-11-21T16:54:01Z END c 500 r1: exit 0, 20261121T162912Z_C_500_r1, ok; onTime_onTime 429  onTime_lateOrMissing 0  late_late 50  late_onTime 0  rate 0.0000
+2026-11-21T16:54:01Z START a 500 r2
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T165406Z_A_500_r2
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T165406Z_A_500_r2/preflight.json
+slow: skew 31.0 ms (best rtt 74 ms), warm median 62.6 ms
+medium: skew 31.5 ms (best rtt 75 ms), warm median 64.6 ms
+fast: skew 31.0 ms (best rtt 76 ms), warm median 65.2 ms
+PREFLIGHT OK for arm a
+Generated schedule with 500 students in C:\dev\deadlinedrop\results\runs\20261121T165406Z_A_500_r2\schedule:
+  Classes: {'ON_TIME': 432, 'MARGIN': 18, 'LATE': 50}
+  Cohorts: {'slow': 147, 'medium': 203, 'fast': 150}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:09 |   9%shard-fast.json           | 41 kB |  41.1 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:13 |   7%shard-medium.json         | 56 kB |  56.0 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:09 |   9%shard-slow.json           | 40 kB |  40.2 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 203 students: k6 starts 222s before the earliest click
+Assignment bd3af0db-5e35-4be4-93bb-419196dea14d, deadline T=2026-11-21T17:10:25Z, grace 300s
+dd-k6-slow: starting k6 (147 students)
+dd-k6-medium: starting k6 (203 students)
+dd-k6-fast: starting k6 (150 students)
+k6 started on: slow medium fast (212s before the earliest click)
+Waiting 1232s until T + grace + 2 min
+Export taken after 1s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  45%vu-log-slow.ndjson        | 70 kB |  70.0 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-slow.out               | 64 kB |  64.0 kB/s | ETA: 00:00:01 |  45%k6-slow.out               | 140 kB | 140.2 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:02 |  33%vu-log-medium.ndjson      | 96 kB |  96.8 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-medium.out             | 144 kB | 144.4 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  44%vu-log-fast.ndjson        | 71 kB |  71.1 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-fast.out               | 144 kB | 144.2 kB/s | ETA: 00:00:00 | 100%
+arm A: 500 students (on time 432, margin 18, late 50)
+  onTime_onTime 422  onTime_lateOrMissing 10  late_late 50  late_onTime 0  rate 0.0231
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+C:\Users\Nirmalraj\AppData\Local\Google\Cloud SDK\google-cloud-sdk\lib\third_party\google\api_core\_python_version_support.py:266: FutureWarning: You are using a Python version (3.11.9) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+......................................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261121T165406Z_A_500_r2 (counted=true, analyze exit 0)
+2026-11-21T17:19:03Z END a 500 r2: exit 0, 20261121T165406Z_A_500_r2, ok; onTime_onTime 422  onTime_lateOrMissing 10  late_late 50  late_onTime 0  rate 0.0231
+2026-11-21T17:19:03Z START b 500 r2
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T171906Z_B_500_r2
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T171906Z_B_500_r2/preflight.json
+slow: skew 31.5 ms (best rtt 75 ms), warm median 63.8 ms
+medium: skew 32.0 ms (best rtt 76 ms), warm median 65.9 ms
+fast: skew 32.0 ms (best rtt 76 ms), warm median 64.8 ms
+PREFLIGHT OK for arm b
+Generated schedule with 500 students in C:\dev\deadlinedrop\results\runs\20261121T171906Z_B_500_r2\schedule:
+  Classes: {'ON_TIME': 432, 'MARGIN': 18, 'LATE': 50}
+  Cohorts: {'slow': 147, 'medium': 203, 'fast': 150}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:09 |   9%shard-fast.json           | 41 kB |  41.1 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:13 |   7%shard-medium.json         | 56 kB |  56.0 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:09 |   9%shard-slow.json           | 40 kB |  40.2 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 203 students: k6 starts 222s before the earliest click
+Assignment 88f7735d-fb7b-41d8-b92f-d0e7cf262733, deadline T=2026-11-21T17:35:15Z, grace 300s
+dd-k6-slow: starting k6 (147 students)
+dd-k6-medium: starting k6 (203 students)
+dd-k6-fast: starting k6 (150 students)
+k6 started on: slow medium fast (213s before the earliest click)
+Waiting 1233s until T + grace + 2 min
+Export taken after 1s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  45%vu-log-slow.ndjson        | 64 kB |  64.0 kB/s | ETA: 00:00:00 |  91%vu-log-slow.ndjson        | 69 kB |  69.6 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-slow.out               | 96 kB |  96.0 kB/s | ETA: 00:00:00 |  68%k6-slow.out               | 140 kB | 140.8 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:02 |  33%vu-log-medium.ndjson      | 96 kB |  96.2 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  21%k6-medium.out             | 146 kB | 146.5 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  45%vu-log-fast.ndjson        | 70 kB |  70.7 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-fast.out               | 142 kB | 142.6 kB/s | ETA: 00:00:00 | 100%
+arm B: 500 students (on time 432, margin 18, late 50)
+  onTime_onTime 422  onTime_lateOrMissing 10  late_late 50  late_onTime 0  rate 0.0231
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+Removing gs://deadlinedrop-nirmal-dd-objects/a/88f7735d-fb7b-41d8-b92f-d0e7cf262733/s/0016b82b-33cc-45a2-b65d-f3a0ec5bcd04/d4cd9d1c-c9c2-4fa4-9078-7d5908045c86#1795282362204416...
+Removing gs://deadlinedrop-nirmal-dd-objects/a/88f7735d-fb7b-41d8-b92f-d0e7cf262733/s/003253ae-9926-400b-91a6-ebc3ea22926c/873307f1-affe-40a4-b8bb-5439020b8ade#1795282510318730...
+.......................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261121T171906Z_B_500_r2 (counted=true, analyze exit 0)
+2026-11-21T17:43:57Z END b 500 r2: exit 0, 20261121T171906Z_B_500_r2, ok; onTime_onTime 422  onTime_lateOrMissing 10  late_late 50  late_onTime 0  rate 0.0231
+2026-11-21T17:43:58Z START c 500 r2
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T174401Z_C_500_r2
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T174401Z_C_500_r2/preflight.json
+slow: skew 31.5 ms (best rtt 75 ms), warm median 65.5 ms
+medium: skew 31.0 ms (best rtt 76 ms), warm median 64.9 ms
+fast: skew 30.5 ms (best rtt 75 ms), warm median 65.3 ms
+PREFLIGHT OK for arm c
+Generated schedule with 500 students in C:\dev\deadlinedrop\results\runs\20261121T174401Z_C_500_r2\schedule:
+  Classes: {'ON_TIME': 432, 'MARGIN': 18, 'LATE': 50}
+  Cohorts: {'slow': 147, 'medium': 203, 'fast': 150}
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:13 |   7%shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:09 |   9%shard-medium.json         | 56 kB |  56.0 kB/s | ETA: 00:00:00 | 100%
+shard-fast.json           | 41 kB |  41.1 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:09 |   9%shard-slow.json           | 40 kB |  40.2 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 203 students: k6 starts 222s before the earliest click
+Assignment 9a37423d-c77e-4ecd-ae9a-d90630fe0847, deadline T=2026-11-21T18:00:17Z, grace 300s
+dd-k6-slow: starting k6 (147 students)
+dd-k6-medium: starting k6 (203 students)
+dd-k6-fast: starting k6 (150 students)
+k6 started on: slow medium fast (214s before the earliest click)
+Waiting 1234s until T + grace + 2 min
+Export taken after 2s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  40%vu-log-slow.ndjson        | 78 kB |  78.2 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-slow.out               | 143 kB | 143.1 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:02 |  29%vu-log-medium.ndjson      | 108 kB | 108.2 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  21%k6-medium.out             | 147 kB | 147.2 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  40%vu-log-fast.ndjson        | 79 kB |  79.5 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-fast.out               | 145 kB | 145.0 kB/s | ETA: 00:00:00 | 100%
+arm C: 500 students (on time 432, margin 18, late 50)
+  onTime_onTime 432  onTime_lateOrMissing 0  late_late 50  late_onTime 0  rate 0.0000
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+  Server-Timing medians (ms): {'n': 500, 'app': 103.0, 'db': 25.0, 'sign': 75.0, 'other': 2.0, 'largestPhase': 'sign'}
+Removing gs://deadlinedrop-nirmal-dd-objects/a/9a37423d-c77e-4ecd-ae9a-d90630fe0847/s/02d90f34-d0e8-471a-82a0-ecd6f02976ea/255862b1-9764-445c-b7df-4f56110974aa#1795283997722512...
+Removing gs://deadlinedrop-nirmal-dd-objects/a/9a37423d-c77e-4ecd-ae9a-d90630fe0847/s/04fb5ccb-0909-40d4-bc89-f3fda751171c/62f6dc77-fecd-45dd-8d83-01d96f25d444#1795283877302386...
+....................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261121T174401Z_C_500_r2 (counted=true, analyze exit 0)
+2026-11-21T18:09:04Z END c 500 r2: exit 0, 20261121T174401Z_C_500_r2, ok; onTime_onTime 432  onTime_lateOrMissing 0  late_late 50  late_onTime 0  rate 0.0000
+2026-11-21T18:09:05Z START a 500 r3
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T180909Z_A_500_r3
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T180909Z_A_500_r3/preflight.json
+slow: skew 33.0 ms (best rtt 78 ms), warm median 66.7 ms
+medium: skew 32.0 ms (best rtt 78 ms), warm median 67.2 ms
+fast: skew 32.0 ms (best rtt 76 ms), warm median 64.8 ms
+PREFLIGHT OK for arm a
+Generated schedule with 500 students in C:\dev\deadlinedrop\results\runs\20261121T180909Z_A_500_r3\schedule:
+  Classes: {'ON_TIME': 429, 'MARGIN': 21, 'LATE': 50}
+  Cohorts: {'slow': 156, 'medium': 199, 'fast': 145}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:08 |  10%shard-fast.json           | 39 kB |  39.7 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:12 |   7%shard-medium.json         | 54 kB |  55.0 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:09 |   9%shard-slow.json           | 42 kB |  42.6 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 199 students: k6 starts 220s before the earliest click
+Assignment 521a1072-f250-41ee-a059-d33f062b96ad, deadline T=2026-11-21T18:25:28Z, grace 300s
+dd-k6-slow: starting k6 (156 students)
+dd-k6-medium: starting k6 (199 students)
+dd-k6-fast: starting k6 (145 students)
+k6 started on: slow medium fast (212s before the earliest click)
+Waiting 1232s until T + grace + 2 min
+Export taken after 1s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  43%vu-log-slow.ndjson        | 64 kB |  64.0 kB/s | ETA: 00:00:00 |  86%vu-log-slow.ndjson        | 74 kB |  74.3 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  21%k6-slow.out               | 148 kB | 148.2 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  33%vu-log-medium.ndjson      | 94 kB |  94.9 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-medium.out             | 145 kB | 145.3 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  46%vu-log-fast.ndjson        | 68 kB |  68.7 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-fast.out               | 142 kB | 142.1 kB/s | ETA: 00:00:00 | 100%
+arm A: 500 students (on time 429, margin 21, late 50)
+  onTime_onTime 426  onTime_lateOrMissing 3  late_late 50  late_onTime 0  rate 0.0070
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+Removing gs://deadlinedrop-nirmal-dd-objects/a/521a1072-f250-41ee-a059-d33f062b96ad/s/018fb093-2e67-4251-9fff-a315e7f56927/80386499-e53d-4139-ab55-36d3dfd13c70#1795285519155717...
+Removing gs://deadlinedrop-nirmal-dd-objects/a/521a1072-f250-41ee-a059-d33f062b96ad/s/021bd531-d117-4865-b8f5-4ae0ff6b526c/25cfbd4e-0cb8-49bc-a5cd-d8142679ba00#1795285410312766...
+..................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261121T180909Z_A_500_r3 (counted=true, analyze exit 0)
+2026-11-21T18:34:04Z END a 500 r3: exit 0, 20261121T180909Z_A_500_r3, ok; onTime_onTime 426  onTime_lateOrMissing 3  late_late 50  late_onTime 0  rate 0.0070
+2026-11-21T18:34:04Z START b 500 r3
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T183407Z_B_500_r3
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T183407Z_B_500_r3/preflight.json
+slow: skew 31.5 ms (best rtt 75 ms), warm median 63.9 ms
+medium: skew 31.5 ms (best rtt 75 ms), warm median 62.9 ms
+fast: skew 31.5 ms (best rtt 75 ms), warm median 63.9 ms
+PREFLIGHT OK for arm b
+Generated schedule with 500 students in C:\dev\deadlinedrop\results\runs\20261121T183407Z_B_500_r3\schedule:
+  Classes: {'ON_TIME': 429, 'MARGIN': 21, 'LATE': 50}
+  Cohorts: {'slow': 156, 'medium': 199, 'fast': 145}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:08 |  10%shard-fast.json           | 39 kB |  39.7 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:12 |   7%shard-medium.json         | 54 kB |  55.0 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:09 |   9%shard-slow.json           | 42 kB |  42.6 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 199 students: k6 starts 220s before the earliest click
+Assignment d12808c1-4050-497c-9a1f-b3b55d956404, deadline T=2026-11-21T18:50:12Z, grace 300s
+dd-k6-slow: starting k6 (156 students)
+dd-k6-medium: starting k6 (199 students)
+dd-k6-fast: starting k6 (145 students)
+k6 started on: slow medium fast (213s before the earliest click)
+Waiting 1232s until T + grace + 2 min
+RUN INVALID: VM dd-k6-slow stopped answering, or k6 died without a summary, at 18:43:50Z (/c/dev/deadlinedrop/results/runs/20261121T183407Z_B_500_r3)
+2026-11-21T18:43:53Z END b 500 r3: exit 4, 20261121T183407Z_B_500_r3, INVALID: VM dd-k6-slow stopped answering, or k6 died without a summary, at 18:43:50Z
+2026-11-21T18:43:54Z START c 500 r3
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T184401Z_C_500_r3
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T184401Z_C_500_r3/preflight.json
+slow: skew 31.5 ms (best rtt 77 ms), warm median 71.1 ms
+medium: skew 32.0 ms (best rtt 78 ms), warm median 70.4 ms
+fast: skew 31.0 ms (best rtt 76 ms), warm median 64.4 ms
+PREFLIGHT OK for arm c
+Generated schedule with 500 students in C:\dev\deadlinedrop\results\runs\20261121T184401Z_C_500_r3\schedule:
+  Classes: {'ON_TIME': 429, 'MARGIN': 21, 'LATE': 50}
+  Cohorts: {'slow': 156, 'medium': 199, 'fast': 145}
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:12 |   7%shard-medium.json         | 54 kB |  55.0 kB/s | ETA: 00:00:00 | 100%
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:08 |  10%shard-fast.json           | 39 kB |  39.7 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:09 |   9%shard-slow.json           | 42 kB |  42.6 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 199 students: k6 starts 220s before the earliest click
+Assignment b55709aa-97fa-43c7-9436-ee9b09c816d7, deadline T=2026-11-21T19:01:12Z, grace 300s
+dd-k6-slow: starting k6 (156 students)
+dd-k6-medium: starting k6 (199 students)
+dd-k6-fast: starting k6 (145 students)
+k6 started on: slow medium fast (212s before the earliest click)
+Waiting 1232s until T + grace + 2 min
+1 rows still COMMITTED or UPLOADED after 1s; polling again in 30s
+1 rows still COMMITTED or UPLOADED after 32s; polling again in 30s
+Export taken after 63s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  38%vu-log-slow.ndjson        | 83 kB |  83.0 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  21%k6-slow.out               | 150 kB | 150.8 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:02 |  30%vu-log-medium.ndjson      | 106 kB | 106.1 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.0 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  21%k6-medium.out             | 146 kB | 146.2 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  41%vu-log-fast.ndjson        | 76 kB |  76.9 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-fast.out               | 144 kB | 144.9 kB/s | ETA: 00:00:00 | 100%
+arm C: 500 students (on time 429, margin 21, late 50)
+  onTime_onTime 429  onTime_lateOrMissing 0  late_late 50  late_onTime 0  rate 0.0000
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+  Server-Timing medians (ms): {'n': 500, 'app': 102.0, 'db': 25.0, 'sign': 75.0, 'other': 2.0, 'largestPhase': 'sign'}
+C:\Users\Nirmalraj\AppData\Local\Google\Cloud SDK\google-cloud-sdk\lib\third_party\google\api_core\_python_version_support.py:266: FutureWarning: You are using a Python version (3.11.9) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2027-10-24). Please upgrade to the latest Python version, or at least Python 3.12, to continue receiving updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+.................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261121T184401Z_C_500_r3 (counted=true, analyze exit 0)
+2026-11-21T19:10:52Z END c 500 r3: exit 0, 20261121T184401Z_C_500_r3, ok; onTime_onTime 429  onTime_lateOrMissing 0  late_late 50  late_onTime 0  rate 0.0000
+2026-11-21T19:10:53Z START a 1000 r1
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T191056Z_A_1000_r1
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T191056Z_A_1000_r1/preflight.json
+slow: skew 31.0 ms (best rtt 74 ms), warm median 63.3 ms
+medium: skew 31.5 ms (best rtt 75 ms), warm median 65.5 ms
+fast: skew 32.0 ms (best rtt 76 ms), warm median 64.1 ms
+PREFLIGHT OK for arm a
+Generated schedule with 1000 students in C:\dev\deadlinedrop\results\runs\20261121T191056Z_A_1000_r1\schedule:
+  Classes: {'ON_TIME': 868, 'MARGIN': 32, 'LATE': 100}
+  Cohorts: {'slow': 329, 'medium': 370, 'fast': 301}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:19 |   4%shard-fast.json           | 82 kB |  82.5 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:21 |   4%shard-slow.json           | 89 kB |  89.9 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:24 |   3%shard-medium.json         | 102 kB | 102.2 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 370 students: k6 starts 305s before the earliest click
+Assignment 3ab43cd4-d57a-4359-bf76-b9b2ab1f756b, deadline T=2026-11-21T19:28:27Z, grace 300s
+dd-k6-slow: starting k6 (329 students)
+dd-k6-medium: starting k6 (370 students)
+dd-k6-fast: starting k6 (301 students)
+k6 started on: slow medium fast (296s before the earliest click)
+Waiting 1316s until T + grace + 2 min
+Export taken after 2s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%vu-log-slow.ndjson        | 156 kB | 156.7 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-slow.out               | 158 kB | 158.4 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:04 |  18%vu-log-medium.ndjson      | 176 kB | 176.5 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-medium.out             | 154 kB | 154.5 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%vu-log-fast.ndjson        | 142 kB | 142.7 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-fast.out               | 155 kB | 156.0 kB/s | ETA: 00:00:00 | 100%
+arm A: 1000 students (on time 868, margin 32, late 100)
+  onTime_onTime 849  onTime_lateOrMissing 19  late_late 100  late_onTime 0  rate 0.0219
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+Removing gs://deadlinedrop-nirmal-dd-objects/a/3ab43cd4-d57a-4359-bf76-b9b2ab1f756b/s/00cd67d5-0bdc-4fab-a8bb-5f3df14460c7/78ca8d97-3622-49a6-af84-efbb810cddfb#1795289273859272...
+Removing gs://deadlinedrop-nirmal-dd-objects/a/3ab43cd4-d57a-4359-bf76-b9b2ab1f756b/s/01d97d64-bad7-4458-9ee5-85cb6025d18a/62d382ee-6a9e-4cb3-8f16-01dbad5b154d#1795289039298750...
+..........................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261121T191056Z_A_1000_r1 (counted=true, analyze exit 0)
+2026-11-21T19:37:07Z END a 1000 r1: exit 0, 20261121T191056Z_A_1000_r1, ok; onTime_onTime 849  onTime_lateOrMissing 19  late_late 100  late_onTime 0  rate 0.0219
+2026-11-21T19:37:07Z START b 1000 r1
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T193710Z_B_1000_r1
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T193710Z_B_1000_r1/preflight.json
+slow: skew 30.5 ms (best rtt 75 ms), warm median 64.2 ms
+medium: skew 30.5 ms (best rtt 73 ms), warm median 62.8 ms
+fast: skew 32.0 ms (best rtt 78 ms), warm median 68.5 ms
+PREFLIGHT OK for arm b
+Generated schedule with 1000 students in C:\dev\deadlinedrop\results\runs\20261121T193710Z_B_1000_r1\schedule:
+  Classes: {'ON_TIME': 868, 'MARGIN': 32, 'LATE': 100}
+  Cohorts: {'slow': 329, 'medium': 370, 'fast': 301}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:19 |   4%shard-fast.json           | 82 kB |  82.5 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:24 |   3%shard-medium.json         | 102 kB | 102.2 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:21 |   4%shard-slow.json           | 89 kB |  89.9 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 370 students: k6 starts 305s before the earliest click
+Assignment 46eb5e75-5c5a-4641-907e-d5a440dbd1a8, deadline T=2026-11-21T19:54:42Z, grace 300s
+dd-k6-slow: starting k6 (329 students)
+dd-k6-medium: starting k6 (370 students)
+dd-k6-fast: starting k6 (301 students)
+k6 started on: slow medium fast (297s before the earliest click)
+Waiting 1317s until T + grace + 2 min
+Export taken after 1s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%vu-log-slow.ndjson        | 155 kB | 155.6 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-slow.out               | 64 kB |  64.0 kB/s | ETA: 00:00:01 |  40%k6-slow.out               | 157 kB | 157.6 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:04 |  18%vu-log-medium.ndjson      | 175 kB | 175.4 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-medium.out             | 64 kB |  64.0 kB/s | ETA: 00:00:01 |  41%k6-medium.out             | 154 kB | 154.6 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%vu-log-fast.ndjson        | 141 kB | 141.9 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-fast.out               | 155 kB | 155.9 kB/s | ETA: 00:00:00 | 100%
+arm B: 1000 students (on time 868, margin 32, late 100)
+  onTime_onTime 849  onTime_lateOrMissing 19  late_late 100  late_onTime 0  rate 0.0219
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+Removing gs://deadlinedrop-nirmal-dd-objects/a/46eb5e75-5c5a-4641-907e-d5a440dbd1a8/s/0016b82b-33cc-45a2-b65d-f3a0ec5bcd04/70b7c34d-fe5c-4a45-8540-d6cc250736a7#1795290754098536...
+Removing gs://deadlinedrop-nirmal-dd-objects/a/46eb5e75-5c5a-4641-907e-d5a440dbd1a8/s/003253ae-9926-400b-91a6-ebc3ea22926c/863508e3-844d-4505-a4a5-af231bce7f48#1795290834128336...
+.......................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261121T193710Z_B_1000_r1 (counted=true, analyze exit 0)
+2026-11-21T20:03:20Z END b 1000 r1: exit 0, 20261121T193710Z_B_1000_r1, ok; onTime_onTime 849  onTime_lateOrMissing 19  late_late 100  late_onTime 0  rate 0.0219
+2026-11-21T20:03:20Z START c 1000 r1
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T200324Z_C_1000_r1
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T200324Z_C_1000_r1/preflight.json
+slow: skew 31.5 ms (best rtt 75 ms), warm median 63.5 ms
+medium: skew 31.5 ms (best rtt 77 ms), warm median 66.3 ms
+fast: skew 31.5 ms (best rtt 77 ms), warm median 65.2 ms
+PREFLIGHT OK for arm c
+Generated schedule with 1000 students in C:\dev\deadlinedrop\results\runs\20261121T200324Z_C_1000_r1\schedule:
+  Classes: {'ON_TIME': 868, 'MARGIN': 32, 'LATE': 100}
+  Cohorts: {'slow': 329, 'medium': 370, 'fast': 301}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:19 |   4%shard-fast.json           | 82 kB |  82.5 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:24 |   3%shard-medium.json         | 102 kB | 102.2 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:21 |   4%shard-slow.json           | 89 kB |  89.9 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 370 students: k6 starts 305s before the earliest click
+Assignment 684116a0-6c79-42ae-aa6b-e867dbfd036c, deadline T=2026-11-21T20:21:00Z, grace 300s
+dd-k6-slow: starting k6 (329 students)
+dd-k6-medium: starting k6 (370 students)
+dd-k6-fast: starting k6 (301 students)
+k6 started on: slow medium fast (297s before the earliest click)
+Waiting 1317s until T + grace + 2 min
+Export taken after 1s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:04 |  18%vu-log-slow.ndjson        | 96 kB |  48.0 kB/s | ETA: 00:00:01 |  54%vu-log-slow.ndjson        | 175 kB |  87.5 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-slow.out               | 158 kB | 158.4 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:05 |  16%vu-log-medium.ndjson      | 197 kB | 197.2 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-medium.out             | 155 kB | 155.3 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%vu-log-fast.ndjson        | 159 kB | 159.6 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-fast.out               | 156 kB | 156.6 kB/s | ETA: 00:00:00 | 100%
+arm C: 1000 students (on time 868, margin 32, late 100)
+  onTime_onTime 868  onTime_lateOrMissing 0  late_late 100  late_onTime 0  rate 0.0000
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+  Server-Timing medians (ms): {'n': 1000, 'app': 101.0, 'db': 26.0, 'sign': 73.0, 'other': 2.0, 'largestPhase': 'sign'}
+Removing gs://deadlinedrop-nirmal-dd-objects/a/684116a0-6c79-42ae-aa6b-e867dbfd036c/s/00371928-141b-4905-a815-b8269d8dae89/b6ef5018-8016-4c40-8df6-0d929cc3ebc7#1795292236831680...
+Removing gs://deadlinedrop-nirmal-dd-objects/a/684116a0-6c79-42ae-aa6b-e867dbfd036c/s/01e5f362-89eb-4ec2-9f15-87020d6a7561/784f3752-0a5e-4caf-946a-c8b96fc5f6a9#1795292658657170...
+.....................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261121T200324Z_C_1000_r1 (counted=true, analyze exit 0)
+2026-11-21T20:29:51Z END c 1000 r1: exit 0, 20261121T200324Z_C_1000_r1, ok; onTime_onTime 868  onTime_lateOrMissing 0  late_late 100  late_onTime 0  rate 0.0000
+2026-11-21T20:29:51Z START a 1000 r2
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T202956Z_A_1000_r2
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T202956Z_A_1000_r2/preflight.json
+slow: skew 30.5 ms (best rtt 73 ms), warm median 63.7 ms
+medium: skew 31.5 ms (best rtt 75 ms), warm median 62.9 ms
+fast: skew 31.5 ms (best rtt 77 ms), warm median 66.4 ms
+PREFLIGHT OK for arm a
+Generated schedule with 1000 students in C:\dev\deadlinedrop\results\runs\20261121T202956Z_A_1000_r2\schedule:
+  Classes: {'ON_TIME': 869, 'MARGIN': 31, 'LATE': 100}
+  Cohorts: {'slow': 298, 'medium': 406, 'fast': 296}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:19 |   4%shard-fast.json           | 81 kB |  81.2 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:27 |   3%shard-medium.json         | 112 kB | 112.1 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:19 |   4%shard-slow.json           | 81 kB |  81.4 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 406 students: k6 starts 323s before the earliest click
+Assignment 5ab5f1ca-8f8d-4268-8362-10438ee0b4d4, deadline T=2026-11-21T20:47:53Z, grace 300s
+dd-k6-slow: starting k6 (298 students)
+dd-k6-medium: starting k6 (406 students)
+dd-k6-fast: starting k6 (296 students)
+k6 started on: slow medium fast (315s before the earliest click)
+Waiting 1335s until T + grace + 2 min
+Export taken after 1s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%vu-log-slow.ndjson        | 141 kB | 142.0 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-slow.out               | 96 kB |  48.0 kB/s | ETA: 00:00:01 |  60%k6-slow.out               | 159 kB |  79.8 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:05 |  16%vu-log-medium.ndjson      | 193 kB | 193.6 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-medium.out             | 158 kB | 158.3 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%vu-log-fast.ndjson        | 140 kB | 140.4 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:04 |  19%k6-fast.out               | 160 kB | 160.1 kB/s | ETA: 00:00:00 | 100%
+arm A: 1000 students (on time 869, margin 31, late 100)
+  onTime_onTime 856  onTime_lateOrMissing 13  late_late 100  late_onTime 0  rate 0.0150
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+Removing gs://deadlinedrop-nirmal-dd-objects/a/5ab5f1ca-8f8d-4268-8362-10438ee0b4d4/s/00cd67d5-0bdc-4fab-a8bb-5f3df14460c7/d591872a-df17-40ac-b074-61e9df7a1262#1795294009832033...
+Removing gs://deadlinedrop-nirmal-dd-objects/a/5ab5f1ca-8f8d-4268-8362-10438ee0b4d4/s/01d97d64-bad7-4458-9ee5-85cb6025d18a/b5a94ad6-9da2-42d5-a1f1-9ee8936adaa6#1795293922932694...
+......................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261121T202956Z_A_1000_r2 (counted=true, analyze exit 0)
+2026-11-21T20:56:44Z END a 1000 r2: exit 0, 20261121T202956Z_A_1000_r2, ok; onTime_onTime 856  onTime_lateOrMissing 13  late_late 100  late_onTime 0  rate 0.0150
+2026-11-21T20:56:44Z START b 1000 r2
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T205648Z_B_1000_r2
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T205648Z_B_1000_r2/preflight.json
+slow: skew 32.5 ms (best rtt 77 ms), warm median 65.7 ms
+medium: skew 31.0 ms (best rtt 76 ms), warm median 64.2 ms
+fast: skew 31.5 ms (best rtt 75 ms), warm median 64.8 ms
+PREFLIGHT OK for arm b
+Generated schedule with 1000 students in C:\dev\deadlinedrop\results\runs\20261121T205648Z_B_1000_r2\schedule:
+  Classes: {'ON_TIME': 869, 'MARGIN': 31, 'LATE': 100}
+  Cohorts: {'slow': 298, 'medium': 406, 'fast': 296}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:19 |   4%shard-fast.json           | 81 kB |  81.2 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:27 |   3%shard-medium.json         | 112 kB | 112.1 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:19 |   4%shard-slow.json           | 81 kB |  81.4 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 406 students: k6 starts 323s before the earliest click
+Assignment 25005dee-52b4-49ac-b634-d20585c98e21, deadline T=2026-11-21T21:14:47Z, grace 300s
+dd-k6-slow: starting k6 (298 students)
+dd-k6-medium: starting k6 (406 students)
+dd-k6-fast: starting k6 (296 students)
+k6 started on: slow medium fast (314s before the earliest click)
+Waiting 1334s until T + grace + 2 min
+Export taken after 1s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%vu-log-slow.ndjson        | 140 kB | 141.0 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-slow.out               | 128 kB | 128.0 kB/s | ETA: 00:00:00 |  80%k6-slow.out               | 159 kB | 159.0 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:05 |  16%vu-log-medium.ndjson      | 128 kB | 128.0 kB/s | ETA: 00:00:00 |  66%vu-log-medium.ndjson      | 192 kB | 192.5 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-medium.out             | 64 kB |  64.0 kB/s | ETA: 00:00:01 |  40%k6-medium.out             | 158 kB | 158.8 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%vu-log-fast.ndjson        | 139 kB | 139.6 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:04 |  19%k6-fast.out               | 161 kB | 161.3 kB/s | ETA: 00:00:00 | 100%
+arm B: 1000 students (on time 869, margin 31, late 100)
+  onTime_onTime 856  onTime_lateOrMissing 13  late_late 100  late_onTime 0  rate 0.0150
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+Removing gs://deadlinedrop-nirmal-dd-objects/a/25005dee-52b4-49ac-b634-d20585c98e21/s/0016b82b-33cc-45a2-b65d-f3a0ec5bcd04/7d94e05b-5181-4297-90f9-bdbec110137b#1795295533806547...
+Removing gs://deadlinedrop-nirmal-dd-objects/a/25005dee-52b4-49ac-b634-d20585c98e21/s/003253ae-9926-400b-91a6-ebc3ea22926c/ecf77ee8-96cf-4204-8d56-bf2802282a4d#1795295575224323...
+........................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261121T205648Z_B_1000_r2 (counted=true, analyze exit 0)
+2026-11-21T21:23:32Z END b 1000 r2: exit 0, 20261121T205648Z_B_1000_r2, ok; onTime_onTime 856  onTime_lateOrMissing 13  late_late 100  late_onTime 0  rate 0.0150
+2026-11-21T21:23:32Z START c 1000 r2
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T212336Z_C_1000_r2
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T212336Z_C_1000_r2/preflight.json
+slow: skew 30.5 ms (best rtt 75 ms), warm median 65.2 ms
+medium: skew 30.0 ms (best rtt 74 ms), warm median 63.5 ms
+fast: skew 32.5 ms (best rtt 79 ms), warm median 65.9 ms
+PREFLIGHT OK for arm c
+Generated schedule with 1000 students in C:\dev\deadlinedrop\results\runs\20261121T212336Z_C_1000_r2\schedule:
+  Classes: {'ON_TIME': 869, 'MARGIN': 31, 'LATE': 100}
+  Cohorts: {'slow': 298, 'medium': 406, 'fast': 296}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:19 |   4%shard-fast.json           | 81 kB |  81.2 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:27 |   3%shard-medium.json         | 112 kB | 112.1 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:19 |   4%shard-slow.json           | 81 kB |  81.4 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 406 students: k6 starts 323s before the earliest click
+Assignment 0d4526c5-97cf-4e05-b532-7bbe1b34eb12, deadline T=2026-11-21T21:41:26Z, grace 300s
+dd-k6-slow: starting k6 (298 students)
+dd-k6-medium: starting k6 (406 students)
+dd-k6-fast: starting k6 (296 students)
+k6 started on: slow medium fast (316s before the earliest click)
+Waiting 1336s until T + grace + 2 min
+1 rows still COMMITTED or UPLOADED after 1s; polling again in 30s
+Export taken after 33s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%vu-log-slow.ndjson        | 158 kB | 158.4 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:04 |  19%k6-slow.out               | 160 kB | 160.7 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:05 |  14%vu-log-medium.ndjson      | 216 kB | 216.2 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.0 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-medium.out             | 159 kB | 159.1 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%vu-log-fast.ndjson        | 96 kB |  48.0 kB/s | ETA: 00:00:01 |  61%vu-log-fast.ndjson        | 156 kB |  78.4 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-fast.out               | 159 kB | 159.6 kB/s | ETA: 00:00:00 | 100%
+arm C: 1000 students (on time 869, margin 31, late 100)
+  onTime_onTime 869  onTime_lateOrMissing 0  late_late 100  late_onTime 0  rate 0.0000
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+  Server-Timing medians (ms): {'n': 1000, 'app': 97.0, 'db': 22.0, 'sign': 74.0, 'other': 1.0, 'largestPhase': 'sign'}
+Removing gs://deadlinedrop-nirmal-dd-objects/a/0d4526c5-97cf-4e05-b532-7bbe1b34eb12/s/00371928-141b-4905-a815-b8269d8dae89/d07ec25d-d15e-4414-a324-1ed2afcb07de#1795297210140337...
+Removing gs://deadlinedrop-nirmal-dd-objects/a/0d4526c5-97cf-4e05-b532-7bbe1b34eb12/s/01e5f362-89eb-4ec2-9f15-87020d6a7561/d0ba10d0-005f-45ce-a9a9-33a76239c092#1795297295393873...
+.....................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261121T212336Z_C_1000_r2 (counted=true, analyze exit 0)
+2026-11-21T21:50:46Z END c 1000 r2: exit 0, 20261121T212336Z_C_1000_r2, ok; onTime_onTime 869  onTime_lateOrMissing 0  late_late 100  late_onTime 0  rate 0.0000
+2026-11-21T21:50:46Z START a 1000 r3
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T215050Z_A_1000_r3
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T215050Z_A_1000_r3/preflight.json
+slow: skew 33.5 ms (best rtt 79 ms), warm median 68.6 ms
+medium: skew 31.0 ms (best rtt 74 ms), warm median 62.2 ms
+fast: skew 31.0 ms (best rtt 74 ms), warm median 62.9 ms
+PREFLIGHT OK for arm a
+Generated schedule with 1000 students in C:\dev\deadlinedrop\results\runs\20261121T215050Z_A_1000_r3\schedule:
+  Classes: {'ON_TIME': 868, 'MARGIN': 32, 'LATE': 100}
+  Cohorts: {'slow': 302, 'medium': 402, 'fast': 296}
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:26 |   3%shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:19 |   4%shard-fast.json           | 81 kB |  81.2 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 110 kB | 111.0 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:19 |   4%shard-slow.json           | 82 kB |  82.5 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 402 students: k6 starts 321s before the earliest click
+Assignment 7df95c81-182e-41a7-a3aa-94a0c85d00d6, deadline T=2026-11-21T22:08:36Z, grace 300s
+dd-k6-slow: starting k6 (302 students)
+dd-k6-medium: starting k6 (402 students)
+dd-k6-fast: starting k6 (296 students)
+k6 started on: slow medium fast (312s before the earliest click)
+Waiting 1332s until T + grace + 2 min
+Export taken after 0s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%vu-log-slow.ndjson        | 143 kB | 143.8 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-slow.out               | 158 kB | 158.8 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:04 |  16%vu-log-medium.ndjson      | 191 kB | 191.7 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-medium.out             | 157 kB | 157.7 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%vu-log-fast.ndjson        | 140 kB | 140.4 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-fast.out               | 159 kB | 159.7 kB/s | ETA: 00:00:00 | 100%
+arm A: 1000 students (on time 868, margin 32, late 100)
+  onTime_onTime 855  onTime_lateOrMissing 13  late_late 100  late_onTime 0  rate 0.0150
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+Removing gs://deadlinedrop-nirmal-dd-objects/a/7df95c81-182e-41a7-a3aa-94a0c85d00d6/s/00cd67d5-0bdc-4fab-a8bb-5f3df14460c7/501dd168-b355-4534-aa75-a5e8aad4e586#1795298796520326...
+Removing gs://deadlinedrop-nirmal-dd-objects/a/7df95c81-182e-41a7-a3aa-94a0c85d00d6/s/01d97d64-bad7-4458-9ee5-85cb6025d18a/2c900476-30a3-4d35-98f8-0f0f37a99761#1795298727982564...
+....................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261121T215050Z_A_1000_r3 (counted=true, analyze exit 0)
+2026-11-21T22:17:16Z END a 1000 r3: exit 0, 20261121T215050Z_A_1000_r3, ok; onTime_onTime 855  onTime_lateOrMissing 13  late_late 100  late_onTime 0  rate 0.0150
+2026-11-21T22:17:16Z START b 1000 r3
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T221720Z_B_1000_r3
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T221720Z_B_1000_r3/preflight.json
+slow: skew 31.0 ms (best rtt 76 ms), warm median 64.6 ms
+medium: skew 32.0 ms (best rtt 76 ms), warm median 64.1 ms
+fast: skew 32.0 ms (best rtt 76 ms), warm median 66.5 ms
+PREFLIGHT OK for arm b
+Generated schedule with 1000 students in C:\dev\deadlinedrop\results\runs\20261121T221720Z_B_1000_r3\schedule:
+  Classes: {'ON_TIME': 868, 'MARGIN': 32, 'LATE': 100}
+  Cohorts: {'slow': 302, 'medium': 402, 'fast': 296}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:19 |   4%shard-fast.json           | 81 kB |  81.2 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:26 |   3%shard-medium.json         | 110 kB | 111.0 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:19 |   4%shard-slow.json           | 82 kB |  82.5 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 402 students: k6 starts 321s before the earliest click
+Assignment 6c9a2277-c864-4e79-b5cf-085eddd969ae, deadline T=2026-11-21T22:35:12Z, grace 300s
+dd-k6-slow: starting k6 (302 students)
+dd-k6-medium: starting k6 (402 students)
+dd-k6-fast: starting k6 (296 students)
+k6 started on: slow medium fast (313s before the earliest click)
+Waiting 1333s until T + grace + 2 min
+Export taken after 1s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%vu-log-slow.ndjson        | 142 kB | 142.8 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-slow.out               | 158 kB | 158.8 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:04 |  16%vu-log-medium.ndjson      | 96 kB |  96.0 kB/s | ETA: 00:00:00 |  50%vu-log-medium.ndjson      | 190 kB | 190.6 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-medium.out             | 159 kB | 159.1 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%vu-log-fast.ndjson        | 139 kB | 139.5 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-fast.out               | 96 kB |  96.0 kB/s | ETA: 00:00:00 |  60%k6-fast.out               | 158 kB | 158.1 kB/s | ETA: 00:00:00 | 100%
+arm B: 1000 students (on time 868, margin 32, late 100)
+  onTime_onTime 855  onTime_lateOrMissing 13  late_late 100  late_onTime 0  rate 0.0150
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+Removing gs://deadlinedrop-nirmal-dd-objects/a/6c9a2277-c864-4e79-b5cf-085eddd969ae/s/0016b82b-33cc-45a2-b65d-f3a0ec5bcd04/ed243a71-0007-4562-9210-8f0930c9932f#1795300506770964...
+Removing gs://deadlinedrop-nirmal-dd-objects/a/6c9a2277-c864-4e79-b5cf-085eddd969ae/s/003253ae-9926-400b-91a6-ebc3ea22926c/22cba3c5-d26c-41c1-8279-d57aa5375d71#1795300498444065...
+.......................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261121T221720Z_B_1000_r3 (counted=true, analyze exit 0)
+2026-11-21T22:43:53Z END b 1000 r3: exit 0, 20261121T221720Z_B_1000_r3, ok; onTime_onTime 855  onTime_lateOrMissing 13  late_late 100  late_onTime 0  rate 0.0150
+2026-11-21T22:43:53Z START c 1000 r3
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T224357Z_C_1000_r3
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T224357Z_C_1000_r3/preflight.json
+slow: skew 31.5 ms (best rtt 77 ms), warm median 65.5 ms
+medium: skew 30.5 ms (best rtt 75 ms), warm median 64.8 ms
+fast: skew 30.5 ms (best rtt 75 ms), warm median 64.8 ms
+PREFLIGHT OK for arm c
+Generated schedule with 1000 students in C:\dev\deadlinedrop\results\runs\20261121T224357Z_C_1000_r3\schedule:
+  Classes: {'ON_TIME': 868, 'MARGIN': 32, 'LATE': 100}
+  Cohorts: {'slow': 302, 'medium': 402, 'fast': 296}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:19 |   4%shard-fast.json           | 81 kB |  81.2 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:26 |   3%shard-medium.json         | 110 kB | 111.0 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:19 |   4%shard-slow.json           | 82 kB |  82.5 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 402 students: k6 starts 321s before the earliest click
+Assignment 89e8861a-2aaa-4d87-ae5c-0192a2d5342d, deadline T=2026-11-21T23:01:41Z, grace 300s
+dd-k6-slow: starting k6 (302 students)
+dd-k6-medium: starting k6 (402 students)
+dd-k6-fast: starting k6 (296 students)
+k6 started on: slow medium fast (313s before the earliest click)
+Waiting 1333s until T + grace + 2 min
+1 rows still COMMITTED or UPLOADED after 1s; polling again in 30s
+Export taken after 32s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:04 |  19%vu-log-slow.ndjson        | 160 kB | 160.6 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-slow.out               | 128 kB | 128.0 kB/s | ETA: 00:00:00 |  80%k6-slow.out               | 159 kB | 159.8 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:05 |  14%vu-log-medium.ndjson      | 214 kB | 214.1 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%k6-medium.out             | 96 kB |  96.0 kB/s | ETA: 00:00:00 |  60%k6-medium.out             | 157 kB | 157.8 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  20%vu-log-fast.ndjson        | 156 kB | 156.9 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.0 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:04 |  19%k6-fast.out               | 160 kB | 160.9 kB/s | ETA: 00:00:00 | 100%
+arm C: 1000 students (on time 868, margin 32, late 100)
+  onTime_onTime 868  onTime_lateOrMissing 0  late_late 100  late_onTime 0  rate 0.0000
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+  Server-Timing medians (ms): {'n': 1000, 'app': 99.0, 'db': 24.0, 'sign': 73.0, 'other': 1.0, 'largestPhase': 'sign'}
+Removing gs://deadlinedrop-nirmal-dd-objects/a/89e8861a-2aaa-4d87-ae5c-0192a2d5342d/s/00371928-141b-4905-a815-b8269d8dae89/84cb6983-40ba-4c4e-8914-9bb6f13683f8#1795302018871474...
+Removing gs://deadlinedrop-nirmal-dd-objects/a/89e8861a-2aaa-4d87-ae5c-0192a2d5342d/s/01e5f362-89eb-4ec2-9f15-87020d6a7561/fa34029d-aee9-4e09-86b8-6761e947616b#1795302383739343...
+.......................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261121T224357Z_C_1000_r3 (counted=true, analyze exit 0)
+2026-11-21T23:10:46Z END c 1000 r3: exit 0, 20261121T224357Z_C_1000_r3, ok; onTime_onTime 868  onTime_lateOrMissing 0  late_late 100  late_onTime 0  rate 0.0000
+2026-11-21T23:10:46Z SUMMARY (18 lines: 17 ok, 0 skipped, 0 G3 failed, 1 invalid, 0 other)
+2026-11-21T23:10:46Z   a 500 r1 | exit 0 | 20261121T153509Z_A_500_r1 | ok; onTime_onTime 420  onTime_lateOrMissing 9  late_late 50  late_onTime 0  rate 0.0210
+2026-11-21T23:10:47Z   b 500 r1 | exit 0 | 20261121T160223Z_B_500_r1 | ok; onTime_onTime 420  onTime_lateOrMissing 9  late_late 50  late_onTime 0  rate 0.0210
+2026-11-21T23:10:47Z   c 500 r1 | exit 0 | 20261121T162912Z_C_500_r1 | ok; onTime_onTime 429  onTime_lateOrMissing 0  late_late 50  late_onTime 0  rate 0.0000
+2026-11-21T23:10:47Z   a 500 r2 | exit 0 | 20261121T165406Z_A_500_r2 | ok; onTime_onTime 422  onTime_lateOrMissing 10  late_late 50  late_onTime 0  rate 0.0231
+2026-11-21T23:10:47Z   b 500 r2 | exit 0 | 20261121T171906Z_B_500_r2 | ok; onTime_onTime 422  onTime_lateOrMissing 10  late_late 50  late_onTime 0  rate 0.0231
+2026-11-21T23:10:47Z   c 500 r2 | exit 0 | 20261121T174401Z_C_500_r2 | ok; onTime_onTime 432  onTime_lateOrMissing 0  late_late 50  late_onTime 0  rate 0.0000
+2026-11-21T23:10:47Z   a 500 r3 | exit 0 | 20261121T180909Z_A_500_r3 | ok; onTime_onTime 426  onTime_lateOrMissing 3  late_late 50  late_onTime 0  rate 0.0070
+2026-11-21T23:10:48Z   b 500 r3 | exit 4 | 20261121T183407Z_B_500_r3 | INVALID: VM dd-k6-slow stopped answering, or k6 died without a summary, at 18:43:50Z
+2026-11-21T23:10:48Z   c 500 r3 | exit 0 | 20261121T184401Z_C_500_r3 | ok; onTime_onTime 429  onTime_lateOrMissing 0  late_late 50  late_onTime 0  rate 0.0000
+2026-11-21T23:10:48Z   a 1000 r1 | exit 0 | 20261121T191056Z_A_1000_r1 | ok; onTime_onTime 849  onTime_lateOrMissing 19  late_late 100  late_onTime 0  rate 0.0219
+2026-11-21T23:10:48Z   b 1000 r1 | exit 0 | 20261121T193710Z_B_1000_r1 | ok; onTime_onTime 849  onTime_lateOrMissing 19  late_late 100  late_onTime 0  rate 0.0219
+2026-11-21T23:10:48Z   c 1000 r1 | exit 0 | 20261121T200324Z_C_1000_r1 | ok; onTime_onTime 868  onTime_lateOrMissing 0  late_late 100  late_onTime 0  rate 0.0000
+2026-11-21T23:10:48Z   a 1000 r2 | exit 0 | 20261121T202956Z_A_1000_r2 | ok; onTime_onTime 856  onTime_lateOrMissing 13  late_late 100  late_onTime 0  rate 0.0150
+2026-11-21T23:10:49Z   b 1000 r2 | exit 0 | 20261121T205648Z_B_1000_r2 | ok; onTime_onTime 856  onTime_lateOrMissing 13  late_late 100  late_onTime 0  rate 0.0150
+2026-11-21T23:10:49Z   c 1000 r2 | exit 0 | 20261121T212336Z_C_1000_r2 | ok; onTime_onTime 869  onTime_lateOrMissing 0  late_late 100  late_onTime 0  rate 0.0000
+2026-11-21T23:10:49Z   a 1000 r3 | exit 0 | 20261121T215050Z_A_1000_r3 | ok; onTime_onTime 855  onTime_lateOrMissing 13  late_late 100  late_onTime 0  rate 0.0150
+2026-11-21T23:10:49Z   b 1000 r3 | exit 0 | 20261121T221720Z_B_1000_r3 | ok; onTime_onTime 855  onTime_lateOrMissing 13  late_late 100  late_onTime 0  rate 0.0150
+2026-11-21T23:10:49Z   c 1000 r3 | exit 0 | 20261121T224357Z_C_1000_r3 | ok; onTime_onTime 868  onTime_lateOrMissing 0  late_late 100  late_onTime 0  rate 0.0000
+2026-11-21T23:10:49Z Invalid runs are repeated into _rerun folders by running: bash tools/sweep.sh tools/plans/day16.txt
+2026-11-21T23:10:50Z sweep finished
+2026-11-21T23:10:56Z sweep started: plan tools/plans/day16.txt, commit 12e591c, host DESKTOP-T7TBPCV
+2026-11-21T23:10:56Z sleep inhibited while the sweep runs (helper pid 33608)
+2026-11-21T23:10:57Z START a 500 r1
+SKIP A_500_r1: already done in 20261121T153509Z_A_500_r1
+2026-11-21T23:11:01Z END a 500 r1: exit 0, no folder, skipped (20261121T153509Z_A_500_r1)
+2026-11-21T23:11:02Z START b 500 r1
+SKIP B_500_r1: already done in 20261121T160223Z_B_500_r1
+2026-11-21T23:11:06Z END b 500 r1: exit 0, no folder, skipped (20261121T160223Z_B_500_r1)
+2026-11-21T23:11:07Z START c 500 r1
+SKIP C_500_r1: already done in 20261121T162912Z_C_500_r1
+2026-11-21T23:11:11Z END c 500 r1: exit 0, no folder, skipped (20261121T162912Z_C_500_r1)
+2026-11-21T23:11:12Z START a 500 r2
+SKIP A_500_r2: already done in 20261121T165406Z_A_500_r2
+2026-11-21T23:11:17Z END a 500 r2: exit 0, no folder, skipped (20261121T165406Z_A_500_r2)
+2026-11-21T23:11:17Z START b 500 r2
+SKIP B_500_r2: already done in 20261121T171906Z_B_500_r2
+2026-11-21T23:11:22Z END b 500 r2: exit 0, no folder, skipped (20261121T171906Z_B_500_r2)
+2026-11-21T23:11:22Z START c 500 r2
+SKIP C_500_r2: already done in 20261121T174401Z_C_500_r2
+2026-11-21T23:11:28Z END c 500 r2: exit 0, no folder, skipped (20261121T174401Z_C_500_r2)
+2026-11-21T23:11:28Z START a 500 r3
+SKIP A_500_r3: already done in 20261121T180909Z_A_500_r3
+2026-11-21T23:11:33Z END a 500 r3: exit 0, no folder, skipped (20261121T180909Z_A_500_r3)
+2026-11-21T23:11:34Z START b 500 r3
+Run folder: /c/dev/deadlinedrop/results/runs/20261121T231137Z_B_500_r3_rerun
+== (a) parity ==
+parity clean
+== (b) connection budget ==
+dd-arm-a: maxScale 3 x pool 5 = 15
+dd-arm-b: maxScale 3 x pool 5 = 15
+dd-arm-c: maxScale 3 x pool 5 = 15
+Starting cloud-sql-proxy for dd-pg on 127.0.0.1:15432
+sum(maxScale x pool) = 45; max_connections = 50; allowed <= 45
+== (c) clock skew and (d) warm ==
+dd-k6-slow: probed unshaped, 'slow' shaping restored
+dd-k6-medium: probed unshaped, 'medium' shaping restored
+dd-k6-fast: probed unshaped, 'fast' shaping restored
+wrote /c/dev/deadlinedrop/results/runs/20261121T231137Z_B_500_r3_rerun/preflight.json
+slow: skew 31.5 ms (best rtt 75 ms), warm median 67.0 ms
+medium: skew 32.0 ms (best rtt 76 ms), warm median 65.3 ms
+fast: skew 32.0 ms (best rtt 76 ms), warm median 64.9 ms
+PREFLIGHT OK for arm b
+Generated schedule with 500 students in C:\dev\deadlinedrop\results\runs\20261121T231137Z_B_500_r3_rerun\schedule:
+  Classes: {'ON_TIME': 429, 'MARGIN': 21, 'LATE': 50}
+  Cohorts: {'slow': 156, 'medium': 199, 'fast': 145}
+shard-fast.json           | 4 kB |   4.0 kB/s | ETA: 00:00:08 |  10%shard-fast.json           | 39 kB |  39.7 kB/s | ETA: 00:00:00 | 100%
+shard-medium.json         | 4 kB |   4.0 kB/s | ETA: 00:00:12 |   7%shard-medium.json         | 54 kB |  55.0 kB/s | ETA: 00:00:00 | 100%
+shard-slow.json           | 4 kB |   4.0 kB/s | ETA: 00:00:09 |   9%shard-slow.json           | 42 kB |  42.6 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+rush.js                   | 4 kB |   4.0 kB/s | ETA: 00:00:00 |  85%rush.js                   | 4 kB |   4.7 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+flows.js                  | 4 kB |   4.0 kB/s | ETA: 00:00:02 |  30%flows.js                  | 13 kB |  13.2 kB/s | ETA: 00:00:00 | 100%
+Largest shard 199 students: k6 starts 220s before the earliest click
+Assignment 4128b297-ca53-4ffa-a64e-fffc8f950292, deadline T=2026-11-21T23:27:48Z, grace 300s
+dd-k6-slow: starting k6 (156 students)
+dd-k6-medium: starting k6 (199 students)
+dd-k6-fast: starting k6 (145 students)
+k6 started on: slow medium fast (213s before the earliest click)
+Waiting 1233s until T + grace + 2 min
+Export taken after 1s extra wait (noPending, 0 rows pending)
+vu-log-slow.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  43%vu-log-slow.ndjson        | 73 kB |  73.8 kB/s | ETA: 00:00:00 | 100%
+summary-slow.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-slow.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  21%k6-slow.out               | 151 kB | 151.1 kB/s | ETA: 00:00:00 | 100%
+vu-log-medium.ndjson      | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  33%vu-log-medium.ndjson      | 94 kB |  94.4 kB/s | ETA: 00:00:00 | 100%
+summary-medium.json       | 3 kB |   3.0 kB/s | ETA: 00:00:00 | 100%
+k6-medium.out             | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  21%k6-medium.out             | 146 kB | 146.4 kB/s | ETA: 00:00:00 | 100%
+vu-log-fast.ndjson        | 32 kB |  32.0 kB/s | ETA: 00:00:01 |  46%vu-log-fast.ndjson        | 68 kB |  68.4 kB/s | ETA: 00:00:00 | 100%
+summary-fast.json         | 3 kB |   3.1 kB/s | ETA: 00:00:00 | 100%
+k6-fast.out               | 32 kB |  32.0 kB/s | ETA: 00:00:03 |  22%k6-fast.out               | 145 kB | 145.1 kB/s | ETA: 00:00:00 | 100%
+arm B: 500 students (on time 429, margin 21, late 50)
+  onTime_onTime 426  onTime_lateOrMissing 3  late_late 50  late_onTime 0  rate 0.0070
+  lost 0  duplicates 0  pending 0  connectionErrors 0
+Removing gs://deadlinedrop-nirmal-dd-objects/a/4128b297-ca53-4ffa-a64e-fffc8f950292/s/0016b82b-33cc-45a2-b65d-f3a0ec5bcd04/aeec6266-018e-464a-a1ee-985c48a7e890#1795303501457259...
+Removing gs://deadlinedrop-nirmal-dd-objects/a/4128b297-ca53-4ffa-a64e-fffc8f950292/s/003253ae-9926-400b-91a6-ebc3ea22926c/46a22e76-1a92-4bcc-9fe8-f30803a242cd#1795303660436324...
+..................................
+Run complete: /c/dev/deadlinedrop/results/runs/20261121T231137Z_B_500_r3_rerun (counted=true, analyze exit 0)
+2026-11-21T23:36:27Z END b 500 r3: exit 0, 20261121T231137Z_B_500_r3_rerun, ok; onTime_onTime 426  onTime_lateOrMissing 3  late_late 50  late_onTime 0  rate 0.0070
+2026-11-21T23:36:27Z START c 500 r3
+SKIP C_500_r3: already done in 20261121T184401Z_C_500_r3
+2026-11-21T23:36:33Z END c 500 r3: exit 0, no folder, skipped (20261121T184401Z_C_500_r3)
+2026-11-21T23:36:33Z START a 1000 r1
+SKIP A_1000_r1: already done in 20261121T191056Z_A_1000_r1
+2026-11-21T23:36:39Z END a 1000 r1: exit 0, no folder, skipped (20261121T191056Z_A_1000_r1)
+2026-11-21T23:36:39Z START b 1000 r1
+SKIP B_1000_r1: already done in 20261121T193710Z_B_1000_r1
+2026-11-21T23:36:45Z END b 1000 r1: exit 0, no folder, skipped (20261121T193710Z_B_1000_r1)
+2026-11-21T23:36:45Z START c 1000 r1
+SKIP C_1000_r1: already done in 20261121T200324Z_C_1000_r1
+2026-11-21T23:36:50Z END c 1000 r1: exit 0, no folder, skipped (20261121T200324Z_C_1000_r1)
+2026-11-21T23:36:51Z START a 1000 r2
+SKIP A_1000_r2: already done in 20261121T202956Z_A_1000_r2
+2026-11-21T23:36:56Z END a 1000 r2: exit 0, no folder, skipped (20261121T202956Z_A_1000_r2)
+2026-11-21T23:36:56Z START b 1000 r2
+SKIP B_1000_r2: already done in 20261121T205648Z_B_1000_r2
+2026-11-21T23:37:02Z END b 1000 r2: exit 0, no folder, skipped (20261121T205648Z_B_1000_r2)
+2026-11-21T23:37:02Z START c 1000 r2
+SKIP C_1000_r2: already done in 20261121T212336Z_C_1000_r2
+2026-11-21T23:37:07Z END c 1000 r2: exit 0, no folder, skipped (20261121T212336Z_C_1000_r2)
+2026-11-21T23:37:08Z START a 1000 r3
+SKIP A_1000_r3: already done in 20261121T215050Z_A_1000_r3
+2026-11-21T23:37:12Z END a 1000 r3: exit 0, no folder, skipped (20261121T215050Z_A_1000_r3)
+2026-11-21T23:37:12Z START b 1000 r3
+SKIP B_1000_r3: already done in 20261121T221720Z_B_1000_r3
+2026-11-21T23:37:18Z END b 1000 r3: exit 0, no folder, skipped (20261121T221720Z_B_1000_r3)
+2026-11-21T23:37:18Z START c 1000 r3
+SKIP C_1000_r3: already done in 20261121T224357Z_C_1000_r3
+2026-11-21T23:37:23Z END c 1000 r3: exit 0, no folder, skipped (20261121T224357Z_C_1000_r3)
+2026-11-21T23:37:23Z SUMMARY (18 lines: 1 ok, 17 skipped, 0 G3 failed, 0 invalid, 0 other)
+2026-11-21T23:37:23Z   a 500 r1 | exit 0 | no folder | skipped (20261121T153509Z_A_500_r1)
+2026-11-21T23:37:23Z   b 500 r1 | exit 0 | no folder | skipped (20261121T160223Z_B_500_r1)
+2026-11-21T23:37:23Z   c 500 r1 | exit 0 | no folder | skipped (20261121T162912Z_C_500_r1)
+2026-11-21T23:37:23Z   a 500 r2 | exit 0 | no folder | skipped (20261121T165406Z_A_500_r2)
+2026-11-21T23:37:24Z   b 500 r2 | exit 0 | no folder | skipped (20261121T171906Z_B_500_r2)
+2026-11-21T23:37:24Z   c 500 r2 | exit 0 | no folder | skipped (20261121T174401Z_C_500_r2)
+2026-11-21T23:37:24Z   a 500 r3 | exit 0 | no folder | skipped (20261121T180909Z_A_500_r3)
+2026-11-21T23:37:24Z   b 500 r3 | exit 0 | 20261121T231137Z_B_500_r3_rerun | ok; onTime_onTime 426  onTime_lateOrMissing 3  late_late 50  late_onTime 0  rate 0.0070
+2026-11-21T23:37:24Z   c 500 r3 | exit 0 | no folder | skipped (20261121T184401Z_C_500_r3)
+2026-11-21T23:37:25Z   a 1000 r1 | exit 0 | no folder | skipped (20261121T191056Z_A_1000_r1)
+2026-11-21T23:37:25Z   b 1000 r1 | exit 0 | no folder | skipped (20261121T193710Z_B_1000_r1)
+2026-11-21T23:37:25Z   c 1000 r1 | exit 0 | no folder | skipped (20261121T200324Z_C_1000_r1)
+2026-11-21T23:37:25Z   a 1000 r2 | exit 0 | no folder | skipped (20261121T202956Z_A_1000_r2)
+2026-11-21T23:37:25Z   b 1000 r2 | exit 0 | no folder | skipped (20261121T205648Z_B_1000_r2)
+2026-11-21T23:37:25Z   c 1000 r2 | exit 0 | no folder | skipped (20261121T212336Z_C_1000_r2)
+2026-11-21T23:37:25Z   a 1000 r3 | exit 0 | no folder | skipped (20261121T215050Z_A_1000_r3)
+2026-11-21T23:37:26Z   b 1000 r3 | exit 0 | no folder | skipped (20261121T221720Z_B_1000_r3)
+2026-11-21T23:37:26Z   c 1000 r3 | exit 0 | no folder | skipped (20261121T224357Z_C_1000_r3)
+2026-11-21T23:37:26Z sweep finished

@@ -1,0 +1,12 @@
+{
+  "arm": "b",
+  "size": 500,
+  "repeat": 3,
+  "fault": "none",
+  "counted": true,
+  "valid": false,
+  "startedAt": "2026-11-21T18:34:07Z",
+  "rerunOf": null,
+  "invalidReason": "VM dd-k6-slow stopped answering, or k6 died without a summary, at 18:43:50Z",
+  "invalidAt": "2026-11-21T18:43:50Z"
+}

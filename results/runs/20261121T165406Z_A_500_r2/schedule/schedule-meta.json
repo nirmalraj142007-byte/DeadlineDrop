@@ -1,0 +1,41 @@
+{
+  "mode": "PUBLIC_PROFILES",
+  "label": "PUBLIC_PROFILES",
+  "seed": 236189901,
+  "n": 500,
+  "cohortMinutes": 10.0,
+  "lateFrac": 0.1,
+  "graceSeconds": 300.0,
+  "counts": {
+    "ON_TIME": 432,
+    "MARGIN": 18,
+    "LATE": 50
+  },
+  "classes": {
+    "ON_TIME": 432,
+    "MARGIN": 18,
+    "LATE": 50
+  },
+  "cohorts": {
+    "slow": 147,
+    "medium": 203,
+    "fast": 150
+  },
+  "profiles": {
+    "slow": {
+      "rateMbps": 7.0,
+      "rttMs": 40.0,
+      "source": "Ookla open data 2026-Q3 India: mobile upload p20 7.124 Mbps; mobile latency p80 41 ms"
+    },
+    "medium": {
+      "rateMbps": 20.0,
+      "rttMs": 25.0,
+      "source": "Ookla open data 2026-Q3 India: mobile upload p80 21.248 and fixed upload p20 18.544 Mbps; latency between mobile p50 (29 ms) and fixed p80 (20 ms)"
+    },
+    "fast": {
+      "rateMbps": 54.0,
+      "rttMs": 10.0,
+      "source": "Ookla open data 2026-Q3 India: fixed upload p50 54.409 Mbps; fixed latency p50 9 ms"
+    }
+  }
+}

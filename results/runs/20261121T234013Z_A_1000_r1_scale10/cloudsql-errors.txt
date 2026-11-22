@@ -1,0 +1,3 @@
+# Cloud SQL deadlinedrop-nirmal:dd-pg, postgres.log, 2026-11-21T23:40:14Z to 2026-11-22T00:09:32Z (UTC)
+# filter: severity>=WARNING or textPayload contains FATAL, ERROR or the reserved-connection-slots message
+# pulled 2026-11-22T00:11:10Z by tools/cloudsql-errors.sh; 0 lines
