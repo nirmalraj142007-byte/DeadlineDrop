@@ -3,7 +3,7 @@ SHELL := C:/Program Files/Git/bin/bash.exe
 else
 SHELL := /bin/bash
 endif
-.PHONY: verify up down logs terms seed k6-local charts e2e
+.PHONY: verify up down logs terms seed k6-local charts e2e demo demo-reset demo-deadline demo-rush check
 
 verify:
 	bash tools/check-frozen.sh
@@ -36,3 +36,21 @@ charts:
 # which is torn down with its volumes afterwards. Needs k6 and Docker.
 e2e:
 	bash tools/e2e/e2e.sh
+
+# Phase 37: offline demo (two arm C replicas behind nginx on :8080, arm B on :8081, storage on :9000).
+DEMO_COMPOSE := docker compose -f docker-compose.yml -f docker-compose.demo.yml
+
+demo:
+	$(DEMO_COMPOSE) up -d --build postgres app-c1 app-c2 nginx app-armb storage scheduler
+
+demo-reset:
+	bash tools/demo/demo-reset.sh
+
+demo-deadline:
+	bash tools/demo/demo-deadline.sh $(or $(SECONDS),120)
+
+demo-rush:
+	bash tools/demo/demo-rush.sh
+
+check:
+	bash tools/demo/check.sh

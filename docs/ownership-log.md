@@ -798,3 +798,11 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 - **Trade-off:** the failure test identifies a 503 by status, not by reading its `DATABASE_UNAVAILABLE` code, because the shared `armC` retry policy only keeps statuses and `tools/k6/**` is frozen. Every 503 in this app carries that code. Each script creates its own assignment so reruns never meet earlier live rows.
 - **Tests:** `make e2e` green (happy 12/12 checks; failure 18/18, 5 of 5 students retried a 503); `tools/check-frozen.sh` clean; `DatabaseDownIT` green.
 - **File to read first:** `tools/e2e/failure.js`.
+
+## 2026-11-24 - Phase 37: offline demo stack
+
+- **What changed:** `docker-compose.demo.yml` (used on top of `docker-compose.yml`): two arm C replicas `app-c1`/`app-c2`, nginx on :8080 (`deploy/nginx.conf`), arm B `app-armb` on :8081, storage on :9000, and a scheduler that calls nginx. The plain `app` service is not started. `deploy/healthcheck.sh` gives the JRE image a health check. `tools/demo/` holds `demo-reset.sh`, `demo-deadline.sh`, `demo-rush.sh`, `check.sh` (+ `check.py`), `demo-preflight.sh`; `make demo`, `demo-reset`, `demo-deadline`, `demo-rush`, `check`; `docs/demo/setup.md`.
+- **Why:** the cloud project is deleted on 26 Nov (phase 40), and the demo must still run on a laptop with no internet in front of an audience.
+- **Trade-off:** `demo-deadline.sh` writes the deadline straight into Postgres with psql, which is demo tooling, not product behaviour. nginx resolves the replicas once at start, so a recreated replica needs an nginx restart. `check.sh` calls the reconcile and drain endpoints first, so it does not wait on the 60 s scheduler.
+- **Tests:** see the session transcript for the acceptance output. No Java and no frozen path changed.
+- **File to read first:** `deploy/nginx.conf`, then `tools/demo/check.py`.

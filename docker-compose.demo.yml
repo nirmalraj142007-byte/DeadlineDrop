@@ -1,0 +1,102 @@
+# Offline demo stack. Use together with the base file:
+#   docker compose -f docker-compose.yml -f docker-compose.demo.yml up -d --build \
+#     postgres app-c1 app-c2 nginx app-armb storage scheduler
+# (make demo does exactly this). The plain `app` service of the base file is NOT started:
+# nginx owns :8080 and fronts the two arm C replicas.
+#
+#   :8080  nginx -> app-c1 / app-c2   arm C (database dd_c)
+#   :8081  app-armb                   arm B (database dd_b)
+#   :9000  storage                    local signed-URL storage server
+#
+# Everything the demo needs is a local image or a local container: after the images are built
+# and nginx has been pulled once, no step touches the internet.
+
+x-arm-c: &arm-c
+  build: .
+  environment:
+    SPRING_PROFILES_ACTIVE: local
+    DB_HOST: postgres
+    DB_NAME: dd_c
+    DB_USER: ${DB_USER}
+    DB_PASSWORD: ${DB_PASSWORD}
+    JWT_SECRET: ${JWT_SECRET}
+    TELEMETRY_SALT: ${TELEMETRY_SALT}
+    RECEIPT_HMAC_KEY: ${RECEIPT_HMAC_KEY}
+    RECEIPT_ENABLED: ${RECEIPT_ENABLED:-true}
+    DD_STORAGE_HMAC_SECRET: ${DD_STORAGE_HMAC_SECRET}
+    INTERNAL_TOKEN: ${INTERNAL_TOKEN}
+  depends_on:
+    postgres:
+      condition: service_healthy
+  volumes:
+    - objects:/data/objects
+    - ./deploy/healthcheck.sh:/healthcheck.sh:ro
+  healthcheck:
+    test: ["CMD", "bash", "/healthcheck.sh", "8080", "/actuator/health"]
+    interval: 5s
+    timeout: 5s
+    retries: 30
+    start_period: 20s
+
+services:
+  app-c1:
+    <<: *arm-c
+
+  app-c2:
+    <<: *arm-c
+
+  nginx:
+    image: nginx:1.27-alpine
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8080:8080"
+    depends_on:
+      app-c1:
+        condition: service_healthy
+      app-c2:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8080/nginx-health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Arm B: same code, direct-finalize profile, its own database, published on :8081.
+  app-armb:
+    profiles: !reset []
+    ports: !override
+      - "8081:8080"
+    volumes:
+      - objects:/data/objects
+      - ./deploy/healthcheck.sh:/healthcheck.sh:ro
+    healthcheck:
+      test: ["CMD", "bash", "/healthcheck.sh", "8080", "/actuator/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  storage:
+    volumes:
+      - objects:/data/objects
+      - ./deploy/healthcheck.sh:/healthcheck.sh:ro
+    healthcheck:
+      test: ["CMD", "bash", "/healthcheck.sh", "9000"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+  # Plays Cloud Scheduler: reconcile then drain, through nginx so either replica may answer.
+  scheduler:
+    depends_on: !override
+      nginx:
+        condition: service_healthy
+    command: !override
+      - >-
+        while true;
+        do curl -s -w '\n' -X POST -H "X-Internal-Token: $$INTERNAL_TOKEN" http://nginx:8080/internal/reconcile;
+        curl -s -w '\n' -X POST -H "X-Internal-Token: $$INTERNAL_TOKEN" http://nginx:8080/internal/jobs/drain;
+        sleep 60;
+        done
