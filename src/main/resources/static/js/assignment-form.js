@@ -60,8 +60,13 @@ async function loadForEdit() {
   if (!assignmentId) return;
   document.getElementById('assignment-form-heading').textContent = 'Edit assignment';
   document.getElementById('assignment-submit').textContent = 'Save changes';
+  const loadingBanner = banner('info', 'Loading assignment…');
+  document.getElementById('assignment-banner').appendChild(loadingBanner);
+  document.getElementById('assignment-submit').disabled = true;
   try {
     const assignment = await apiFetch(`/api/assignments/${encodeURIComponent(assignmentId)}`);
+    loadingBanner.remove();
+    document.getElementById('assignment-submit').disabled = false;
     version = assignment.version;
     document.getElementById('assignment-title').value = assignment.title;
     setDeadlineInputs(assignment.deadlineAt);
@@ -71,6 +76,7 @@ async function loadForEdit() {
       input.checked = assignment.allowedTypes.includes(input.value);
     });
   } catch (error) {
+    loadingBanner.remove();
     document.getElementById('assignment-banner').appendChild(banner('error', error.detail || 'Could not load this assignment.'));
     document.getElementById('assignment-submit').disabled = true;
   }
@@ -80,6 +86,10 @@ async function submit(event) {
   event.preventDefault();
   clearErrors();
   const request = payload();
+  const saveButton = document.getElementById('assignment-submit');
+  const saveLabel = saveButton.textContent;
+  saveButton.disabled = true;
+  saveButton.textContent = 'Saving…';
   try {
     if (assignmentId) {
       request.version = version;
@@ -90,6 +100,8 @@ async function submit(event) {
     }
     window.location.href = '/teacher/courses.html';
   } catch (error) {
+    saveButton.disabled = false;
+    saveButton.textContent = saveLabel;
     const target = document.getElementById('assignment-banner');
     if (error instanceof ApiError && error.status === 409 && error.code === 'VERSION_CONFLICT') {
       const reload = document.createElement('button');

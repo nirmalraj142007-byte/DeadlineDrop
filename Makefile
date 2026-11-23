@@ -2,6 +2,7 @@ SHELL := C:/Program Files/Git/bin/bash.exe
 .PHONY: verify up down logs terms seed k6-local charts
 
 verify:
+	bash tools/check-frozen.sh
 	./mvnw verify
 
 up:

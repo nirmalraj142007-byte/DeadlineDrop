@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeadlineDrop — Admin console</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <header>
+    <a href="/" class="brand">DeadlineDrop</a>
+    <nav>
+      <a href="/teacher/courses.html" class="btn">Courses</a>
+      <span id="user-display" class="chip chip-muted">Administrator</span>
+      <button type="button" id="sign-out-btn" class="btn">Sign out</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="card" aria-labelledby="console-heading">
+      <h1 id="console-heading">Admin console</h1>
+      <div id="console-state" aria-live="polite"></div>
+      <dl class="console-details">
+        <div><dt>Current arm</dt><dd id="arm-value">Loading…</dd></div>
+        <div><dt>Server time</dt><dd id="server-time">Loading…</dd></div>
+        <div><dt>Clock skew sample</dt><dd id="clock-skew">Loading…</dd></div>
+      </dl>
+      <section id="chaos-section" class="chaos-section" aria-labelledby="chaos-heading" hidden>
+        <h2 id="chaos-heading">Failure injection</h2>
+        <p id="chaos-status" role="status" aria-live="polite"></p>
+        <button type="button" id="halt-button" class="btn btn-danger" hidden>Halt this instance</button>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <p>DeadlineDrop — Hash commitment assignment portal</p>
+  </footer>
+
+  <script type="module" src="/js/shell.js"></script>
+  <script type="module" src="/js/console.js"></script>
+</body>
+</html>

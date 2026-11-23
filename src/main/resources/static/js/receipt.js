@@ -210,6 +210,7 @@ async function load(id, first) {
     } else {
       // Keep the last good receipt on screen and try again on the next tick.
       console.warn('Receipt refresh failed; will retry.', err);
+      stateContainer.replaceChildren(banner('warn', 'Could not refresh this receipt. Showing the last status we have; trying again shortly.'));
       schedule(id);
     }
     return;

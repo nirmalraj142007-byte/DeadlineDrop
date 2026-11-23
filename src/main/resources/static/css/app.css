@@ -190,6 +190,22 @@ textarea:focus {
   border-color: var(--primary);
 }
 
+.btn-danger {
+  background-color: var(--danger);
+  color: #ffffff;
+  border-color: var(--danger);
+}
+
+.btn-danger:hover:not(:disabled) {
+  filter: brightness(0.9);
+}
+
+@media (prefers-color-scheme: dark) {
+  .btn-danger {
+    color: #0b0f19;
+  }
+}
+
 /* ==========================================================================
    Cards
    ========================================================================== */
@@ -650,4 +666,34 @@ fieldset.form-group {
 
 [hidden] {
   display: none !important;
+}
+
+.console-details {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.console-details > div {
+  padding: var(--space-3);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.console-details dt {
+  font-size: var(--fs-200);
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.console-details dd {
+  margin: var(--space-1) 0 0;
+  overflow-wrap: anywhere;
+}
+
+.chaos-section {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
 }

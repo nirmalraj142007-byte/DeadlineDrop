@@ -47,7 +47,9 @@ function initLogin() {
 
         if (data.role === 'STUDENT') {
           window.location.href = '/student/assignments.html';
-        } else if (data.role === 'TEACHER' || data.role === 'ADMIN') {
+        } else if (data.role === 'ADMIN') {
+          window.location.href = '/admin/console.html';
+        } else if (data.role === 'TEACHER') {
           window.location.href = '/teacher/courses.html';
         } else {
           window.location.href = '/student/assignments.html';

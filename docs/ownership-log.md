@@ -669,7 +669,7 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 
 ---
 
-## 2026-11-17 — Phase 26: signed-URL security tests (G13)
+## 2026-11-17 ï¿½ Phase 26: signed-URL security tests (G13)
 
 - **What changed:** Committed `SignedUrlSecurityIT` (oversize PUT, unsigned content type, PUT to another path) and `tools/smoke-bucket.sh`, and ran the script against the real bucket via dd-arm-c: results in `results/smoke-bucket.log`. GCS rejected the 2 MiB PUT (400 EntityTooLarge), the wrong Content-Type (403 SignatureDoesNotMatch) and the changed object name (403 SignatureDoesNotMatch). D11 in `docs/decisions.md` records this. Fixed three script bugs on the way: it sourced a nonexistent `tools/env.sh`, the tampered-URL regex matched `//host` so case (c) never reached Google, and it wrote to `/tmp`.
 - **Why:** The design depends on the signed URL binding size, type and path; that had to be shown against Google, not only the local storage server.
@@ -782,3 +782,12 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 - **Not done:** `results/billing/cost-so-far.md` waits for your Cloud Billing numbers and screenshot (results/billing/ is not a frozen path). `tools/check-frozen.sh`, which AGENTS.md names, does not exist yet, so nothing enforces the freeze. Bucket objects from the two invalid A F1 runs remain under `a/<assignmentId>/` for phase 40. The halt endpoint names the revision, not the instance.
 - **Tests:** the first `./mvnw verify` failed on `DatabaseDownIT` (the commit right after the database returns got 503 "Unable to rollback against JDBC Connection", the same intermittent failure as phase 33: a pooled connection that died in the outage is handed out unchecked). It passed alone, and the full re-run was green (49 unit, 356 integration). No Java changed in this phase. The same behaviour appears on the deployed app as retried finalize 503s right after each F3 restart; a fix touches the pool configuration or the frozen commit path, so it is your decision. `pytest tools/tests` 29 passed; `make terms` OK.
 - **File to read first:** `results/failure/SUMMARY.md`, then `tools/faults/f1.sh`.
+
+## 2026-11-23 - Phase 35: admin console, UI review and post-evidence costs
+
+- **What changed:** Added the static admin console and admin login destination, improved dark-mode primary-button contrast, added the evidence freeze checker to CI and `make verify`, recorded the supplied cost summary, documented the screen-state walkthrough, and capped each Cloud Run arm at one instance. Cloud SQL is back on `db-f1-micro`.
+- **Why:** make the operator controls available for the day-20 UI, keep measured evidence guarded, and reduce post-evidence cloud capacity while staying within the 25-connection database budget.
+- **Trade-off:** one instance per arm uses 15 of the 20 connections allowed by the budget, leaving less scale headroom. The state walkthrough held or aborted requests in the browser for loading and error, and really stopped the app container only for the S7 stale-data case, so most error cells show a failed request rather than a dead server.
+- **Walkthrough and accessibility:** `docs/ui-states.md` has every S1-S9 state seen in real Chrome through the login form, and Lighthouse accessibility scored 100 on S3, S4 and S7 (`results/ui/`). The walk found two gaps that are fixed in static files (S4 failed polls were silent; S6 showed no loading or saving state) and one left for you: `api.js` awaits `/api/time` at load, so a slow `/api/time` leaves every screen blank.
+- **Tests:** `./mvnw verify` green (356 integration), `tools/check-frozen.sh` clean.
+- **File to read first:** `src/main/resources/static/js/console.js`.
