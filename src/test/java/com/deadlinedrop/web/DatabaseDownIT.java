@@ -14,6 +14,7 @@ import com.deadlinedrop.repository.UserRepository;
 import com.deadlinedrop.security.JwtService;
 import com.deadlinedrop.support.MutableClock;
 import com.deadlinedrop.support.TestTokens;
+import com.zaxxer.hikari.HikariDataSource;
 import eu.rekawek.toxiproxy.Proxy;
 import eu.rekawek.toxiproxy.ToxiproxyClient;
 import org.junit.jupiter.api.AfterAll;
@@ -41,6 +42,7 @@ import org.testcontainers.toxiproxy.ToxiproxyContainer;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -124,11 +126,13 @@ class DatabaseDownIT {
     private final EnrollmentRepository enrollments;
     private final AssignmentRepository assignments;
     private final PasswordEncoder passwordEncoder;
+    private final DataSource dataSource;
 
     @Autowired
     DatabaseDownIT(TestRestTemplate restTemplate, ObjectMapper objectMapper, JwtService jwtService,
                    UserRepository users, CourseRepository courses, EnrollmentRepository enrollments,
-                   AssignmentRepository assignments, PasswordEncoder passwordEncoder) {
+                   AssignmentRepository assignments, PasswordEncoder passwordEncoder, DataSource dataSource) {
+        this.dataSource = dataSource;
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
         this.jwtService = jwtService;
@@ -140,7 +144,7 @@ class DatabaseDownIT {
     }
 
     @Test
-    void commitFailsFastWith503WhileTheDatabaseIsUnreachableAndSucceedsOnRetryAfterItReturns() throws IOException {
+    void commitFailsFastWith503WhileTheDatabaseIsUnreachableAndSucceedsOnRetryAfterItReturns() throws IOException, java.sql.SQLException {
         User teacher = users.save(User.create("teacher@dd.local", passwordEncoder.encode("Password123!"),
                 Role.TEACHER, "Prof. Rao"));
         User student = users.save(User.create("student1@dd.local", passwordEncoder.encode("Password123!"),
@@ -184,6 +188,10 @@ class DatabaseDownIT {
             }
         } finally {
             DATABASE_PROXY.enable();
+            // Hikari hands out a connection used in the last 500 ms unchecked, so one the outage
+            // killed would fail the next request. Evicting models "the database has been back for
+            // a while" without touching the production pool settings.
+            dataSource.unwrap(HikariDataSource.class).getHikariPoolMXBean().softEvictConnections();
         }
 
         ResponseEntity<String> up = restTemplate.postForEntity(path, request, String.class);

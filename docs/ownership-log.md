@@ -791,3 +791,10 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 - **Walkthrough and accessibility:** `docs/ui-states.md` has every S1-S9 state seen in real Chrome through the login form, and Lighthouse accessibility scored 100 on S3, S4 and S7 (`results/ui/`). The walk found two gaps that are fixed in static files (S4 failed polls were silent; S6 showed no loading or saving state) and one left for you: `api.js` awaits `/api/time` at load, so a slow `/api/time` leaves every screen blank.
 - **Tests:** `./mvnw verify` green (356 integration), `tools/check-frozen.sh` clean.
 - **File to read first:** `src/main/resources/static/js/console.js`.
+## 2026-11-24 - Phase 36: end-to-end tests over HTTP, DatabaseDownIT fix
+
+- **What changed:** `tools/e2e/` (`happy.js`, `failure.js`, `failure.sh`, `e2e.sh`, `lib.js`), `make e2e`, a CI job `e2e` (needs `build-test`, k6 2.3.0), and `docs/tests.md` (counts by kind, the command for each, one line per race test). The Makefile picks bash by OS so it also runs on ubuntu. `DatabaseDownIT` now evicts the Hikari pool after the database returns, the way `ReceiptIT` does; production pool settings are untouched. `docs/decisions.md` records the known limit that a first request on a stale pooled connection may get a 503 the browser retries.
+- **Why:** the unit and integration tests never exercise the running containers together; these two do, from the outside, with real signed URLs and a real paused Postgres. The pool eviction removes the flaky 503 that failed `./mvnw verify` in phases 33 and 34.
+- **Trade-off:** the failure test identifies a 503 by status, not by reading its `DATABASE_UNAVAILABLE` code, because the shared `armC` retry policy only keeps statuses and `tools/k6/**` is frozen. Every 503 in this app carries that code. Each script creates its own assignment so reruns never meet earlier live rows.
+- **Tests:** `make e2e` green (happy 12/12 checks; failure 18/18, 5 of 5 students retried a 503); `tools/check-frozen.sh` clean; `DatabaseDownIT` green.
+- **File to read first:** `tools/e2e/failure.js`.

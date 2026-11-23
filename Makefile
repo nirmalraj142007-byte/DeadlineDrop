@@ -1,5 +1,9 @@
+ifeq ($(OS),Windows_NT)
 SHELL := C:/Program Files/Git/bin/bash.exe
-.PHONY: verify up down logs terms seed k6-local charts
+else
+SHELL := /bin/bash
+endif
+.PHONY: verify up down logs terms seed k6-local charts e2e
 
 verify:
 	bash tools/check-frozen.sh
@@ -27,3 +31,8 @@ k6-local:
 charts:
 	python tools/summary.py
 	python tools/charts.py
+
+# Phase 36: happy path then failure path (Postgres paused for 10 s) against the real compose stack,
+# which is torn down with its volumes afterwards. Needs k6 and Docker.
+e2e:
+	bash tools/e2e/e2e.sh

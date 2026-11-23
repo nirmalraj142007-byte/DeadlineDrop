@@ -86,3 +86,42 @@ jobs:
       scan-args: |-
         --lockfile=pom.xml
         --config=osv-scanner.toml
+
+  # Drives the real compose stack over HTTP with k6: a student's happy path, then a run with
+  # Postgres paused for 10 s. k6 is pinned to the version in tools/README.md.
+  e2e:
+    needs: build-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up k6
+        uses: grafana/setup-k6-action@v1
+        with:
+          k6-version: '2.3.0'
+
+      - name: Create .env with generated secrets
+        run: |
+          cp .env.example .env
+          {
+            echo "JWT_SECRET=$(openssl rand -base64 48)"
+            echo "TELEMETRY_SALT=$(openssl rand -base64 32)"
+            echo "RECEIPT_HMAC_KEY=$(openssl rand -base64 32)"
+            echo "INTERNAL_TOKEN=$(openssl rand -base64 32)"
+          } > secrets.env
+          for key in JWT_SECRET TELEMETRY_SALT RECEIPT_HMAC_KEY INTERNAL_TOKEN; do
+            sed -i "/^${key}=/d" .env
+          done
+          cat secrets.env >> .env
+          rm secrets.env
+
+      - name: Run the end-to-end tests
+        run: make e2e
+
+      - name: Upload k6 output on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-output
+          path: target/e2e
