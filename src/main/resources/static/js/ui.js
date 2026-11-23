@@ -5,7 +5,7 @@
  * IST date-time formatting, and countdown timers.
  */
 
-import { serverNow } from './api.js';
+import { serverNow, isClockSynced } from './api.js';
 
 /**
  * Render an accessible state container into a target element.
@@ -129,6 +129,10 @@ export function countdown(el, deadlineEpochMs) {
   }
 
   function update() {
+    if (!isClockSynced()) {
+      el.textContent = 'syncing clock…';
+      return;
+    }
     const remainingMs = deadlineEpochMs - serverNow();
     if (remainingMs <= 0) {
       el.textContent = 'Deadline passed';

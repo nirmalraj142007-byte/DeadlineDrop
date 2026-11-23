@@ -6,7 +6,7 @@
  * the screen is never blanked after the first successful load.
  */
 
-import { apiFetch, serverNow } from './api.js';
+import { apiFetch, serverNow, isClockSynced } from './api.js';
 import { renderState, formatIst, chip } from './ui.js';
 
 const POLL_MS = 5000;
@@ -174,9 +174,12 @@ function formatRemaining(ms) {
 function tick() {
   if (!data) return;
   const now = serverNow();
+  const synced = isClockSynced();
   const deadline = Date.parse(data.deadlineAt);
   const graceEnd = Date.parse(data.graceEndsAt);
-  if (now < deadline) {
+  if (!synced) {
+    countdownEl.textContent = 'syncing clock…';
+  } else if (now < deadline) {
     countdownEl.textContent = `Deadline in ${formatRemaining(deadline - now)}`;
   } else if (now < graceEnd) {
     countdownEl.textContent = `Deadline passed. Grace ends in ${formatRemaining(graceEnd - now)}`;
@@ -184,7 +187,7 @@ function tick() {
     countdownEl.textContent = 'Grace is over. Results are final.';
   }
 
-  const open = now >= graceEnd;
+  const open = synced && now >= graceEnd;
   downloadAllBtn.disabled = !open || downloading;
   downloadAllBtn.title = open ? '' : `Available after grace ends at ${formatIst(data.graceEndsAt)}`;
 

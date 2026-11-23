@@ -4,6 +4,8 @@
  * Plain ES module for HTTP communication, clock synchronisation, and retries.
  */
 
+export const NETWORK_MESSAGE = "Can't reach DeadlineDrop. Check your connection; we'll retry.";
+
 export class ApiError extends Error {
   constructor(status, code, detail, requestId, errors = []) {
     super(detail || code || `HTTP ${status}`);
@@ -48,11 +50,18 @@ export async function apiFetch(path, { method = 'GET', body, headers = {}, idemp
     }
   }
 
-  const res = await fetch(path, {
-    method,
-    headers: reqHeaders,
-    body: reqBody
-  });
+  let res;
+  try {
+    res = await fetch(path, {
+      method,
+      headers: reqHeaders,
+      body: reqBody
+    });
+  } catch (networkError) {
+    // fetch rejects with a TypeError ("Failed to fetch") when the server is unreachable.
+    // Status 0 keeps retry() and the submit flows treating it as retryable.
+    throw new ApiError(0, 'NETWORK_ERROR', NETWORK_MESSAGE);
+  }
 
   if (meta) {
     // Lets callers read the ETag and see a 304 without apiFetch turning it into an error.
@@ -168,6 +177,7 @@ export async function retry(fn, { untilEpochMs, onWait } = {}) {
 }
 
 let clockOffset = 0;
+let clockSynced = false;
 
 /**
  * Synchronise local clock against server via three /api/time samples,
@@ -196,6 +206,7 @@ export async function syncClock() {
   if (samples.length > 0) {
     samples.sort((a, b) => a.rtt - b.rtt);
     clockOffset = Math.round(samples[0].offset);
+    clockSynced = true;
   }
   return clockOffset;
 }
@@ -209,5 +220,22 @@ export function serverNow() {
   return Date.now() + clockOffset;
 }
 
-// Eagerly initiate clock sync on module evaluation
-await syncClock().catch(() => {});
+/**
+ * True once at least one /api/time sample has arrived. Until then serverNow() is the local clock,
+ * so countdowns say "syncing clock…" instead of showing a time that could be off.
+ *
+ * @returns {boolean}
+ */
+export function isClockSynced() {
+  return clockSynced;
+}
+
+// Sync in the background so pages render at once; never block module evaluation on /api/time.
+// If every sample fails, try again every 5 s until one succeeds. The server stamp (committed_at)
+// is taken on arrival and does not depend on this offset.
+function syncInBackground() {
+  syncClock().catch(() => {}).then(() => {
+    if (!clockSynced) setTimeout(syncInBackground, 5000);
+  });
+}
+syncInBackground();
