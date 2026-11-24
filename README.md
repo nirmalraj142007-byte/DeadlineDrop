@@ -74,7 +74,7 @@ The headline is B against C: they differ only in where the stamp is taken. Arm A
 
 ## Claims
 
-Every number on this page is in this table, with the file it comes from and how it was measured. `tools/check-claims.sh` fails if a linked file is missing or a number in the claim is not in that file. (The "3-minute" length of the demo video is a runtime, not a result, and is not a claim.)
+Every number on this page is in this table, with the file it comes from and how it was measured. `tools/check-claims.sh` fails if a linked file is missing or a number in the claim is not in that file. (The screenshots above and the local demo, `make demo`, illustrate the system; they are not measurements and are not claims.)
 
 | Claim | File | How it was measured |
 | --- | --- | --- |
@@ -108,7 +108,7 @@ Every number on this page is in this table, with the file it comes from and how 
 - **Single region.** Everything runs in asia-south1; there is no failover and nothing here speaks for other regions.
 - **No student pilot.** The 1,000-student cohort is synthetic: network speeds come from published percentiles, and the click curve is a stated assumption (D8, `results/model/model-output.json`).
 - **Failure runs are one run each**, at 500 students; they show what happened, not how often.
-- **Live deployment.** The cloud deployment is shut down on 26 Nov; `results/` and the demo video are kept, and `make demo` runs the whole system offline.
+- **Live deployment.** The cloud deployment is shut down on 26 Nov; `results/` and the screenshots in `docs/screenshots/` are kept, and `make demo` runs the whole system offline.
 - **Cost per 1,000 submissions** is not stated: `results/billing/` does not exist yet (phase 40 adds it), and the figure in the Claims table is total usage, not a per-submission cost.
 
 ## Non-goals

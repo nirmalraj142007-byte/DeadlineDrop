@@ -815,3 +815,12 @@ Surefire/Failsafe split that governs how `./mvnw verify` works.
 - **Trade-off:** the checker proves a number appears in the linked file, not that it means the same thing there, and a small number such as 3 can match by accident. The Claims table's "how measured" column is where a human reviewer checks meaning.
 - **Not done:** `docs/openapi.json` was not refreshed (no Docker daemon in the cloud session, so no running stack), and `docs/whiteboard-day19.jpg` is yours to draw and photograph. `./mvnw verify` here: 49 unit tests pass, 190 integration tests error on "Could not find a valid Docker environment"; CI is the check for those. No Java, frozen path or evidence file changed.
 - **File to read first:** `docs/design.md`, section "The authoritative clock", then the Claims table in `README.md`.
+
+## 2026-11-24 - Phase 39: live screenshots instead of a video
+
+- **What changed:** `docs/screenshots/race.png`, `receipt.png`, `dashboard.png`, captured from real Chrome (headless, 1280x800, DevTools Protocol) against the live Cloud Run arms B and C, with the page URL and the IST capture time burned into the bottom of each. `README.md`: the video placeholder is now a "Screenshots (live Cloud Run, 24 Nov 2026)" section with one-line captions, and the two sentences that mentioned a demo video now point to the screenshots and `make demo`. No app code changed.
+- **Why:** the approved change for phase 39 replaces the video with screenshots. The race image puts arm B and arm C side by side on one assignment: same student, same file, same throttled link; arm B said LATE, arm C said ON TIME.
+- **Trade-off:** this is an illustration, not evidence. It is one run, the throttle is Chrome's own (browser side only), and nothing from it is in `results/` or the Claims table. The capture scripts lived in the session scratchpad and are not committed. The dashboard image is cropped to the top of the page because the full page lists every student in the course. Three earlier attempts failed on my harness (a relative file path made Chrome upload an empty file, and puppeteer's protocol timeout fired); they left unused Lab 4 assignments on both arms.
+- **Cloud:** min-instances was set to 1 on `dd-arm-b` and `dd-arm-c` for the run and put back to 0 afterwards; the push also triggers the Deploy workflow, which sets sweep mode off.
+- **Checks:** `tools/check-claims.sh` clean (21 claims); `tools/check-frozen.sh` clean.
+- **File to read first:** the "Screenshots" section of `README.md`.
