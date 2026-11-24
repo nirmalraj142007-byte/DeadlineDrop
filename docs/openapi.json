@@ -148,7 +148,7 @@
                 "tags": [
                     "finalize-controller"
                 ],
-                "summary": "Confirm the committed bytes arrived in storage; never moves the stamp",
+                "summary": "Confirm the committed bytes arrived in storage; never moves the stamp. Send {\"receipt\": ...} when the commit returned one (the database was down at commit).",
                 "operationId": "finalizeSubmission",
                 "parameters": [
                     {
@@ -161,6 +161,15 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -271,6 +280,39 @@
             }
         },
         "/api/courses/{courseId}/assignments": {
+            "get": {
+                "tags": [
+                    "assignment-controller"
+                ],
+                "summary": "List a teacher's assignments for one course",
+                "operationId": "getAssignmentsForCourse",
+                "parameters": [
+                    {
+                        "name": "courseId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AssignmentDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "assignment-controller"
@@ -1128,6 +1170,9 @@
                     "urlExpiresAt": {
                         "type": "string",
                         "format": "date-time"
+                    },
+                    "receipt": {
+                        "type": "string"
                     }
                 }
             },
