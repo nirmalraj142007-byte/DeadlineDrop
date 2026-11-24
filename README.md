@@ -9,7 +9,21 @@ A student on slow Wi-Fi who clicked Submit before the deadline is marked late an
 **Headline (final-10-minute cohort, 1,000 students, public Indian network profiles; there was no student pilot, see D8):**
 with the stamp taken at finalize (arm B) the median run misjudged **1.50%** of the students who were truly on time; with the stamp taken when the hash commitment arrives (arm C, same code, same schedule, same network) it misjudged **0.00%** in all three runs. That is about **4.8** expected on-time students misjudged per 1,000-student course for arm B, against 0 for arm C. Source: [`results/headline.md`](results/headline.md).
 
-Watch the 3-minute demo: <VIDEO LINK, filled on day 20>
+## Screenshots (live Cloud Run, 24 Nov 2026)
+
+One student, one file, one deadline, a throttled link, and both builds on the same assignment. Each image has the page URL and the capture time (IST) burned into the bottom.
+
+![Arm B and arm C result pages side by side](docs/screenshots/race.png)
+
+Same click, same bytes, same slow link: arm B stamps at finalize and says LATE; arm C stamped when the hash commitment arrived and says ON TIME.
+
+![Arm C receipt page](docs/screenshots/receipt.png)
+
+The arm C receipt: time locked before the file arrived, then file arrived, then verified, with the SHA-256 the browser committed to.
+
+![Teacher dashboard for Lab 4 on arm C](docs/screenshots/dashboard.png)
+
+The teacher's dashboard for Lab 4 on arm C: the submission is verified, with the three stamps per student.
 
 Run it: `make demo`
 
