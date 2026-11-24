@@ -15,9 +15,9 @@ Run it: `make demo`
 
 ## The repeatable sentence
 
-> DeadlineDrop never marks an on-time student late because of slow Wi-Fi, even with the database down at 11:59.
+> The intern who showed that even a modern direct-to-cloud upload marks about 5 on-time last-minute submitters late per 1,000-student course for having slow Wi-Fi, and fixed it with a hash commitment.
 
-The second clause is here because both conditions for it hold: [D12](docs/decisions.md) says the signed commit receipt shipped, and the F3 run with the receipt (Cloud SQL restarted 90 s before the deadline) misjudged 0 truly on-time students ([`results/failure/SUMMARY.md`](results/failure/SUMMARY.md)). What that run did and did not cover is under Limits.
+The "about 5" is the model-scaled 4.8 in the Claims table (arm B, stamp at finalize); arm C, the hash commitment, misjudged 0.
 
 ## Architecture
 
@@ -66,7 +66,7 @@ Every number on this page is in this table, with the file it comes from and how 
 | --- | --- | --- |
 | Arm B, median misclassification at 1,000 students: 1.50% (min-max 1.50%-2.19%, 3 runs) | [`results/headline.md`](results/headline.md) | `tools/summary.py` over the counted B runs at 1,000: truly on time (clicked at least 5 s before the deadline on the k6 VM's NTP-synced clock) but recorded late or missing, divided by truly on time. |
 | Arm C, same cohort: 0.00% in all 3 runs, and 0 error cells summed over all 10 counted arm C runs | [`results/headline.md`](results/headline.md) | Same schedule and network as arm B; error cells are on-time-to-late plus late-to-on-time. |
-| About 4.8 on-time students misjudged by arm B per 1,000-student course (model 4.2, measured over model 1.14) | [`results/headline.md`](results/headline.md) | The model's count at 1x (assumes one third of the course submits in the final 10 minutes) scaled by measured over model cohort rate for B (1.50% over 1.32%). A model-scaled estimate, not a direct count. |
+| About 4.8 (the repeatable sentence says about 5) on-time students misjudged by arm B per 1,000-student course (model 4.2, measured over model 1.14) | [`results/headline.md`](results/headline.md) | The model's count at 1x (assumes one third of the course submits in the final 10 minutes) scaled by measured over model cohort rate for B (1.50% over 1.32%). A model-scaled estimate, not a direct count. |
 | Arm A, same cohort: 1.50% median, 1.32% model for B, 1.30% model for A | [`results/headline.md`](results/headline.md) | Same method; model from `tools/model/model.py`, pre-registered. A and B misjudged the same students: the error is slow uploads, not load. |
 | Arm C commit latency at 1,000 students: p95 192 ms, p99 340 ms, target 500 ms | [`results/headline.md`](results/headline.md) | Median over 3 runs of each run's k6 commit latency percentile. |
 | Arm C commit, one 1,000-student run: app 101.0 ms, URL signing 73.0 ms, database 26.0 ms | [`results/runs/20261121T200324Z_C_1000_r1/confusion.json`](results/runs/20261121T200324Z_C_1000_r1/confusion.json) | Server-Timing medians over 1,000 commits; signing (IAM signBlob) is the largest phase. |
@@ -88,7 +88,7 @@ Every number on this page is in this table, with the file it comes from and how 
 
 ## Limits
 
-- **F3 (database restart) result.** The restart was short on this tier (10-21 s) and began 90 s before the deadline, so retries had over a minute. Arm C misjudged 0 with the receipt and 0 without it, so the pre-registered prediction that F3 without a receipt would misjudge more than 0 students was **not borne out**; the receipt's measured effect was 11 commits accepted on the first try instead of retried. The "database down at 11:59" clause is therefore proved for a restart of about 10-21 s, not for an outage that reaches the deadline. It was run once per configuration (a demonstration, not a rate).
+- **F3 (database restart) result.** The restart was short on this tier (10-21 s) and began 90 s before the deadline, so retries had over a minute. Arm C misjudged 0 with the receipt and 0 without it, so the pre-registered prediction that F3 without a receipt would misjudge more than 0 students was **not borne out**; the receipt's measured effect was 11 commits accepted on the first try instead of retried. So the receipt is shown to hold for a restart of about 10-21 s, not for an outage that reaches the deadline. It was run once per configuration (a demonstration, not a rate).
 - **A receipt does not cover everything.** If the browser dies after uploading while the database is still down, the object has no row and that submission is lost (D12). Recovery by listing the bucket is designed, not built.
 - **Upload cap: 25 MB.** Uploads are one signed PUT (resumable uploads are not built), and the verifier hashes the stored object while holding a database connection from a pool of 5, so the cap keeps that short; the same cap bounds the load generator's memory on its VMs.
 - **Single region.** Everything runs in asia-south1; there is no failover and nothing here speaks for other regions.
