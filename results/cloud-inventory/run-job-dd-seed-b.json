@@ -1,0 +1,131 @@
+{
+  "apiVersion": "run.googleapis.com/v1",
+  "kind": "Job",
+  "metadata": {
+    "annotations": {
+      "run.googleapis.com/client-name": "gcloud",
+      "run.googleapis.com/client-version": "592.0.0",
+      "run.googleapis.com/creator": "nirmalraj142007@gmail.com",
+      "run.googleapis.com/lastModifier": "nirmalraj142007@gmail.com",
+      "run.googleapis.com/operation-id": "a1f185ab-1194-442b-bc94-80ee86084bed"
+    },
+    "creationTimestamp": "2026-11-11T13:17:53.126930Z",
+    "generation": 2,
+    "labels": {
+      "cloud.googleapis.com/location": "asia-south1",
+      "run.googleapis.com/lastUpdatedTime": "2026-11-13T14:32:22.228282Z",
+      "run.googleapis.com/satisfiesPzs": "true"
+    },
+    "name": "dd-seed-b",
+    "namespace": "1047066668481",
+    "resourceVersion": "AAZgKU6RuW4",
+    "selfLink": "/apis/run.googleapis.com/v1/namespaces/1047066668481/jobs/dd-seed-b",
+    "uid": "f7d537f4-0382-41f9-bf87-f1ef2bcb99cd"
+  },
+  "spec": {
+    "template": {
+      "metadata": {
+        "annotations": {
+          "run.googleapis.com/client-name": "gcloud",
+          "run.googleapis.com/client-version": "592.0.0",
+          "run.googleapis.com/cloudsql-instances": "deadlinedrop-nirmal:asia-south1:dd-pg",
+          "run.googleapis.com/execution-environment": "gen2"
+        },
+        "labels": {
+          "client.knative.dev/nonce": "puw_xab_yek"
+        }
+      },
+      "spec": {
+        "taskCount": 1,
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "env": [
+                  {
+                    "name": "SPRING_PROFILES_ACTIVE",
+                    "value": "cloud,seed"
+                  },
+                  {
+                    "name": "DB_NAME",
+                    "value": "dd_b"
+                  },
+                  {
+                    "name": "BUCKET",
+                    "value": "deadlinedrop-nirmal-dd-objects"
+                  },
+                  {
+                    "name": "CLOUD_SQL_INSTANCE",
+                    "value": "deadlinedrop-nirmal:asia-south1:dd-pg"
+                  },
+                  {
+                    "name": "SEED_STUDENTS",
+                    "value": "1000"
+                  },
+                  {
+                    "name": "DB_POOL_MAX",
+                    "value": "5"
+                  },
+                  {
+                    "name": "DB_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "latest",
+                        "name": "dd-db-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "SEED_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "latest",
+                        "name": "dd-seed-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "JWT_SECRET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "latest",
+                        "name": "dd-jwt-secret"
+                      }
+                    }
+                  }
+                ],
+                "image": "asia-south1-docker.pkg.dev/deadlinedrop-nirmal/dd/app:latest",
+                "resources": {
+                  "limits": {
+                    "cpu": "1000m",
+                    "memory": "512Mi"
+                  }
+                }
+              }
+            ],
+            "maxRetries": 0,
+            "sandboxes": {},
+            "serviceAccountName": "dd-run@deadlinedrop-nirmal.iam.gserviceaccount.com",
+            "timeoutSeconds": "300"
+          }
+        }
+      }
+    }
+  },
+  "status": {
+    "conditions": [
+      {
+        "status": "True",
+        "type": "Ready"
+      }
+    ],
+    "executionCount": 2,
+    "latestCreatedExecution": {
+      "completionStatus": "EXECUTION_SUCCEEDED",
+      "completionTimestamp": "2026-11-13T14:33:08.233769Z",
+      "creationTimestamp": "2026-11-13T14:32:29.624089Z",
+      "name": "dd-seed-b-6tlzf"
+    },
+    "observedGeneration": 2
+  }
+}

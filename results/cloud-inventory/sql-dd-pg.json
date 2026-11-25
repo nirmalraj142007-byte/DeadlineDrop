@@ -1,0 +1,100 @@
+{
+  "availableMaintenanceVersions": [
+    "POSTGRES_17_11.R20261013.06_02"
+  ],
+  "backendType": "SECOND_GEN",
+  "connectionName": "deadlinedrop-nirmal:asia-south1:dd-pg",
+  "createTime": "2026-11-11T09:04:33.700Z",
+  "databaseInstalledVersion": "POSTGRES_17_11",
+  "databaseVersion": "POSTGRES_17",
+  "etag": "b8b751a335c8f4ab730997dc7fc7bf1b68c42d7701bf38e519fb30e25a52ddd4",
+  "gceZone": "asia-south1-c",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": true
+  },
+  "includeReplicasForMajorVersionUpgrade": false,
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "ipAddresses": [
+    {
+      "ipAddress": "34.93.234.110",
+      "type": "PRIMARY"
+    },
+    {
+      "ipAddress": "34.100.158.0",
+      "type": "OUTGOING"
+    }
+  ],
+  "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_17_11.R20261013.02_04",
+  "name": "dd-pg",
+  "project": "deadlinedrop-nirmal",
+  "region": "asia-south1",
+  "satisfiesPzi": true,
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/deadlinedrop-nirmal/instances/dd-pg",
+  "serverCaCert": {
+    "cert": "[removed]",
+    "certSerialNumber": "0",
+    "commonName": "C=US,O=Google\\, Inc,CN=Cloud SQL Server CA,dnQualifier=c91f473f-e2a6-4a6b-98b7-faadcec2c53c",
+    "createTime": "2026-11-11T09:05:47.556Z",
+    "expirationTime": "2036-11-08T09:06:47.556Z",
+    "instance": "dd-pg",
+    "kind": "sql#sslCert",
+    "sha1Fingerprint": "62d26228d9026a7a7b8e70b8fcae903b8fcc366b"
+  },
+  "serviceAccountEmailAddress": "p1047066668481-1zaf3w@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "backupTier": "STANDARD",
+      "enabled": false,
+      "kind": "sql#backupConfiguration",
+      "startTime": "08:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskSizeGb": "10",
+    "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
+    "edition": "ENTERPRISE",
+    "enableDataplexIntegration": true,
+    "ipConfiguration": {
+      "ipv4Enabled": true,
+      "message": "Configuring authorized network or using CloudSQL auth proxy or language connectors is a prerequisite for connecting to Public IP. Please refer to the documentation for more details https://cloud.google.com/sql/docs/mysql/authorize-networks.",
+      "requireSsl": false,
+      "serverCaMode": "GOOGLE_MANAGED_INTERNAL_CA",
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "asia-south1-c"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
+    "replicationType": "SYNCHRONOUS",
+    "settingsVersion": "38",
+    "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
+    "tier": "db-f1-micro"
+  },
+  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
+  "state": "RUNNABLE",
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "PostgreSQL 18",
+      "majorVersion": "POSTGRES_18",
+      "name": "POSTGRES_18"
+    }
+  ]
+}

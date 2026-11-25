@@ -1,0 +1,40 @@
+{
+  "cors_config": [
+    {
+      "maxAgeSeconds": 3600,
+      "method": [
+        "PUT",
+        "GET"
+      ],
+      "origin": [
+        "https://dd-arm-a-1047066668481.asia-south1.run.app",
+        "https://dd-arm-a-aheo6nqyga-el.a.run.app",
+        "https://dd-arm-b-1047066668481.asia-south1.run.app",
+        "https://dd-arm-b-aheo6nqyga-el.a.run.app",
+        "https://dd-arm-c-1047066668481.asia-south1.run.app",
+        "https://dd-arm-c-aheo6nqyga-el.a.run.app"
+      ],
+      "responseHeader": [
+        "Content-Type",
+        "Content-Disposition",
+        "x-goog-content-length-range"
+      ]
+    }
+  ],
+  "creation_time": "2026-11-11T09:16:56+0000",
+  "default_storage_class": "STANDARD",
+  "generation": 1794388615876699568,
+  "location": "ASIA-SOUTH1",
+  "location_type": "region",
+  "metageneration": 260,
+  "name": "deadlinedrop-nirmal-dd-objects",
+  "public_access_prevention": "enforced",
+  "satisfies_pzs": true,
+  "soft_delete_policy": {
+    "effectiveTime": "2026-11-11T09:16:56.798000+00:00",
+    "retentionDurationSeconds": "604800"
+  },
+  "storage_url": "gs://deadlinedrop-nirmal-dd-objects/",
+  "uniform_bucket_level_access": true,
+  "update_time": "2026-11-24T16:14:03+0000"
+}

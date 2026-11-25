@@ -1,0 +1,28 @@
+{
+  "attemptDeadline": "60s",
+  "httpTarget": {
+    "headers": {
+      "User-Agent": "Google-Cloud-Scheduler"
+    },
+    "httpMethod": "POST",
+    "oidcToken": {
+      "audience": "https://dd-arm-c-aheo6nqyga-el.a.run.app",
+      "serviceAccountEmail": "dd-scheduler@deadlinedrop-nirmal.iam.gserviceaccount.com"
+    },
+    "uri": "https://dd-arm-c-aheo6nqyga-el.a.run.app/internal/reconcile"
+  },
+  "lastAttemptTime": "2026-11-25T15:17:03.842257Z",
+  "name": "projects/deadlinedrop-nirmal/locations/asia-south1/jobs/dd-reconcile-c",
+  "retryConfig": {
+    "maxBackoffDuration": "3600s",
+    "maxDoublings": 5,
+    "maxRetryDuration": "0s",
+    "minBackoffDuration": "5s"
+  },
+  "schedule": "* * * * *",
+  "scheduleTime": "2026-11-25T15:18:03.186337Z",
+  "state": "ENABLED",
+  "status": {},
+  "timeZone": "Etc/UTC",
+  "userUpdateTime": "2026-11-22T20:53:03.700026Z"
+}
