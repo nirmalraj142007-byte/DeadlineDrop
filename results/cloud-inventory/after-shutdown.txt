@@ -1,0 +1,34 @@
+# gcloud listings after shutdown, 2026-11-25T15:52:46Z, project deadlinedrop-nirmal
+$ gcloud scheduler jobs list --location=asia-south1
+Listed 0 items.
+$ gcloud run services list --region=asia-south1
+Listed 0 items.
+$ gcloud run jobs list --region=asia-south1
+Listed 0 items.
+$ gcloud sql instances list
+Listed 0 items.
+$ gcloud storage buckets list
+Listed 0 items.
+$ gcloud artifacts repositories list
+Listing items under project deadlinedrop-nirmal, across all locations.
+
+Listed 0 items.
+$ gcloud compute instances list
+Listed 0 items.
+$ gcloud compute disks list
+Listed 0 items.
+$ gcloud compute addresses list
+Listed 0 items.
+$ gcloud compute snapshots list
+Listed 0 items.
+$ gcloud secrets list
+Listed 0 items.
+$ gcloud iam service-accounts list
+1047066668481-compute@developer.gserviceaccount.com
+$ gcloud iam workload-identity-pools list --location=global --show-deleted
+github	DELETED
+$ gcloud billing budgets list
+dd-40	3500	INR
+$ gh workflow list --all
+CI	active	409370216
+Deploy	disabled_manually	414513210

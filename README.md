@@ -27,6 +27,8 @@ The teacher's dashboard for Lab 4 on arm C: the submission is verified, with the
 
 Run it: `make demo`
 
+**Live deployment:** ran live 6-25 Nov 2026 on Cloud Run (asia-south1); shut down on 25 Nov 2026, the day before the free-trial credit ended. Evidence: `results/` (frozen at tag `evidence-frozen`); the deployed configuration is in `results/cloud-inventory/`. Run it locally with `make demo`.
+
 ## The repeatable sentence
 
 > The intern who showed that even a modern direct-to-cloud upload marks about 5 on-time last-minute submitters late per 1,000-student course for having slow Wi-Fi, and fixed it with a hash commitment.
@@ -98,7 +100,8 @@ Every number on this page is in this table, with the file it comes from and how 
 | Upload cap in bytes: 26214400 | [`src/main/java/com/deadlinedrop/domain/Assignment.java`](src/main/java/com/deadlinedrop/domain/Assignment.java) | Entity validation on `maxBytes` (the first migration repeats it as a `CHECK`), so no assignment can ask for more. |
 | Database pool of 5 connections per instance, 2 s connection timeout | [`src/main/resources/application.yml`](src/main/resources/application.yml) | Configuration (`maximum-pool-size` default 5, `connection-timeout` 2000 ms); not a measurement. |
 | Network profiles: slow 7 Mbps, medium 20 Mbps, fast 54 Mbps | [`docs/network-profiles.md`](docs/network-profiles.md) | Published Ookla percentiles (mobile upload p20, mobile p80 or fixed p20, fixed p50); shaped on the k6 VMs with tc and netem. |
-| Cloud cost, 1-23 Nov: ₹2,985.57 usage, ₹0 paid after credits | [`results/cost-so-far.md`](results/cost-so-far.md) | Cloud Billing, usage cost before credits, supplied by the owner. Not a per-1,000-submissions figure. |
+| Cloud cost, 1-25 Nov: ₹3,121.37 usage, ₹0 paid after credits | [`results/billing/billing-final.md`](results/billing/billing-final.md) | Cloud Billing report for project deadlinedrop-nirmal only, usage cost before credits, supplied by the owner on 25 Nov (screenshot `results/billing/billing-final.png`). |
+| Cost per 1,000 submissions: ₹131.98 (₹3,121.37 over 23,650 submissions) | [`results/billing/cost-per-1000.md`](results/billing/cost-per-1000.md) | Whole bill divided by the sum of `size` over the 45 counted runs, x 1,000. An upper bound: the bill includes development, idle time and the k6 VMs. |
 
 ## Limits
 
@@ -108,8 +111,8 @@ Every number on this page is in this table, with the file it comes from and how 
 - **Single region.** Everything runs in asia-south1; there is no failover and nothing here speaks for other regions.
 - **No student pilot.** The 1,000-student cohort is synthetic: network speeds come from published percentiles, and the click curve is a stated assumption (D8, `results/model/model-output.json`).
 - **Failure runs are one run each**, at 500 students; they show what happened, not how often.
-- **Live deployment.** The cloud deployment is shut down on 26 Nov; `results/` and the screenshots in `docs/screenshots/` are kept, and `make demo` runs the whole system offline.
-- **Cost per 1,000 submissions** is not stated: `results/billing/` does not exist yet (phase 40 adds it), and the figure in the Claims table is total usage, not a per-submission cost.
+- **Live deployment.** Ran live 6-25 Nov 2026 and was shut down on 25 Nov (every billable resource deleted, `tools/shutdown.sh`, listings in `results/cloud-inventory/after-shutdown.txt`); `results/`, the database dumps in `results/backup/` and the screenshots in `docs/screenshots/` are kept, and `make demo` runs the whole system offline.
+- **Cost per 1,000 submissions is an upper bound.** It divides the whole project's bill (development, idle Cloud SQL, the k6 VMs, dry runs) by the submissions in the counted runs, so it is not the marginal cost of a submission (`results/billing/cost-per-1000.md`).
 
 ## Non-goals
 

@@ -83,3 +83,9 @@ A cache would also cost something the project cannot afford: a second copy of su
 - **Trade-off:** pinning patch versions above the Boot BOM means they must be removed when Boot ships the same or newer ones; the comment in `pom.xml` marks them.
 
 - **Known limit (phase 36):** after a database restart, the first request on a stale pooled connection may get a 503 that the browser retries.
+
+## D16: Shutdown (phase 40, 2026-11-25)
+- **No pilot hand-over.** There was no pilot (D8), so there was no pilot assignment to download or hand over and no student accounts to delete. `telemetry_events` and `survey_responses` had 0 rows in dd_a, dd_b and dd_c, so there was no aggregate telemetry to export; secret `dd-telemetry-salt` was destroyed with the other secrets.
+- **Kept:** `results/cloud-inventory/` (describe JSON of every deleted resource, secrets redacted, taken before any delete) and `results/backup/` (`pg_dump -Fc` of the three arm databases, under 5 MB, tracked in git; `gcloud storage ls -r` of the bucket).
+- **Deleted on 2026-11-25 between 15:20 and 15:52 UTC (20:50-21:22 IST), with `tools/shutdown.sh`, one typed confirmation per group, in this order:** Cloud Scheduler jobs dd-drain-c and dd-reconcile-c; Cloud Run services dd-arm-a/b/c and jobs dd-seed-a/b/c; Cloud SQL instance dd-pg; all 1,210 objects and the bucket (invalid-run leftovers and the Lab 4 test files included); Artifact Registry repository dd; secrets dd-*; service accounts dd-run, dd-deployer, dd-scheduler; Workload Identity pool github. No dd-* VMs existed. The Deploy workflow was disabled before the first push of the phase. Budget alert dd-40 is kept. Listings proving it: `results/cloud-inventory/after-shutdown.txt`.
+- **Not deleted:** the custom IAM role `ddBucketCorsUpdater` (not billable, not in the shutdown list) and the project itself.

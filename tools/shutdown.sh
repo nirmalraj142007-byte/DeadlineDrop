@@ -36,7 +36,8 @@ GROUPS_IN_ORDER=(scheduler run sql bucket ar vms secrets sa wif)
 SERVICE_ACCOUNTS=(dd-run dd-deployer dd-scheduler)
 POOL_ID="github"
 
-g() { gcloud --project="${PROJECT_ID}" --quiet "$@" 2>/dev/null; }
+# tr: gcloud on Windows ends lines with CRLF, and a trailing \r breaks the names passed back to delete.
+g() { gcloud --project="${PROJECT_ID}" --quiet "$@" 2>/dev/null | tr -d '\r'; }
 
 # Each list_* prints one resource per line, nothing when the group is empty.
 list_scheduler() { g scheduler jobs list --location="${REGION}" --format="value(name.basename())"; }
