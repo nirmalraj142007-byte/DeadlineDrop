@@ -6,7 +6,7 @@ results/raw/
 results/local/
 results/flow-live/
 tools/k6/files/out/
-backup/
+/backup/
 probe.pdf
 probe_response.json
 probe_logs.json
@@ -20,3 +20,4 @@ __pycache__/
 /tools/demo/.lab4
 /tools/demo/.last-rush/
 /tools/demo/lab4.pdf
+!/results/backup/
