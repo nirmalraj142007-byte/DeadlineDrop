@@ -134,7 +134,7 @@ The six cuts made on day 1 (D2) and what replaced them:
 | Cross-student duplicate detection | Stretch goal; nothing built |
 | CSV bulk import | An automated database seed script |
 | Downloadable receipt file | A web-based receipt page, kept |
-| 2,000-student sweep point | Stopped at 1,000 to stay inside the free-tier compute and connection budgets |
+| 2,000-student sweep point ([D2](docs/decisions.md)) | Stopped at 1,000 to stay inside the free-tier compute and connection budgets |
 | OpenAPI example payloads | Standard generated API documentation, kept |
 | Teacher CSV export | Per-file submission inspection and a download-all archive |
 
@@ -149,6 +149,7 @@ The six cuts made on day 1 (D2) and what replaced them:
 
 ## Links
 
+- [Project report](docs/report/report.md), [interview cards](docs/interview-cards.md), [resume entry](docs/resume.md)
 - [Design](docs/design.md), [prior art](docs/prior-art.md), [decisions](docs/decisions.md)
 - [OpenAPI document](docs/openapi.json) (also served at `/v3/api-docs` in the `local` and `cloud` profiles)
 - [Tests](docs/tests.md), [UI states](docs/ui-states.md), [demo setup](docs/demo/setup.md)
@@ -163,5 +164,5 @@ cp .env.example .env
 make up        # Docker Compose: postgres, app, storage, scheduler
 ./mvnw verify  # unit + integration tests (needs Docker)
 make terms     # banned-terms check
-bash tools/check-claims.sh   # every README number traces to results/
+bash tools/check-claims.sh   # every number in README, report and resume traces to results/
 ```

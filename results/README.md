@@ -12,9 +12,8 @@ results/
                         export.json      the teacher export for the run's assignment
                         vu-log-<cohort>.ndjson, summary-<cohort>.json, k6-<cohort>.out
                         confusion.json   tools/analyze.py: confusion cells, checks, latency, Server-Timing
-  model/              fitted models and their inputs (pilot-derived)
+  model/              the analytic model's output and sensitivity table (public network profiles; no pilot, D8)
   charts/             figures generated from runs/ and model/
-  pilot/              anonymised pilot telemetry summaries (never names, emails or passwords)
   billing/            Cloud Billing exports and the cost summary
   ui/                 UI evidence (screenshots, accessibility results)
   sanity/             <cohort>.txt: shaped-link check from each k6 VM (rate ±10%, RTT ±10 ms)
@@ -22,7 +21,11 @@ results/
   coldstart.json      measured Cloud Run cold-start times (tools/coldstart.sh)
   probe-buffering.md  Cloud Run request-buffering probe (arm A rationale)
   smoke-bucket.log    Cloud Storage smoke-test log
-  SUMMARY.md          the headline numbers, each pointing at the run folders it came from
+  SUMMARY.md          one row per counted run (tools/analyze.py)
+  headline.md         the headline numbers, each pointing at the run folders it came from
+  failure/            F1-F3 and cold-rush summary (failure/SUMMARY.md)
+  cloud-inventory/    describe output of every cloud resource, saved before the 25 Nov 2026 shutdown
+  backup/             pg_dump of dd_a, dd_b, dd_c and a bucket listing
 ```
 
 ## Rules

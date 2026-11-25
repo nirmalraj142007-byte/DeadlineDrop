@@ -55,7 +55,7 @@ Run these in order, from the repository root, in Git Bash or `make`'s shell.
   2 minutes old, so run `make check` at least 2 minutes after the rush, or the students who
   skipped finalize still show as `COMMITTED` (stamped, not lost).
 
-## Between rehearsals
+## Between runs
 
 `make demo-reset` brings everything back to a clean Lab 4. `make down` stops the base stack;
 to stop the demo stack use
